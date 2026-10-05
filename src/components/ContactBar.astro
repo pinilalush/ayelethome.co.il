@@ -1,0 +1,84 @@
+---
+import Button from './Button.astro';
+import { telHref, whatsappHref } from '../lib/contact.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { callsInNote } from '../lib/i18n.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { ui } = getLocale(code);
+const note = callsInNote(code);
+---
+
+<aside class="contact-bar" aria-label={ui.contact}>
+	<div class="contact-bar__inner">
+		<Button href={whatsappHref(site.business.whatsapp)} icon="whatsapp" class="contact-bar__button">
+			{ui.whatsapp}
+		</Button>
+		<Button href={telHref(site.business.phone)} variant="on-dark" icon="phone" class="contact-bar__button">
+			<span class="contact-bar__label">{ui.call}</span>
+			{note && <span class="contact-bar__note">{note}</span>}
+		</Button>
+	</div>
+</aside>
+
+<style>
+	.contact-bar {
+		position: fixed;
+		inset-inline: 0;
+		inset-block-end: 0;
+		z-index: 90;
+		padding-block: var(--space-2xs) calc(var(--space-2xs) + var(--safe-bottom));
+		padding-left: max(var(--space-s), var(--safe-left));
+		padding-right: max(var(--space-s), var(--safe-right));
+		background: color-mix(in oklab, var(--color-ink) 90%, transparent);
+		-webkit-backdrop-filter: blur(14px) saturate(1.4);
+		backdrop-filter: blur(14px) saturate(1.4);
+		box-shadow: 0 -0.75rem 2rem -1.25rem color-mix(in oklab, var(--color-ink) 60%, transparent);
+	}
+
+	.contact-bar__inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-2xs);
+		max-inline-size: 40rem;
+		margin-inline: auto;
+	}
+
+	.contact-bar :global(.contact-bar__button) {
+		min-block-size: 3.25rem;
+		padding-inline: var(--space-xs);
+	}
+
+	.contact-bar :global(.contact-bar__button > span) {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		line-height: 1.15;
+	}
+
+	.contact-bar__note {
+		font-size: var(--step--2);
+		font-weight: 500;
+		opacity: 0.8;
+	}
+
+	@media (orientation: landscape) and (max-height: 32rem) {
+		.contact-bar {
+			padding-block: var(--space-3xs) calc(var(--space-3xs) + var(--safe-bottom));
+		}
+
+		.contact-bar :global(.contact-bar__button) {
+			min-block-size: 2.75rem;
+		}
+	}
+
+	@media (min-width: 60rem) {
+		.contact-bar {
+			display: none;
+		}
+	}
+</style>

@@ -2,12 +2,15 @@
 import '@fontsource-variable/rubik';
 import '../styles/global.css';
 import Button from '../components/Button.astro';
+import ContactBar from '../components/ContactBar.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import Logo from '../components/Logo.astro';
 import TestDataBanner from '../components/TestDataBanner.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { getLocale, isTestData, site } from '../lib/data.ts';
-import { LANGUAGE_STORAGE_KEY, getLanguage, homeUrl } from '../lib/i18n.ts';
+import { LANGUAGE_STORAGE_KEY, callsInNote, getLanguage, homeUrl } from '../lib/i18n.ts';
 import { telHref } from '../lib/contact.ts';
+import { formatPhone } from '../lib/text.ts';
 import { themeCss } from '../lib/theme.ts';
 
 interface Props {
@@ -19,6 +22,7 @@ interface Props {
 const { code, title, headerTone = 'light' } = Astro.props;
 const language = getLanguage(code);
 const { ui } = getLocale(code);
+const callNote = callsInNote(code);
 
 const detect = {
 	storageKey: LANGUAGE_STORAGE_KEY,
@@ -71,14 +75,17 @@ const detect = {
 				<Logo code={code} />
 				<div class="site-header__end">
 					<LanguageSwitcher current={code} />
+					{callNote && <span id="call-note-header" class="site-header__note">{callNote}</span>}
 					<Button
 						href={telHref(site.business.phone)}
 						variant={headerTone === 'dark' ? 'on-dark' : 'secondary'}
 						size="sm"
 						icon="phone"
+						describedBy={callNote ? 'call-note-header' : undefined}
 						class="site-header__call"
 					>
-						{ui.call}
+						<span class="visually-hidden">{ui.call} </span>
+						<span dir="ltr">{formatPhone(site.business.phone)}</span>
 					</Button>
 				</div>
 			</div>
@@ -86,6 +93,8 @@ const detect = {
 		<main id="main">
 			<slot />
 		</main>
+		<ContactBar code={code} />
+		<WhatsAppFab code={code} />
 	</body>
 </html>
 
@@ -175,13 +184,23 @@ const detect = {
 		gap: var(--space-xs);
 	}
 
-	.site-header :global(.site-header__call) {
+	.site-header :global(.site-header__call),
+	.site-header__note {
 		display: none;
+	}
+
+	.site-header__note {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
 	}
 
 	@media (min-width: 60rem) {
 		.site-header :global(.site-header__call) {
 			display: inline-flex;
+		}
+
+		.site-header__note {
+			display: inline;
 		}
 	}
 </style>

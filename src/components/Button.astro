@@ -9,10 +9,11 @@ interface Props {
 	icon?: IconName;
 	newTab?: boolean;
 	newTabLabel?: string;
+	describedBy?: string;
 	class?: string;
 }
 
-const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabel, class: className } = Astro.props;
+const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabel, describedBy, class: className } = Astro.props;
 ---
 
 <a
@@ -20,6 +21,7 @@ const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabe
 	class:list={['button', `button--${variant}`, `button--${size}`, className]}
 	target={newTab ? '_blank' : undefined}
 	rel={newTab ? 'noopener' : undefined}
+	aria-describedby={describedBy}
 >
 	{icon && <Icon name={icon} size="1.25em" />}
 	<span><slot /></span>

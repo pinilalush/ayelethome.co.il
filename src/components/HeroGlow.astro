@@ -3,6 +3,7 @@ import Button from './Button.astro';
 import Icon from './Icon.astro';
 import { telHref, whatsappHref } from '../lib/contact.ts';
 import { getLocale, site } from '../lib/data.ts';
+import { callsInNote } from '../lib/i18n.ts';
 
 interface Props {
 	code: string;
@@ -11,6 +12,7 @@ interface Props {
 const { code } = Astro.props;
 const { content, ui } = getLocale(code);
 const { business } = site;
+const callNote = callsInNote(code);
 
 const sparkles = [
 	{ top: '0.5rem', start: '7%', size: '1.5rem', delay: '0s', edge: 'top' },
@@ -48,8 +50,23 @@ const sparkles = [
 		<p class="hero__subtitle">{content.hero.subtitle}</p>
 		<div class="hero__actions">
 			<Button href={whatsappHref(business.whatsapp)} icon="whatsapp">{ui.bookOnWhatsapp}</Button>
-			<Button href={telHref(business.phone)} variant="on-dark" icon="phone">{ui.call}</Button>
+			<Button
+				href={telHref(business.phone)}
+				variant="on-dark"
+				icon="phone"
+				describedBy={callNote ? 'call-note-hero' : undefined}
+			>
+				{ui.call}
+			</Button>
 		</div>
+		{
+			callNote && (
+				<p id="call-note-hero" class="hero__note">
+					<Icon name="phone" size="1em" />
+					<span>{callNote}</span>
+				</p>
+			)
+		}
 		<ul class="hero__badges">
 			{
 				content.hero.badges.map((badge) => (
@@ -209,6 +226,15 @@ const sparkles = [
 		.hero__actions > :global(*) {
 			max-inline-size: 20rem;
 		}
+	}
+
+	.hero__note {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		margin-block-start: calc(var(--space-xs) * -1);
+		color: color-mix(in oklab, var(--color-surface) 70%, transparent);
+		font-size: var(--step--1);
 	}
 
 	.hero__badges {

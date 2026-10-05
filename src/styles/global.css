@@ -25,6 +25,13 @@
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
+  --bar-h: 4.5rem;
+}
+
+@media (orientation: landscape) and (max-height: 32rem) {
+  :root {
+    --bar-h: 3.75rem;
+  }
 }
 
 *,
@@ -60,6 +67,12 @@ body {
   min-block-size: 100dvh;
   font-size: var(--step-0);
   overflow-wrap: break-word;
+}
+
+@media (max-width: 59.99rem) {
+  body {
+    padding-block-end: calc(var(--bar-h) + var(--safe-bottom));
+  }
 }
 
 img,
