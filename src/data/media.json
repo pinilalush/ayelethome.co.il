@@ -1,5 +1,4 @@
 {
-  "logo": { "file": "logo.svg", "alt": "logo" },
   "hero": { "file": "hero.jpg", "fileMobile": "hero-mobile.jpg", "alt": "hero" },
   "heroVideo": { "file": "hero.mp4", "poster": "hero.jpg" },
   "about": { "file": "about.jpg", "alt": "about" },

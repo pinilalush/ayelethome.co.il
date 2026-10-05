@@ -1,4 +1,5 @@
 ---
+import HeroGlow from '../../components/HeroGlow.astro';
 import Base from '../../layouts/Base.astro';
 import { getLocale, site } from '../../lib/data.ts';
 
@@ -14,12 +15,9 @@ interface Props {
 }
 
 const { code } = Astro.props;
-const { content, seo } = getLocale(code);
+const { seo } = getLocale(code);
 ---
 
-<Base code={code} title={seo.title}>
-	<div class="container flow">
-		<h1>{content.businessName}</h1>
-		<p class="muted">{content.tagline}</p>
-	</div>
+<Base code={code} title={seo.title} headerTone="dark">
+	<HeroGlow code={code} />
 </Base>

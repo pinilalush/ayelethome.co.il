@@ -1,8 +1,8 @@
 ---
-import type { ImageMetadata } from 'astro';
 import Icon from './Icon.astro';
 import { getLocale, site } from '../lib/data.ts';
 import { homeUrl } from '../lib/i18n.ts';
+import { findImage } from '../lib/media.ts';
 
 interface Props {
 	code: string;
@@ -11,9 +11,9 @@ interface Props {
 const { code } = Astro.props;
 const { content } = getLocale(code);
 
-const images = import.meta.glob<{ default: ImageMetadata }>('../assets/media/*.{svg,png,jpg,jpeg,webp,avif}', { eager: true });
-const logo = Object.entries(images).find(([path]) => path.endsWith(`/${site.media.logo.file}`))?.[1].default;
-const alt = content.media[site.media.logo.alt] ?? content.businessName;
+const logoData = site.media.logo;
+const logo = findImage(logoData?.file);
+const alt = (logoData && content.media[logoData.alt]) ?? content.businessName;
 ---
 
 <a href={homeUrl(code)} class="logo">

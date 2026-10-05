@@ -88,6 +88,7 @@ export const businessSchema = z.strictObject({
       hourlyRate: positive,
       minimumHours: positive,
       step: positive,
+      cancellationFee: positive.optional(),
       evening: z
         .strictObject({
           from: time,
@@ -126,7 +127,7 @@ export const businessSchema = z.strictObject({
 const image = z.strictObject({ file: imageFile, alt: altKey });
 
 export const mediaSchema = z.strictObject({
-  logo: image,
+  logo: image.optional(),
   hero: z.strictObject({ file: imageFile, fileMobile: imageFile.optional(), alt: altKey }),
   heroVideo: z.strictObject({ file: videoFile, poster: imageFile }).optional(),
   about: image,

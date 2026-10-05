@@ -2,7 +2,7 @@ import type { Business } from './schema.ts';
 
 export type TextFile = 'content' | 'seo' | 'ui';
 
-const PRICE_TOKENS = ['hours', 'rate', 'total', 'eveningFrom', 'eveningRate'];
+const PRICE_TOKENS = ['hours', 'rate', 'total', 'eveningFrom', 'eveningRate', 'cancellationFee'];
 
 const RULES: Record<string, string[]> = {
   'content:booking.message': ['service', 'hours', 'slot', 'availability', 'price'],
@@ -16,7 +16,7 @@ const RULES: Record<string, string[]> = {
   'ui:booking.contactNote': ['name', 'language'],
 };
 
-const NEEDS_PRICING = new Set(['hours', 'rate', 'total', 'price', 'dayHours', 'eveningHours', 'eveningFrom', 'eveningRate']);
+const NEEDS_PRICING = new Set(['hours', 'rate', 'total', 'price', 'dayHours', 'eveningHours', 'eveningFrom', 'eveningRate', 'cancellationFee']);
 const NEEDS_EVENING = new Set(['dayHours', 'eveningHours', 'eveningFrom', 'eveningRate']);
 
 const TOKEN = /\{(\w+)\}/g;
@@ -36,5 +36,6 @@ export function hasStrayBraces(text: string): boolean {
 export function whyUnfillable(token: string, business: Business): string | undefined {
   if (NEEDS_PRICING.has(token) && !business.pricing) return 'business.json has no pricing';
   if (NEEDS_EVENING.has(token) && !business.pricing?.evening) return 'business.json has no evening rate';
+  if (token === 'cancellationFee' && !business.pricing?.cancellationFee) return 'business.json has no cancellation fee';
   return undefined;
 }

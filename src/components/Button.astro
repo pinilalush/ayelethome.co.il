@@ -1,0 +1,88 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from '../lib/icons.ts';
+
+interface Props {
+	href: string;
+	variant?: 'primary' | 'secondary' | 'on-dark';
+	icon?: IconName;
+	newTab?: boolean;
+	newTabLabel?: string;
+	class?: string;
+}
+
+const { href, variant = 'primary', icon, newTab = false, newTabLabel, class: className } = Astro.props;
+---
+
+<a
+	href={href}
+	class:list={['button', `button--${variant}`, className]}
+	target={newTab ? '_blank' : undefined}
+	rel={newTab ? 'noopener' : undefined}
+>
+	{icon && <Icon name={icon} size="1.25em" />}
+	<span><slot /></span>
+	{newTab && newTabLabel && <span class="visually-hidden">({newTabLabel})</span>}
+</a>
+
+<style>
+	.button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-2xs);
+		min-block-size: 3.25rem;
+		padding-inline: var(--space-m);
+		border: 1.5px solid transparent;
+		border-radius: 999px;
+		font-size: var(--step-0);
+		font-weight: 700;
+		line-height: 1.2;
+		text-align: center;
+		text-decoration: none;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease,
+			background-color 0.2s ease;
+	}
+
+	.button--primary {
+		background: var(--color-primary);
+		color: var(--color-primary-text);
+		box-shadow: 0 0.5rem 1.5rem -0.75rem color-mix(in oklab, var(--color-primary) 80%, transparent);
+	}
+
+	.button--secondary {
+		border-color: color-mix(in oklab, var(--color-text) 25%, transparent);
+		color: var(--color-text);
+	}
+
+	.button--on-dark {
+		border-color: color-mix(in oklab, var(--color-surface) 35%, transparent);
+		background: color-mix(in oklab, var(--color-surface) 8%, transparent);
+		color: var(--color-surface);
+		backdrop-filter: blur(8px);
+	}
+
+	@media (hover: hover) {
+		.button:hover {
+			transform: translateY(-2px);
+		}
+
+		.button--primary:hover {
+			box-shadow: 0 0.75rem 2rem -0.75rem color-mix(in oklab, var(--color-primary) 90%, transparent);
+		}
+
+		.button--secondary:hover {
+			background: var(--color-surface-alt);
+		}
+
+		.button--on-dark:hover {
+			background: color-mix(in oklab, var(--color-surface) 16%, transparent);
+		}
+	}
+
+	.button:active {
+		transform: scale(0.98);
+	}
+</style>

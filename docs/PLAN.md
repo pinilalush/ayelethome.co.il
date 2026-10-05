@@ -174,6 +174,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     "hourlyRate": 100,
     "minimumHours": 4,
     "step": 0.5,
+    "cancellationFee": 100,
     "evening": {
       "from": "19:00",
       "hourlyRate": 150
@@ -198,6 +199,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 
 - Phone numbers are stored in international format (`+972…`); the site shows them in local format (`050-000-0000`).
 - `pricing` holds only numbers; the words around them ("per hour", "minimum") come from `content.json` per language. The minimum visit price is calculated by the site (4 × ₪100 = ₪400 by day, 4 × ₪150 = ₪600 in the evening), so changing a rate updates everything.
+- `pricing.cancellationFee` — optional one-time fee for cancelling a booked visit (Ayelet: ₪100). Shown in the FAQ through `{cancellationFee}`; a business without one leaves it out.
 - `pricing.step` — how extra time is charged after the minimum, in hours: `0.5` means by the half hour, so the booking panel offers 4, 4.5, 5….
 - **A visit that crosses `evening.from`** is split: the hours before 19:00 at the day rate, the hours after at the evening rate (e.g. 17:00–21:00 = 2 × ₪100 + 2 × ₪150 = ₪500). Same rates every work day, Friday and holiday eves included.
 - `pricing.evening` is optional: a business without an evening rate leaves it out, and the day/evening choice (section 7) disappears. If it's there, the check fails unless some `workHours` run past `evening.from`.
@@ -270,7 +272,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     { "q": "TODO", "a": "TODO" }
   ],
   "finalCta": { "title": "TODO", "text": "TODO" },
-  "media": { "logo": "TODO", "hero": "TODO", "about": "TODO" }
+  "media": { "hero": "TODO", "about": "TODO" }
 }
 ```
 
@@ -286,6 +288,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   - `{hours}` — the minimum hours (4) in normal text; the chosen hours in the message
   - `{rate}`, `{total}` — the day rate and minimum total (100 ₪, 400 ₪) in normal text; in the message, the chosen slot's rate and chosen hours × rate
   - `{eveningFrom}` — when the evening rate starts (19:00); `{eveningRate}` — the evening hourly rate (150 ₪)
+  - `{cancellationFee}` — the one-time cancellation fee (100 ₪)
   - message only: `{service}`, `{slot}`, `{availability}`, `{when}`, `{weekday}`, `{date}`, `{time}`, `{price}`, and inside `price.split`: `{dayHours}`, `{eveningHours}`
   - without an evening rate, `{slot}` is empty and the day/evening choice isn't shown
 - The check script fails if a text uses a placeholder whose value is missing (e.g. `{eveningRate}` with no evening rate), or a placeholder name it doesn't know (a typo like `{rte}`).
@@ -331,7 +334,6 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 
 ```json
 {
-  "logo": { "file": "logo.svg", "alt": "logo" },
   "hero": { "file": "hero.jpg", "fileMobile": "hero-mobile.jpg", "alt": "hero" },
   "heroVideo": { "file": "hero.mp4", "poster": "hero.jpg" },
   "about": { "file": "about.jpg", "alt": "about" },
@@ -341,6 +343,8 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 ```
 
 `alt` values are **keys** into `content.json` (`"media": { "hero": "…" }`), so image descriptions are translated like everything else.
+
+**`logo` is optional.** Without it, the site shows a text logo: a sparkle mark in the theme color next to the business name — a permanent option for businesses without a logo, and the template default. A business with a logo adds `"logo": { "file": "logo.svg", "alt": "logo" }`, the file in `src/assets/media/`, and the alt text in each `content.json` → `media`.
 
 ## 6. Languages and RTL
 
@@ -367,7 +371,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 One page per language, short, built for phones first. No forms, no steps.
 
 1. **Header** — logo/business name, language switcher, Call button (on desktop). Becomes compact and frosted when scrolling.
-2. **Hero** — headline, one supporting line, 3 short badges (e.g. "reliable", "discreet", "Beer Sheva and area"), **Call** and **WhatsApp** buttons. Optional background video.
+2. **Hero** — headline, one supporting line, 3 short badges (e.g. "reliable and responsible", "thorough", "Beer Sheva and area"), **Call** and **WhatsApp** buttons. Optional background video.
 3. **Services** — cards with icon, short text, and a WhatsApp button that opens the booking panel with that service already selected.
 4. **Price** — two cards side by side (stacked on phones): **Daytime** (until 19:00) · ₪100 per hour · minimum 4 hours = **₪400**, and **Evening** (from 19:00) · ₪150 per hour · minimum 4 hours = **₪600**. Each card has its own WhatsApp button that opens the booking panel with that time already selected, plus a short line on what's included and the payment methods. A clear price up front saves her the "how much?" messages and filters out visitors who aren't a fit. The same prices appear in the FAQ ("How much does it cost?").
 5. **Why her** — three short points with icons, plus a short "about" line and her photo.
@@ -572,7 +576,7 @@ Built in, not added on:
 
 ## 15. Media
 
-**Built as code (by me):** logo placeholder, icon set, illustrations, sparkle/shine effects, section dividers, the service-area graphic, favicon.
+**Built as code (by me):** the text logo (used when there's no logo file), icon set, illustrations, sparkle/shine effects, section dividers, the service-area graphic, favicon.
 
 **Photos and video (Google image and video tools, by you with my prompts):**
 - `hero.jpg` (wide, desktop) and `hero-mobile.jpg` (portrait, phones) — bright, tidy, modern living room in an Israeli apartment, morning light, no people's faces.
@@ -611,6 +615,6 @@ The work is split into small steps in **[`docs/STEPS.md`](STEPS.md)**: each step
 - Who writes the English and Russian text: I draft both from the Hebrew; you or she approves the English, and a native Russian speaker checks the Russian.
 - Before Ayelet uses online booking: check with a free Cal.com test account that approving each booking ("Requires confirmation") and a Hebrew booking page are in the free plan.
 - "How many hours do I need?" — her real estimates by home size and service (the guide in the booking panel).
-- More price questions for her (text only, filled in with her data): a lower rate for a regular weekly/bi-weekly cleaning; a cancellation rule (e.g. free until 24 hours before).
-- Decided: visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days.
+- More price questions for her (text only, filled in with her data): a lower rate for a regular weekly/bi-weekly cleaning; whether the ₪100 cancellation fee applies to any cancellation or only close to the visit (e.g. less than 24 hours before).
+- Decided: visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days; cancelling costs a one-time ₪100.
 - Price details to confirm with her: does ₪100 include VAT (or is she VAT-exempt, עוסק פטור), are cleaning materials included, is there a travel charge for towns outside Beer Sheva, does the 4-hour minimum apply to every service.

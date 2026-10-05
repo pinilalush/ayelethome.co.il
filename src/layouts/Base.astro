@@ -11,9 +11,10 @@ import { themeCss } from '../lib/theme.ts';
 interface Props {
 	code: string;
 	title: string;
+	headerTone?: 'light' | 'alt' | 'dark';
 }
 
-const { code, title } = Astro.props;
+const { code, title, headerTone = 'light' } = Astro.props;
 const language = getLanguage(code);
 const { ui } = getLocale(code);
 
@@ -62,7 +63,7 @@ const detect = {
 	<body>
 		<a href="#main" class="skip-link">{ui.skipToContent}</a>
 		<TestDataBanner label={ui.testDataBanner} />
-		<header class="site-header">
+		<header class="site-header" data-tone={headerTone}>
 			<div class="container site-header__inner">
 				<Logo code={code} />
 				<LanguageSwitcher current={code} />
@@ -78,6 +79,19 @@ const detect = {
 	.site-header {
 		padding-block-start: max(var(--space-xs), var(--safe-top));
 		padding-block-end: var(--space-xs);
+		background: var(--color-surface);
+	}
+
+	.site-header[data-tone='alt'] {
+		background: var(--color-surface-alt);
+	}
+
+	.site-header[data-tone='dark'] {
+		--color-text: var(--color-surface);
+		--color-text-muted: color-mix(in oklab, var(--color-surface) 72%, transparent);
+		--color-surface-alt: color-mix(in oklab, var(--color-surface) 12%, transparent);
+		background: var(--color-ink);
+		color: var(--color-text);
 	}
 
 	.site-header__inner {

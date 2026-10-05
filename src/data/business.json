@@ -11,6 +11,7 @@
     "hourlyRate": 100,
     "minimumHours": 4,
     "step": 0.5,
+    "cancellationFee": 100,
     "evening": {
       "from": "19:00",
       "hourlyRate": 150

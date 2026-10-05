@@ -5,7 +5,7 @@
   "hero": {
     "title": "TODO A clean, tidy home, and your time back for everything else",
     "subtitle": "TODO Home cleaning and organizing in Beer Sheva and the area. Book with one WhatsApp message.",
-    "badges": ["TODO Reliable and discreet", "TODO Thorough work", "TODO Beer Sheva and area"]
+    "badges": ["TODO Reliable and responsible", "TODO Thorough work", "TODO Beer Sheva and area"]
   },
   "services": [
     {
@@ -80,7 +80,7 @@
     "when": { "date": "on {weekday} {date}", "time": "from {time}" }
   },
   "why": [
-    { "icon": "shield", "title": "TODO Reliable and discreet", "text": "TODO I work in your home with respect, quietly and carefully, as if it were my own." },
+    { "icon": "shield", "title": "TODO Reliable and responsible", "text": "TODO I work in your home with respect, quietly and carefully, as if it were my own." },
     { "icon": "sparkle", "title": "TODO Thorough down to the details", "text": "TODO No skipped corners. What we agreed on gets done, all the way." },
     { "icon": "clock", "title": "TODO On time", "text": "TODO I arrive at the agreed time and finish what we planned." }
   ],
@@ -98,6 +98,7 @@
     { "q": "TODO How much does it cost?", "a": "TODO {rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit, then by the half hour." },
     { "q": "TODO What if the visit runs past {eveningFrom}?", "a": "TODO The hours until {eveningFrom} are {rate} per hour, and the hours after are {eveningRate} per hour." },
     { "q": "TODO How do I book?", "a": "TODO Send a WhatsApp message or call, and we'll set a day and time." },
+    { "q": "TODO What if I need to cancel?", "a": "TODO A cancellation costs a one-time fee of {cancellationFee}." },
     { "q": "TODO Do I need to provide cleaning supplies?", "a": "TODO We can agree on that in advance over WhatsApp." },
     { "q": "TODO Which areas do you cover?", "a": "TODO Every neighborhood in Beer Sheva, plus Omer, Lehavim and Meitar." },
     { "q": "TODO Can I book a regular cleaning?", "a": "TODO Yes, weekly or every two weeks on a fixed day." },
@@ -108,7 +109,6 @@
     "text": "TODO Send a message and we'll find a time that works for you."
   },
   "media": {
-    "logo": "TODO Business name logo",
     "hero": "TODO A bright, clean and tidy living room",
     "about": "TODO Photo of the business owner"
   }

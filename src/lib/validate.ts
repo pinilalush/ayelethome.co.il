@@ -106,7 +106,7 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
     }
   }
 
-  const altKeys = [media.logo.alt, media.hero.alt, media.about.alt, ...media.gallery.map((g) => g.alt)];
+  const altKeys = [...(media.logo ? [media.logo.alt] : []), media.hero.alt, media.about.alt, ...media.gallery.map((g) => g.alt)];
   for (const [code, { content, seo, ui }] of Object.entries(locales)) {
     const file = `locales/${code}/content.json`;
     for (const key of altKeys) {
@@ -211,7 +211,7 @@ function checkContrast(config: Config, issues: string[]) {
 
 function checkMediaFiles(config: Config, media: Media, options: ValidationOptions, pending: Pending[]) {
   const wanted: Array<{ path: PropertyKey[]; file: string; dir: 'assets' | 'public' }> = [
-    { path: ['logo', 'file'], file: media.logo.file, dir: 'assets' },
+    ...(media.logo ? [{ path: ['logo', 'file'], file: media.logo.file, dir: 'assets' as const }] : []),
     { path: ['hero', 'file'], file: media.hero.file, dir: 'assets' },
     ...(media.hero.fileMobile ? [{ path: ['hero', 'fileMobile'], file: media.hero.fileMobile, dir: 'assets' as const }] : []),
     { path: ['about', 'file'], file: media.about.file, dir: 'assets' },
