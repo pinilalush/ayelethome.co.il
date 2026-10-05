@@ -53,25 +53,20 @@ Status: **plan for review — no code yet.**
 **Creating a new business site:**
 1. On GitHub, open `landing-template` → **Use this template** → new public repo named after the domain.
 2. Clone it into `private-landings/`.
-3. Replace the contents of `src/data/` and `src/assets/media/`.
-4. `npm run build` until the check passes (no placeholders left).
-5. Push → set up GitHub Pages and the domain (section 14).
+3. **Link it to the template right away, before changing anything** (`docs/NEW-SITE.md` §2): add the `template` remote, fetch, merge once with `--allow-unrelated-histories`, push. "Use this template" gives the new repo its own history, so this one merge is what lets later template fixes merge normally. Done now, while both copies are identical, it's clean; done later, git conflicts on every file the business changed.
+4. Replace the contents of `src/data/` and `src/assets/media/`.
+5. `npm run build` until the check passes (no placeholders left).
+6. Push → set up GitHub Pages and the domain (section 14).
 
-**Template changes don't reach existing sites automatically.** "Use this template" makes a one-time copy. To bring a template fix into a business repo:
-
-```bash
-git remote add template git@github.com:pinilalush/landing-template.git
-```
-(once per business repo), then each time you want the latest template:
+**Template changes don't reach existing sites automatically.** "Use this template" makes a one-time copy. Thanks to the link in step 3, bringing a template fix into a business repo is a plain merge:
 ```bash
 git fetch template
 ```
 ```bash
-git merge template/main --allow-unrelated-histories
+git merge template/main
 ```
-(`--allow-unrelated-histories` is only needed the first time.)
 
-This merges cleanly because **the template never changes `src/data/` or `src/assets/media/` once a business has its own data there** — the rule for template work is: code in the template, data in the business repo.
+Business data merges cleanly because **the template never changes `src/data/` or `src/assets/media/` once a business has its own data there** — the rule for template work is: code in the template, data in the business repo. After a merge, look at what changed in the data (`git diff ORIG_HEAD -- src/data src/assets/media`), since a template change to a test value the business kept merges in without a conflict.
 
 ## 4. Project structure
 
@@ -199,6 +194,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 ```
 
 - Phone numbers are stored in international format (`+972…`); the site shows them in local format (`050-000-0000`).
+- `email` is optional. Without it, the footer, the contact card and the accessibility statement offer phone and WhatsApp only.
 - `pricing` holds only numbers; the words around them ("per hour", "minimum") come from `content.json` per language. The minimum visit price is calculated by the site (4 × ₪100 = ₪400 by day, 4 × ₪150 = ₪600 in the evening), so changing a rate updates everything.
 - `pricing.cancellationFee` — optional one-time fee for cancelling a booked visit (Ayelet: ₪100). Shown in the FAQ through `{cancellationFee}`; a business without one leaves it out.
 - `pricing.step` — how extra time is charged after the minimum, in hours: `0.5` means by the half hour, so the booking panel offers 4, 4.5, 5….
@@ -594,7 +590,7 @@ Built in, not added on:
 - No cookies, no analytics, no forms, no tracking scripts → no cookie banner needed.
 - Fonts and all assets self-hosted; the only outside links are `tel:`, WhatsApp and social links.
 - **Counting visits and taps (optional, off by default):** with `analytics.umamiWebsiteId` filled in, the site loads Umami's small script and counts page views plus taps on WhatsApp (Send, per service and day/evening), Call, Save my number and the booking link. No cookies, nothing stored on the visitor's device, no personal data — so still no cookie banner. The counts live in the business's own **Umami Cloud** account (free plan: 100K events a month, one website per account, 6 months of history); you see them on Umami's dashboard. It counts taps, not sent messages, and visitors with ad blockers aren't counted.
-- Events recorded: `booking-open` (with `source`: hero, bar, floating), `whatsapp-send` (with the page `lang` and the chosen `service`, `slot`, `hours`, `day`), `call` (with `source`: hero, header, bar), `online-booking`, and later `save-contact`. The script only counts on the real domain (`data-domains`: the site's domain with and without `www.`) and respects the visitor's Do Not Track setting.
+- Events recorded: `booking-open` (with `source`: hero, bar, floating, service, price, final, footer), `whatsapp-send` (with the page `lang` and the chosen `service`, `slot`, `hours`, `day`), `call` (with `source`: hero, header, bar, final, footer, statement), `online-booking`, and `save-contact`. The script only counts on the site's own domain (`data-domains`: the site's domain with and without `www.`) and respects the visitor's Do Not Track setting.
 - The buttons that open the booking panel are tracked from the panel's own script, not with Umami's link attribute: for a same-tab link, Umami's script cancels the click and navigates to the link itself, which would skip the panel.
 - The accessibility statement page gets one line saying visits are counted anonymously, without cookies, when counting is on.
 
