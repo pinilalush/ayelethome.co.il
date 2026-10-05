@@ -90,7 +90,7 @@ Each section is checked at every width in the responsive matrix, in Hebrew and E
 ## Phase 8 — Finish the template
 
 - [ ] **8.1 🤖 `docs/NEW-SITE.md` and `README.md`** — how to start a new business site, step by step.
-- [ ] **8.2 👤 Mark the repo as a template** (Settings → Template repository).
+- [x] **8.2 👤 Mark the repo as a template** (Settings → Template repository).
 - [ ] **8.3 👤🤖 Dry run** — create a throwaway repo from the template, confirm its build fails on placeholders (no variable copied), then you delete the throwaway repo.
 
 ## Phase 9 — Ayelet's site (home cleaning and organizing, Beer Sheva)
