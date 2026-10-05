@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 3.9, with 4.1–4.4, 5.2, 6.1, 7.1, 8.1 and 9.1 in parallel
+**Current step:** 3.9 (built, in review), then 3.10
 
 ---
 
@@ -67,7 +67,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 
 ## Phase 4 — SEO
 
-- [ ] **4.1 🤖 Keyword lists** in `seo.json` (Hebrew, English and Russian), and the test content rewritten to use them naturally. Check script warns about primary keywords not used in the page.
+- [x] **4.1 🤖 Keyword lists** in `seo.json` (Hebrew, English and Russian), and the test content rewritten to use them naturally. Check script warns about primary keywords not used in the page.
 - [x] **4.2 🤖 Head tags** — title, description, canonical, `hreflang`, and the full share-preview tags (PLAN section 11, **Share preview**).
 - [ ] **4.3 🤖 Structured data** — `LocalBusiness` with area, hours, services and the hourly price.
   *Check:* passes Google's Rich Results Test and the schema.org validator.
@@ -76,7 +76,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 ## Phase 5 — Accessibility
 
 - [ ] **5.1 🤖 Accessibility pass** — keyboard only, screen reader (every language), contrast, 200% zoom, focus order, reduced motion.
-- [ ] **5.2 🤖 Accessibility statement page** in every language, details from `business.json`.
+- [x] **5.2 🤖 Accessibility statement page** in every language, details from `business.json`.
 - [ ] **5.3 🤖 Lighthouse on the local preview** — 95+ in all four categories on mobile.
 
 ## Phase 6 — Media
