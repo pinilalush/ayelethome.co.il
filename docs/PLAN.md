@@ -265,7 +265,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   "area": {
     "title": "אזורי שירות",
     "text": "TODO",
-    "places": ["באר שבע", "עומר", "להבים", "מיתר"]
+    "places": ["באר שבע"]
   },
   "reviews": [],
   "faq": [
@@ -323,7 +323,7 @@ Starting keyword list (Hebrew), to confirm with her — she should only list ser
 - **Primary:** ניהול משק בית בבאר שבע, ניקיון בתים בבאר שבע, סידור וארגון הבית בבאר שבע, עוזרת בית בבאר שבע, מארגנת בתים בבאר שבע
 - **Services:** ניהול משק בית, עזרה במשק הבית, עוזרת משק בית, כביסה וגיהוץ, גיהוץ, החלפת מצעים, ניקיון שוטף, ניקיון יסודי, ניקיון דירה, ניקיון לפני כניסה לדירה, ניקיון אחרי מעבר דירה, ניקיון אחרי שיפוץ, ניקיון לפני פסח, ניקיון לחגים, ניקיון מטבח, ניקיון חלונות, ניקיון חדרי רחצה, סידור ארונות, סידור ארון בגדים, ארגון מטבח, סידור מזווה, סידור חדרי ילדים, אריזה ופריקה במעבר דירה
 - **Phrases people search:** מנקה בבאר שבע, ניקיון דירה באר שבע מחיר, מסדרת בתים, סידור בית אחרי מעבר, עזרה בניקיון הבית, ניקיון בית לפני אירוע
-- **Places (to verify with her):** באר שבע — רמות, נווה זאב, נווה נוי, נחל עשן, נחל בקע, הכלניות, סיגליות, העיר העתיקה, שכונות א׳–ו׳, ט׳, י״א; nearby — עומר, להבים, מיתר, and any other towns she actually serves
+- **Places (to verify with her):** באר שבע — רמות, נווה זאב, נווה נוי, נחל עשן, נחל בקע, הכלניות, סיגליות, העיר העתיקה, שכונות א׳–ו׳, ט׳, י״א. For now Ayelet serves Beer Sheva only; nearby towns (עומר, להבים, מיתר…) can be added to `area.places` and the keywords later.
 
 English list covers the same services, plus the spellings people use for the city: **Beer Sheva, Be'er Sheva, Beersheba, Beer-Sheva**.
 

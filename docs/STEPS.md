@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 3.5
+**Current step:** 3.6
 
 ---
 
@@ -56,7 +56,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 - [x] **3.2 🤖 Services** — cards with a WhatsApp button per service.
 - [x] **3.3 🤖 Price** — two cards: day ₪100 per hour (at least ₪400) and evening from 19:00 ₪150 per hour (at least ₪600), what's included, a WhatsApp button on each.
 - [x] **3.4 🤖 Why her + about.**
-- [ ] **3.5 🤖 Service area** — place chips and the area graphic.
+- [x] **3.5 🤖 Service area** — place chips and the area graphic.
 - [ ] **3.6 🤖 FAQ** — accordion, includes the price question.
 - [ ] **3.7 🤖 Final call-to-action, footer, 404 page.** Footer includes work hours, payment methods, Save my number (`contact.vcf`, tracked as `save-contact`), and the online-booking link when `bookingUrl` is set.
 - [ ] **3.7b 🤖 QR code** — `qr.svg` and `qr.png` made at build time, pointing to the site.

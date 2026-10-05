@@ -1,0 +1,166 @@
+---
+import Icon from './Icon.astro';
+import Section from './Section.astro';
+import { getLocale } from '../lib/data.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content } = getLocale(code);
+const { title, text, places } = content.area;
+---
+
+<Section id="area" title={title} tone="alt">
+	<div class="area">
+		<div class="area__map" aria-hidden="true">
+			<span class="area__ring"></span>
+			<span class="area__ring"></span>
+			<span class="area__ring"></span>
+			<span class="area__pin">
+				<Icon name="pin" size="2rem" />
+			</span>
+			<span class="area__label">{places[0]}</span>
+		</div>
+
+		<div class="area__text">
+			<p class="area__lead">{text}</p>
+			<ul class="area__places">
+				{
+					places.map((place) => (
+						<li class="area__place">
+							<Icon name="pin" size="1.1em" />
+							<span>{place}</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</Section>
+
+<style>
+	.area {
+		display: grid;
+		gap: var(--space-l);
+		align-items: center;
+		max-inline-size: 60rem;
+		margin-inline: auto;
+	}
+
+	@media (min-width: 48rem) {
+		.area {
+			grid-template-columns: 1.15fr 0.85fr;
+			gap: var(--space-xl);
+		}
+	}
+
+	.area__map {
+		position: relative;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		aspect-ratio: 4 / 3;
+		max-block-size: 70svh;
+		border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+		border-radius: calc(var(--radius) * 1.6);
+		background:
+			linear-gradient(115deg, transparent 47%, color-mix(in oklab, var(--color-text) 9%, transparent) 47.5% 49%, transparent 49.5%),
+			linear-gradient(12deg, transparent 58%, color-mix(in oklab, var(--color-text) 7%, transparent) 58.5% 60%, transparent 60.5%),
+			repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in oklab, var(--color-text) 5%, transparent) 31px 32px),
+			repeating-linear-gradient(90deg, transparent 0 31px, color-mix(in oklab, var(--color-text) 5%, transparent) 31px 32px),
+			radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%),
+			var(--color-surface);
+		box-shadow: 0 1.5rem 3rem -2.5rem color-mix(in oklab, var(--color-ink) 50%, transparent);
+	}
+
+	.area__ring {
+		position: absolute;
+		inline-size: 28%;
+		aspect-ratio: 1;
+		border: 2px solid color-mix(in oklab, var(--color-primary) 55%, transparent);
+		border-radius: 50%;
+		animation: area-pulse 3.6s ease-out infinite;
+	}
+
+	.area__ring:nth-child(2) {
+		animation-delay: 1.2s;
+	}
+
+	.area__ring:nth-child(3) {
+		animation-delay: 2.4s;
+	}
+
+	@keyframes area-pulse {
+		from {
+			transform: scale(0.6);
+			opacity: 0.9;
+		}
+		to {
+			transform: scale(2.6);
+			opacity: 0;
+		}
+	}
+
+	.area__pin {
+		position: relative;
+		display: grid;
+		place-items: center;
+		inline-size: 4rem;
+		block-size: 4rem;
+		border-radius: 50%;
+		background: var(--color-surface);
+		box-shadow:
+			0 0 0 0.4rem color-mix(in oklab, var(--color-primary) 20%, transparent),
+			0 0.75rem 1.5rem -0.5rem color-mix(in oklab, var(--color-ink) 45%, transparent);
+		color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+		transform: translateY(-0.75rem);
+	}
+
+	.area__label {
+		position: absolute;
+		inset-block-start: calc(50% + 2.25rem);
+		padding: 0.35em 1em;
+		border-radius: 999px;
+		background: var(--color-ink);
+		color: var(--color-surface);
+		font-size: var(--step--1);
+		font-weight: 700;
+		white-space: nowrap;
+	}
+
+	.area__text {
+		display: grid;
+		gap: var(--space-s);
+	}
+
+	.area__lead {
+		font-size: var(--step-1);
+		font-weight: 500;
+	}
+
+	.area__places {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.area__place {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		padding: 0.45em 1em;
+		border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+		border-radius: 999px;
+		background: var(--color-surface);
+		font-weight: 600;
+	}
+
+	.area__place :global(svg) {
+		color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+	}
+</style>

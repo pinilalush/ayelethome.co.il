@@ -4,8 +4,8 @@
   "tagline": "TODO Home cleaning and household management in Beer Sheva",
   "hero": {
     "title": "TODO A clean, tidy home, and your time back for everything else",
-    "subtitle": "TODO Cleaning, organizing and whatever else the home needs, in Beer Sheva and the area. Book with one WhatsApp message.",
-    "badges": ["TODO Reliable and responsible", "TODO Thorough work", "TODO Beer Sheva and area"]
+    "subtitle": "TODO Cleaning, organizing and whatever else the home needs, in Beer Sheva. Book with one WhatsApp message.",
+    "badges": ["TODO Reliable and responsible", "TODO Thorough work", "TODO All of Beer Sheva"]
   },
   "services": [
     {
@@ -93,12 +93,12 @@
   ],
   "about": {
     "title": "TODO Nice to meet you",
-    "text": "TODO I clean and organize homes in Beer Sheva and the area. A clean, tidy home changes the whole day, and I work quietly, thoroughly and with respect for your home."
+    "text": "TODO I clean and organize homes in Beer Sheva. A clean, tidy home changes the whole day, and I work quietly, thoroughly and with respect for your home."
   },
   "area": {
     "title": "Service area",
-    "text": "TODO I cover every neighborhood in Beer Sheva and the nearby towns.",
-    "places": ["TODO Beer Sheva", "TODO Omer", "TODO Lehavim", "TODO Meitar"]
+    "text": "TODO I cover every neighborhood in Beer Sheva.",
+    "places": ["TODO Beer Sheva"]
   },
   "reviews": [],
   "faq": [
@@ -108,7 +108,7 @@
     { "q": "TODO How do I book?", "a": "TODO Send a WhatsApp message or call, and we'll set a day and time." },
     { "q": "TODO What if I need to cancel?", "a": "TODO A cancellation costs a one-time fee of {cancellationFee}." },
     { "q": "TODO Do I need to provide cleaning supplies?", "a": "TODO We can agree on that in advance over WhatsApp." },
-    { "q": "TODO Which areas do you cover?", "a": "TODO Every neighborhood in Beer Sheva, plus Omer, Lehavim and Meitar." },
+    { "q": "TODO Which areas do you cover?", "a": "TODO Every neighborhood in Beer Sheva." },
     { "q": "TODO Can I book a regular cleaning?", "a": "TODO Yes, weekly or every two weeks on a fixed day." },
     { "q": "TODO Do I need to be home during the cleaning?", "a": "TODO No. We agree in advance how I get in and how the key is returned." }
   ],
