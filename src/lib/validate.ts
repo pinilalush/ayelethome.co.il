@@ -99,6 +99,13 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
   const evening = business?.pricing?.evening;
   if (business && evening && !business.workHours.some((h) => h.from < evening.from && evening.from < h.to)) {
     issues.push(`${where('business.json', ['pricing', 'evening', 'from'])}: the evening rate starts at ${evening.from}, but no work hours run past that time`);
+  } else if (business?.pricing && evening) {
+    const minutes = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3));
+    const need = minutes(evening.from) + business.pricing.minimumHours * 60;
+    if (!business.workHours.some((h) => minutes(h.from) <= minutes(evening.from) && minutes(h.to) >= need)) {
+      const until = `${String(Math.floor(need / 60) % 24).padStart(2, '0')}:${String(need % 60).padStart(2, '0')}`;
+      issues.push(`${where('business.json', ['workHours'])}: no work day leaves room for an evening visit — at least ${business.pricing.minimumHours} hours from ${evening.from}, so work hours must run until ${until} on at least one day`);
+    }
   }
   for (const [i, code] of (business?.contactLanguages ?? []).entries()) {
     if (!codes.includes(code)) {

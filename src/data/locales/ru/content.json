@@ -68,10 +68,10 @@
       { "label": "TODO Квартира 4 комнаты", "hours": 5 },
       { "label": "TODO 5 комнат и больше", "hours": 6 }
     ],
-    "message": "TODO Здравствуйте! Хочу заказать {service} на {hours} ч. {slot}. {availability} Цена, как я понимаю: {price}.",
+    "message": "TODO Здравствуйте! Хочу заказать {service} на {duration} {slot}. {availability} Цена, как я понимаю: {price}.",
     "price": {
       "single": "{rate} в час, итого {total}",
-      "split": "{dayHours} ч. × {rate} и {eveningHours} ч. × {eveningRate}, итого {total}"
+      "split": "{dayDuration} по {rate} и {eveningDuration} по {eveningRate}, итого {total}"
     },
     "availability": {
       "open": "TODO Когда вы свободны?",

@@ -1,8 +1,9 @@
 ---
+import type { HTMLAttributes } from 'astro/types';
 import Icon from './Icon.astro';
 import type { IconName } from '../lib/icons.ts';
 
-interface Props {
+interface Props extends Omit<HTMLAttributes<'a'>, 'href' | 'class'> {
 	href: string;
 	variant?: 'primary' | 'secondary' | 'on-dark';
 	size?: 'md' | 'sm';
@@ -13,7 +14,7 @@ interface Props {
 	class?: string;
 }
 
-const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabel, describedBy, class: className } = Astro.props;
+const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabel, describedBy, class: className, ...rest } = Astro.props;
 ---
 
 <a
@@ -22,6 +23,7 @@ const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabe
 	target={newTab ? '_blank' : undefined}
 	rel={newTab ? 'noopener' : undefined}
 	aria-describedby={describedBy}
+	{...rest}
 >
 	{icon && <Icon name={icon} size="1.25em" />}
 	<span><slot /></span>

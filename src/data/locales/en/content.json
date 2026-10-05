@@ -68,10 +68,10 @@
       { "label": "TODO 4 room apartment", "hours": 5 },
       { "label": "TODO 5 rooms or more", "hours": 6 }
     ],
-    "message": "TODO Hi, I'd like to book {service} for {hours} hours {slot}. {availability} I understand the price is {price}.",
+    "message": "TODO Hi, I'd like to book {service} for {duration} {slot}. {availability} I understand the price is {price}.",
     "price": {
       "single": "{rate} per hour, so {total}",
-      "split": "{dayHours} hours × {rate} and {eveningHours} hours × {eveningRate}, so {total}"
+      "split": "{dayDuration} at {rate} and {eveningDuration} at {eveningRate}, so {total}"
     },
     "availability": {
       "open": "TODO When are you available?",

@@ -18,7 +18,7 @@
     }
   },
   "workHours": [
-    { "days": ["Su", "Mo", "Tu", "We", "Th"], "from": "TODO 08:00", "to": "TODO 22:00" },
+    { "days": ["Su", "Mo", "Tu", "We", "Th"], "from": "TODO 08:00", "to": "TODO 23:00" },
     { "days": ["Fr"], "from": "TODO 08:00", "to": "TODO 13:00" }
   ],
   "social": {

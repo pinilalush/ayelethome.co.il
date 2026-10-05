@@ -5,19 +5,20 @@ export type TextFile = 'content' | 'seo' | 'ui';
 const PRICE_TOKENS = ['hours', 'rate', 'total', 'eveningFrom', 'eveningRate', 'cancellationFee'];
 
 const RULES: Record<string, string[]> = {
-  'content:booking.message': ['service', 'hours', 'slot', 'availability', 'price'],
+  'content:booking.message': ['service', 'duration', 'slot', 'availability', 'price'],
   'content:booking.price.single': ['rate', 'total'],
-  'content:booking.price.split': ['dayHours', 'rate', 'eveningHours', 'eveningRate', 'total'],
+  'content:booking.price.split': ['dayDuration', 'rate', 'eveningDuration', 'eveningRate', 'total'],
   'content:booking.availability.dated': ['when'],
   'content:booking.when.date': ['weekday', 'date'],
   'content:booking.when.time': ['time'],
   'ui:callsIn': ['language'],
   'ui:booking.minimum': ['hours'],
   'ui:booking.contactNote': ['name', 'language'],
+  'ui:duration.other': ['n'],
 };
 
-const NEEDS_PRICING = new Set(['hours', 'rate', 'total', 'price', 'dayHours', 'eveningHours', 'eveningFrom', 'eveningRate', 'cancellationFee']);
-const NEEDS_EVENING = new Set(['dayHours', 'eveningHours', 'eveningFrom', 'eveningRate']);
+const NEEDS_PRICING = new Set(['hours', 'duration', 'rate', 'total', 'price', 'dayDuration', 'eveningDuration', 'eveningFrom', 'eveningRate', 'cancellationFee']);
+const NEEDS_EVENING = new Set(['dayDuration', 'eveningDuration', 'eveningFrom', 'eveningRate']);
 
 const TOKEN = /\{(\w+)\}/g;
 

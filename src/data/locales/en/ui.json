@@ -35,7 +35,18 @@
     "contactNote": "{name} speaks {language}, so this is the message that will be sent:",
     "send": "Send on WhatsApp",
     "close": "Close",
-    "onlineBooking": "or choose a time online"
+    "onlineBooking": "or choose a time online",
+    "anyService": "Not sure yet",
+    "fewerHours": "Fewer hours",
+    "moreHours": "More hours"
+  },
+  "duration": {
+    "half": "half an hour",
+    "one": "1 hour",
+    "oneAndHalf": "1.5 hours",
+    "two": "2 hours",
+    "twoAndHalf": "2.5 hours",
+    "other": "{n} hours"
   },
   "payment": {
     "title": "Payment methods",

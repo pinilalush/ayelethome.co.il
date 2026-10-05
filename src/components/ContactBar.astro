@@ -1,6 +1,7 @@
 ---
 import Button from './Button.astro';
-import { telHref, whatsappHref } from '../lib/contact.ts';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { telHref } from '../lib/contact.ts';
 import { getLocale, site } from '../lib/data.ts';
 import { callsInNote } from '../lib/i18n.ts';
 
@@ -13,9 +14,9 @@ const { ui } = getLocale(code);
 const note = callsInNote(code);
 ---
 
-<aside class="contact-bar" aria-label={ui.contact}>
+<aside class="contact-bar" aria-label={ui.contact} data-contact-bar>
 	<div class="contact-bar__inner">
-		<Button href={whatsappHref(site.business.whatsapp)} icon="whatsapp" class="contact-bar__button">
+		<Button href={defaultWhatsappHref(code)} icon="whatsapp" class="contact-bar__button" data-booking-open>
 			{ui.whatsapp}
 		</Button>
 		<Button href={telHref(site.business.phone)} variant="on-dark" icon="phone" class="contact-bar__button">
@@ -38,6 +39,17 @@ const note = callsInNote(code);
 		-webkit-backdrop-filter: blur(14px) saturate(1.4);
 		backdrop-filter: blur(14px) saturate(1.4);
 		box-shadow: 0 -0.75rem 2rem -1.25rem color-mix(in oklab, var(--color-ink) 60%, transparent);
+		transition:
+			transform 0.3s ease,
+			visibility 0s;
+	}
+
+	:global(:root[data-js]) .contact-bar:not([data-shown]) {
+		visibility: hidden;
+		transform: translateY(calc(100% + 1rem));
+		transition:
+			transform 0.3s ease,
+			visibility 0s 0.3s;
 	}
 
 	.contact-bar__inner {
@@ -82,3 +94,20 @@ const note = callsInNote(code);
 		}
 	}
 </style>
+
+<script>
+	const bar = document.querySelector<HTMLElement>('[data-contact-bar]');
+	const heroActions = document.querySelector('[data-hero-actions]');
+	if (bar) {
+		const show = (visible: boolean) => {
+			bar.toggleAttribute('data-shown', visible);
+			bar.inert = !visible;
+		};
+		if (heroActions && 'IntersectionObserver' in window) {
+			const headerHeight = document.querySelector<HTMLElement>('[data-site-header]')?.offsetHeight ?? 0;
+			new IntersectionObserver(([entry]) => show(!entry.isIntersecting), { rootMargin: `-${headerHeight}px 0px 0px 0px` }).observe(heroActions);
+		} else {
+			show(true);
+		}
+	}
+</script>

@@ -35,7 +35,18 @@
     "contactNote": "השפה של {name}: {language}. זו ההודעה שתישלח:",
     "send": "שליחה בוואטסאפ",
     "close": "סגירה",
-    "onlineBooking": "או לבחור מועד באתר ההזמנות"
+    "onlineBooking": "או לבחור מועד באתר ההזמנות",
+    "anyService": "עוד לא החלטתי",
+    "fewerHours": "פחות שעות",
+    "moreHours": "יותר שעות"
+  },
+  "duration": {
+    "half": "חצי שעה",
+    "one": "שעה",
+    "oneAndHalf": "שעה וחצי",
+    "two": "שעתיים",
+    "twoAndHalf": "שעתיים וחצי",
+    "other": "{n} שעות"
   },
   "payment": {
     "title": "אמצעי תשלום",

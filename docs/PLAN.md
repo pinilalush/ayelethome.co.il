@@ -181,7 +181,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     }
   },
   "workHours": [
-    { "days": ["Su", "Mo", "Tu", "We", "Th"], "from": "08:00", "to": "22:00" },
+    { "days": ["Su", "Mo", "Tu", "We", "Th"], "from": "08:00", "to": "23:00" },
     { "days": ["Fr"], "from": "08:00", "to": "13:00" }
   ],
   "social": {
@@ -202,7 +202,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 - `pricing.cancellationFee` — optional one-time fee for cancelling a booked visit (Ayelet: ₪100). Shown in the FAQ through `{cancellationFee}`; a business without one leaves it out.
 - `pricing.step` — how extra time is charged after the minimum, in hours: `0.5` means by the half hour, so the booking panel offers 4, 4.5, 5….
 - **A visit that crosses `evening.from`** is split: the hours before 19:00 at the day rate, the hours after at the evening rate (e.g. 17:00–21:00 = 2 × ₪100 + 2 × ₪150 = ₪500). Same rates every work day, Friday and holiday eves included.
-- `pricing.evening` is optional: a business without an evening rate leaves it out, and the day/evening choice (section 7) disappears. If it's there, the check fails unless some `workHours` run past `evening.from`.
+- `pricing.evening` is optional: a business without an evening rate leaves it out, and the day/evening choice (section 7) disappears. If it's there, the check fails unless at least one work day leaves room for a full minimum-length visit starting at `evening.from` (Ayelet's test data: 4 hours from 19:00, so until 23:00).
 - `workHours` are the times she works (not shop opening hours). They're shown in the footer and used in the structured data for Google.
 - Empty social links are simply not shown.
 - `contactLanguages` — the languages she speaks with customers, first one is the main one (section 6). Each must be one of the site's languages.
@@ -247,10 +247,10 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
       { "label": "TODO: דירת 2–3 חדרים", "hours": 4 },
       { "label": "TODO: דירת 4–5 חדרים", "hours": 6 }
     ],
-    "message": "היי, אשמח להזמין אותך {service} ל־{hours} שעות {slot}. {availability} הבנתי שהמחיר {price}.",
+    "message": "היי, אשמח להזמין אותך {service} ל־{duration} {slot}. {availability} הבנתי שהמחיר {price}.",
     "price": {
       "single": "{rate} לשעה, כלומר {total}",
-      "split": "{dayHours} שעות × {rate} ו־{eveningHours} שעות × {eveningRate}, כלומר {total}"
+      "split": "{dayDuration} × {rate} + {eveningDuration} × {eveningRate}, כלומר {total}"
     },
     "availability": {
       "open": "מתי את פנויה?",
@@ -281,15 +281,16 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 - Full examples:
   - defaults (one tap): "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. מתי את פנויה? הבנתי שהמחיר 100 ₪ לשעה, כלומר 400 ₪."
   - with choices: "היי, אשמח להזמין אותך לניקיון שוטף ל־4.5 שעות בשעות הערב. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר 150 ₪ לשעה, כלומר 675 ₪."
-  - crossing 19:00: "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־17:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר 2 שעות × 100 ₪ ו־2 שעות × 150 ₪, כלומר 500 ₪."
+  - crossing 19:00: "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־17:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר שעתיים × 100 ₪ + שעתיים × 150 ₪, כלומר 500 ₪."
 - **The message is always written in a language she speaks** (`business.json` → `contactLanguages`, section 6), so it's built from that language's `booking` texts even when the visitor reads the site in English or Russian.
 - `hoursGuide` is the "how many hours do I need?" list shown next to the hours selector; tapping a line sets the hours. Real numbers come from her.
 - **Placeholders**, filled in from `business.json` → `pricing` and formatted for the language, so changing a price in one place updates every text:
-  - `{hours}` — the minimum hours (4) in normal text; the chosen hours in the message
+  - `{hours}` — the minimum hours (4), as a plain number (the message uses `{duration}` instead)
   - `{rate}`, `{total}` — the day rate and minimum total (100 ₪, 400 ₪) in normal text; in the message, the chosen slot's rate and chosen hours × rate
   - `{eveningFrom}` — when the evening rate starts (19:00); `{eveningRate}` — the evening hourly rate (150 ₪)
   - `{cancellationFee}` — the one-time cancellation fee (100 ₪)
-  - message only: `{service}`, `{slot}`, `{availability}`, `{when}`, `{weekday}`, `{date}`, `{time}`, `{price}`, and inside `price.split`: `{dayHours}`, `{eveningHours}`
+  - message only: `{service}`, `{duration}`, `{slot}`, `{availability}`, `{when}`, `{weekday}`, `{date}`, `{time}`, `{price}`, and inside `price.split`: `{dayDuration}`, `{eveningDuration}`
+  - `{duration}`, `{dayDuration}` and `{eveningDuration}` carry the number **with** the right word for the language, from `ui.json` → `duration` (Hebrew: חצי שעה, שעה, שעה וחצי, שעתיים, שעתיים וחצי, 3 שעות…; Russian uses the short "ч." for any number), so a split never reads "1 שעות"
   - without an evening rate, `{slot}` is empty and the day/evening choice isn't shown
 - The check script fails if a text uses a placeholder whose value is missing (e.g. `{eveningRate}` with no evening rate), or a placeholder name it doesn't know (a typo like `{rte}`).
 - `reviews` stays empty (section hidden) until there are real reviews from real customers. Each review will hold the customer's first name, area, text, and the date.
@@ -382,8 +383,8 @@ One page per language, short, built for phones first. No forms, no steps.
 10. **Final call-to-action** — one line + Call / WhatsApp.
 11. **Footer** — contact, work hours, payment methods, social links, **Save my number** (downloads a contact card, so her number is saved in one tap), accessibility statement link.
 
-**Always visible:**
-- **Phones:** a bar fixed to the bottom of the screen with **Call | WhatsApp**, side by side, large tap targets.
+**Always within reach:**
+- **Phones and portrait tablets (under 960px):** a bar fixed to the bottom of the screen with **Call | WhatsApp**, side by side, large tap targets. It slides up once the main section's own Call/WhatsApp buttons scroll out of view (so the two actions never show twice), and stays visible from then on; without JavaScript it's simply always visible.
 - **Desktop:** a floating WhatsApp button in the corner (it moves to the correct side in RTL/LTR).
 
 **Other pages:** `/accessibility` (statement, per language) and a styled 404.

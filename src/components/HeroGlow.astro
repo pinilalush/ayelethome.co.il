@@ -1,7 +1,8 @@
 ---
 import Button from './Button.astro';
 import Icon from './Icon.astro';
-import { telHref, whatsappHref } from '../lib/contact.ts';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { telHref } from '../lib/contact.ts';
 import { getLocale, site } from '../lib/data.ts';
 import { callsInNote } from '../lib/i18n.ts';
 
@@ -48,8 +49,8 @@ const sparkles = [
 		</p>
 		<h1 id="hero-title" class="hero__title">{content.hero.title}</h1>
 		<p class="hero__subtitle">{content.hero.subtitle}</p>
-		<div class="hero__actions">
-			<Button href={whatsappHref(business.whatsapp)} icon="whatsapp">{ui.bookOnWhatsapp}</Button>
+		<div class="hero__actions" data-hero-actions>
+			<Button href={defaultWhatsappHref(code)} icon="whatsapp" data-booking-open>{ui.bookOnWhatsapp}</Button>
 			<Button
 				href={telHref(business.phone)}
 				variant="on-dark"

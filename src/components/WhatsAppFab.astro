@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
-import { whatsappHref } from '../lib/contact.ts';
-import { getLocale, site } from '../lib/data.ts';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { getLocale } from '../lib/data.ts';
 
 interface Props {
 	code: string;
@@ -11,7 +11,7 @@ const { code } = Astro.props;
 const { ui } = getLocale(code);
 ---
 
-<a href={whatsappHref(site.business.whatsapp)} class="fab" aria-label={ui.sendWhatsapp} title={ui.sendWhatsapp}>
+<a href={defaultWhatsappHref(code)} class="fab" aria-label={ui.sendWhatsapp} title={ui.sendWhatsapp} data-booking-open>
 	<Icon name="whatsapp" size="1.75rem" />
 </a>
 

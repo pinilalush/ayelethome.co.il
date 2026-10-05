@@ -1,6 +1,7 @@
 ---
 import '@fontsource-variable/rubik';
 import '../styles/global.css';
+import BookingPanel from '../components/BookingPanel.astro';
 import Button from '../components/Button.astro';
 import ContactBar from '../components/ContactBar.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
@@ -42,6 +43,7 @@ const detect = {
 		<title>{title}</title>
 		<link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.svg`} type="image/svg+xml" />
 		<style is:inline set:html={themeCss(site.config.theme)} />
+		<script is:inline>document.documentElement.dataset.js = '';</script>
 		{
 			language.default && (
 				<script is:inline define:vars={detect}>
@@ -95,6 +97,7 @@ const detect = {
 		</main>
 		<ContactBar code={code} />
 		<WhatsAppFab code={code} />
+		<BookingPanel code={code} />
 	</body>
 </html>
 

@@ -234,6 +234,17 @@ export const uiSchema = z.strictObject({
     send: text,
     close: text,
     onlineBooking: text,
+    anyService: text,
+    fewerHours: text,
+    moreHours: text,
+  }),
+  duration: z.strictObject({
+    half: text,
+    one: text,
+    oneAndHalf: text,
+    two: text,
+    twoAndHalf: text,
+    other: text,
   }),
   payment: z.strictObject({
     title: text,

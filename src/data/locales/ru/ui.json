@@ -35,7 +35,18 @@
     "contactNote": "Язык общения: {language}. Будет отправлено это сообщение:",
     "send": "Отправить в WhatsApp",
     "close": "Закрыть",
-    "onlineBooking": "или выбрать время онлайн"
+    "onlineBooking": "или выбрать время онлайн",
+    "anyService": "Ещё не решено",
+    "fewerHours": "Меньше часов",
+    "moreHours": "Больше часов"
+  },
+  "duration": {
+    "half": "полчаса",
+    "one": "1 ч.",
+    "oneAndHalf": "1,5 ч.",
+    "two": "2 ч.",
+    "twoAndHalf": "2,5 ч.",
+    "other": "{n} ч."
   },
   "payment": {
     "title": "Способы оплаты",

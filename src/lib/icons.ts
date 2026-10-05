@@ -1,7 +1,7 @@
 import type { ICONS } from './schema.ts';
 
 export type ContentIcon = (typeof ICONS)[number];
-export type IconName = ContentIcon | 'phone' | 'whatsapp' | 'check' | 'globe' | 'chevron';
+export type IconName = ContentIcon | 'phone' | 'whatsapp' | 'check' | 'globe' | 'chevron' | 'close' | 'minus' | 'plus';
 
 const PHONE =
   'M8.6 3.5H6A2 2 0 0 0 4 5.6c.4 7.6 6.8 14 14.4 14.4a2 2 0 0 0 2.1-2v-2.6a1 1 0 0 0-.7-1l-3.3-1.1a1 1 0 0 0-1 .25l-1.6 1.6a12.4 12.4 0 0 1-5.1-5.1l1.6-1.6a1 1 0 0 0 .25-1L9.6 4.2a1 1 0 0 0-1-.7Z';
@@ -51,6 +51,9 @@ export const ICON_PATHS: Record<IconName, string> = {
   check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
   globe: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.3 2.4 3.5 5.2 3.5 8.5s-1.2 6.1-3.5 8.5c-2.3-2.4-3.5-5.2-3.5-8.5s1.2-6.1 3.5-8.5Z"/>',
   chevron: '<path d="M6.5 9.5 12 15l5.5-5.5"/>',
+  close: '<path d="M6 6l12 12M18 6 6 18"/>',
+  minus: '<path d="M5 12h14"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
   whatsapp:
     '<path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4L3.5 20.5Z"/>' +
     `<path d="${PHONE}" transform="translate(12 12) scale(0.42) translate(-12 -12)" fill="currentColor" stroke="none"/>`,

@@ -68,10 +68,10 @@
       { "label": "TODO דירת 4 חדרים", "hours": 5 },
       { "label": "TODO דירת 5 חדרים ומעלה", "hours": 6 }
     ],
-    "message": "TODO היי, אשמח להזמין אותך {service} ל־{hours} שעות {slot}. {availability} הבנתי שהמחיר {price}.",
+    "message": "TODO היי, אשמח להזמין אותך {service} ל־{duration} {slot}. {availability} הבנתי שהמחיר {price}.",
     "price": {
       "single": "{rate} לשעה, כלומר {total}",
-      "split": "{dayHours} שעות × {rate} ו־{eveningHours} שעות × {eveningRate}, כלומר {total}"
+      "split": "{dayDuration} × {rate} + {eveningDuration} × {eveningRate}, כלומר {total}"
     },
     "availability": {
       "open": "TODO מתי את פנויה?",

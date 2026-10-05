@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 3.1b
+**Current step:** 3.1c
 
 ---
 
@@ -49,7 +49,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 Each section is checked at every width in the responsive matrix, in every language, before moving on.
 
 - [x] **3.1 🤖 Contact buttons.** Call link, bottom Call | WhatsApp bar (phones, tablets portrait), floating WhatsApp button (desktop), Call button in the header, "Calls in Hebrew" note on other languages' pages.
-- [ ] **3.1b 🤖 Booking panel.** Service, day/evening, hours in half-hour steps with live price and the hours guide, optional day and start time limited to her work hours, split price for visits that cross 19:00, message preview in the visitor's language plus the Hebrew that's sent, Send on WhatsApp; works as a plain link without JavaScript.
+- [x] **3.1b 🤖 Booking panel.** Service, day/evening, hours in half-hour steps with live price and the hours guide, optional day and start time limited to her work hours, split price for visits that cross 19:00, message preview in the visitor's language plus the Hebrew that's sent, Send on WhatsApp; works as a plain link without JavaScript.
   *Check:* every combination gives the right Hebrew message and price from every language's page, including 17:00–21:00 = ₪500, and correct singular wording when a split gives 1 hour or half an hour; one tap still sends the default message; keyboard, screen reader and the phone's back button work.
 - [ ] **3.1c 🤖 Optional settings** — Umami counting (page views and taps on WhatsApp, Call, Save my number, booking link) when `analytics.umamiWebsiteId` is set; the "choose a time online" link when `bookingUrl` is set. Both hidden and nothing loaded when empty.
   *Check:* with both empty, the built site loads no outside script; with test values, the script and link appear.
