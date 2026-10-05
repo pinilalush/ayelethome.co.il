@@ -1,0 +1,97 @@
+{
+  "businessName": "TODO Business name",
+  "ownerName": "TODO Owner name",
+  "tagline": "TODO Home cleaning and organizing in Beer Sheva",
+  "hero": {
+    "title": "TODO A clean, tidy home, and your time back for everything else",
+    "subtitle": "TODO Home cleaning and organizing in Beer Sheva and the area. Book with one WhatsApp message.",
+    "badges": ["TODO Reliable and discreet", "TODO Thorough work", "TODO Beer Sheva and area"]
+  },
+  "services": [
+    {
+      "id": "regular",
+      "icon": "sparkle",
+      "title": "TODO Regular cleaning",
+      "text": "TODO Routine cleaning of the whole home: dusting, floors, kitchen and bathrooms, so you always come back to a clean home.",
+      "whatsappMessage": "TODO Hi, I'd like to book you for regular cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    },
+    {
+      "id": "deep",
+      "icon": "spray",
+      "title": "TODO Deep cleaning",
+      "text": "TODO A thorough clean of every corner: behind furniture, inside cabinets, tiles, windows and tracks.",
+      "whatsappMessage": "TODO Hi, I'd like to book you for deep cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    },
+    {
+      "id": "organizing",
+      "icon": "clothes",
+      "title": "TODO Home organizing",
+      "text": "TODO Organizing closets, kitchen, pantry and kids' rooms, with a system that's easy to keep up afterwards.",
+      "whatsappMessage": "TODO Hi, I'd like to book you for home organizing. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    },
+    {
+      "id": "moving",
+      "icon": "boxes",
+      "title": "TODO Move-in and move-out cleaning",
+      "text": "TODO Cleaning before you move in or after you move out, so you get or hand over a spotless apartment.",
+      "whatsappMessage": "TODO Hi, I'd like to book you for move-in/move-out cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    },
+    {
+      "id": "renovation",
+      "icon": "broom",
+      "title": "TODO After-renovation cleaning",
+      "text": "TODO Removing construction dust, paint stains and silicone leftovers until the home is ready to live in.",
+      "whatsappMessage": "TODO Hi, I'd like to book you for after-renovation cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    },
+    {
+      "id": "holidays",
+      "icon": "kitchen",
+      "title": "TODO Passover and holiday cleaning",
+      "text": "TODO A thorough clean of the kitchen, cabinets and the whole home before the holiday.",
+      "whatsappMessage": "TODO Hi, I'd like to book you for holiday cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    }
+  ],
+  "pricing": {
+    "title": "Price",
+    "perHour": "per hour",
+    "minimum": "Minimum {hours} hours per visit ({total})",
+    "note": "TODO What the price includes",
+    "whatsappMessage": "TODO Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+  },
+  "why": [
+    { "icon": "shield", "title": "TODO Reliable and discreet", "text": "TODO I work in your home with respect, quietly and carefully, as if it were my own." },
+    { "icon": "sparkle", "title": "TODO Thorough down to the details", "text": "TODO No skipped corners. What we agreed on gets done, all the way." },
+    { "icon": "clock", "title": "TODO On time", "text": "TODO I arrive at the agreed time and finish what we planned." }
+  ],
+  "about": {
+    "title": "TODO Nice to meet you",
+    "text": "TODO I clean and organize homes in Beer Sheva and the area. A clean, tidy home changes the whole day, and I work quietly, thoroughly and with respect for your home."
+  },
+  "area": {
+    "title": "Service area",
+    "text": "TODO I cover every neighborhood in Beer Sheva and the nearby towns.",
+    "places": ["TODO Beer Sheva", "TODO Omer", "TODO Lehavim", "TODO Meitar"]
+  },
+  "reviews": [],
+  "faq": [
+    { "q": "TODO How much does it cost?", "a": "TODO {rate} per hour, with a minimum of {hours} hours per visit ({total})." },
+    { "q": "TODO How do I book?", "a": "TODO Send a WhatsApp message or call, and we'll set a day and time." },
+    { "q": "TODO Do I need to provide cleaning supplies?", "a": "TODO We can agree on that in advance over WhatsApp." },
+    { "q": "TODO Which areas do you cover?", "a": "TODO Every neighborhood in Beer Sheva, plus Omer, Lehavim and Meitar." },
+    { "q": "TODO Can I book a regular cleaning?", "a": "TODO Yes, weekly or every two weeks on a fixed day." },
+    { "q": "TODO Do I need to be home during the cleaning?", "a": "TODO No. We agree in advance how I get in and how the key is returned." }
+  ],
+  "finalCta": {
+    "title": "TODO Want a clean, tidy home?",
+    "text": "TODO Send a message and we'll find a time that works for you."
+  },
+  "whatsapp": {
+    "default": "TODO Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour.",
+    "floating": "TODO Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+  },
+  "media": {
+    "logo": "TODO Business name logo",
+    "hero": "TODO A bright, clean and tidy living room",
+    "about": "TODO Photo of the business owner"
+  }
+}

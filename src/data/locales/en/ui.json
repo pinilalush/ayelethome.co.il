@@ -1,0 +1,41 @@
+{
+  "skipToContent": "Skip to main content",
+  "call": "Call",
+  "callNow": "Call now",
+  "whatsapp": "WhatsApp",
+  "sendWhatsapp": "Send a WhatsApp message",
+  "bookOnWhatsapp": "Book on WhatsApp",
+  "languageSwitcher": "Choose language",
+  "opensInNewTab": "Opens in a new tab",
+  "sections": {
+    "services": "Services",
+    "why": "Why choose us",
+    "gallery": "Gallery",
+    "reviews": "Reviews",
+    "faq": "Frequently asked questions"
+  },
+  "contact": "Contact",
+  "hours": "Opening hours",
+  "days": {
+    "Su": "Sun",
+    "Mo": "Mon",
+    "Tu": "Tue",
+    "We": "Wed",
+    "Th": "Thu",
+    "Fr": "Fri",
+    "Sa": "Sat"
+  },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "googleBusiness": "Google"
+  },
+  "accessibilityStatement": "Accessibility statement",
+  "testDataBanner": "Test data: this is not a real business",
+  "notFound": {
+    "title": "Page not found",
+    "text": "The link may be wrong, or the page may have been removed.",
+    "back": "Back to the home page"
+  }
+}

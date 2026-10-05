@@ -1,0 +1,41 @@
+{
+  "skipToContent": "דילוג לתוכן הראשי",
+  "call": "התקשרו",
+  "callNow": "התקשרו עכשיו",
+  "whatsapp": "וואטסאפ",
+  "sendWhatsapp": "שליחת הודעה בוואטסאפ",
+  "bookOnWhatsapp": "להזמנה בוואטסאפ",
+  "languageSwitcher": "בחירת שפה",
+  "opensInNewTab": "נפתח בחלון חדש",
+  "sections": {
+    "services": "השירותים",
+    "why": "למה לבחור בנו",
+    "gallery": "גלריה",
+    "reviews": "המלצות",
+    "faq": "שאלות נפוצות"
+  },
+  "contact": "יצירת קשר",
+  "hours": "שעות פעילות",
+  "days": {
+    "Su": "א׳",
+    "Mo": "ב׳",
+    "Tu": "ג׳",
+    "We": "ד׳",
+    "Th": "ה׳",
+    "Fr": "ו׳",
+    "Sa": "שבת"
+  },
+  "social": {
+    "facebook": "פייסבוק",
+    "instagram": "אינסטגרם",
+    "tiktok": "טיקטוק",
+    "googleBusiness": "גוגל"
+  },
+  "accessibilityStatement": "הצהרת נגישות",
+  "testDataBanner": "נתוני בדיקה: זה לא עסק אמיתי",
+  "notFound": {
+    "title": "העמוד לא נמצא",
+    "text": "ייתכן שהקישור שגוי או שהעמוד הוסר.",
+    "back": "חזרה לעמוד הבית"
+  }
+}

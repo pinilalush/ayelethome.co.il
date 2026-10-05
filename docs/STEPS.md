@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 1.2
+**Current step:** 1.3
 
 ---
 
@@ -23,7 +23,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 - [x] **1.1 🤖 Create the Astro project.** `package.json`, `astro.config.mjs`, TypeScript config, `.gitignore`, Node version file, the folder structure from PLAN section 4.
   *You see:* `npm run dev` opens an empty page. *Check:* `npm run build` creates `dist/`.
-- [ ] **1.2 🤖 Data files with test data.** `config.json`, `business.json` (with the ₪100 / 4-hour pricing), `media.json`, and `locales/he` + `locales/en` (`content.json`, `seo.json`, `ui.json`). Every unknown value marked `TODO`.
+- [x] **1.2 🤖 Data files with test data.** `config.json`, `business.json` (with the ₪100 / 4-hour pricing), `media.json`, and `locales/he` + `locales/en` (`content.json`, `seo.json`, `ui.json`). Every unknown value marked `TODO`.
   *Check:* every field from PLAN section 5 exists.
 - [ ] **1.3 🤖 Schemas and data loading.** Zod schemas for every file, helpers that load the data for a given language.
   *Check:* a wrong type or missing field gives a clear error naming the file and field.
@@ -62,7 +62,7 @@ Each section is checked at every width in the responsive matrix, in Hebrew and E
 ## Phase 4 — SEO
 
 - [ ] **4.1 🤖 Keyword lists** in `seo.json` (Hebrew and English), and the test content rewritten to use them naturally. Check script warns about primary keywords not used in the page.
-- [ ] **4.2 🤖 Head tags** — title, description, canonical, `hreflang`, Open Graph and social cards.
+- [ ] **4.2 🤖 Head tags** — title, description, canonical, `hreflang`, and the full share-preview tags (PLAN section 11, **Share preview**).
 - [ ] **4.3 🤖 Structured data** — `LocalBusiness` with area, hours, services and the hourly price.
   *Check:* passes Google's Rich Results Test and the schema.org validator.
 - [ ] **4.4 🤖 Sitemap and robots.txt.**
@@ -77,7 +77,7 @@ Each section is checked at every width in the responsive matrix, in Hebrew and E
 
 - [ ] **6.1 🤖 Media brief** (`docs/MEDIA-BRIEF.md`) — each image/video: purpose, size, file name, the exact prompt, and step-by-step how to create it with Google's tools.
 - [ ] **6.2 👤 Create the media** with Google and put the files in a folder for me.
-- [ ] **6.3 🤖 Add the media** — desktop and phone crops of the hero, optimization, OG share images in both languages.
+- [ ] **6.3 🤖 Add the media** — desktop and phone crops of the hero, optimization, and the share images in both languages generated from the data (under 300 KB, readable as a centered square).
 - [ ] **6.4 👤 Decide on the hero video** after seeing the hero with the real image.
 
 ## Phase 7 — Deploy the template demo
@@ -105,5 +105,5 @@ The domain steps (9.2–9.3) don't depend on the template and can be done any ti
 - [ ] **9.6 🤖 Build passes with no placeholders.**
 - [ ] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
 - [ ] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values.
-- [ ] **9.9 🤖👤 Final checks on the real domain** — every button, both languages, Lighthouse, real devices.
+- [ ] **9.9 🤖👤 Final checks on the real domain** — every button, both languages, Lighthouse, real devices, and the share preview: Facebook Sharing Debugger ("Scrape Again"), then paste the link in WhatsApp and Facebook to see the card.
 - [ ] **9.10 👤👩 Google Search Console** (submit the sitemap) and **Google Business Profile** for Ayelet — I'll write the steps.

@@ -254,6 +254,11 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   "title": "TODO",
   "description": "TODO",
   "ogImage": "og-he",
+  "share": {
+    "title": "TODO",
+    "description": "TODO",
+    "imageAlt": "TODO"
+  },
   "keywords": {
     "primary": [],
     "services": [],
@@ -410,13 +415,36 @@ I'll check these in the browser and send you screenshots of each; you check on r
 
 - `<title>` and description per language from `seo.json`.
 - Canonical URL, `hreflang` for every language plus `x-default`.
-- Open Graph + Twitter card tags, OG image per language (1200×630).
+- Open Graph + Twitter card tags, OG image per language (1200×630) — see **Share preview** below.
 - **Structured data (JSON-LD):** `LocalBusiness` with name, phone, area served (every place in `area.places`), opening hours, geo, social links (`sameAs`), and the services as an offer catalog with the hourly price (₪100 per hour, from `business.json`). Reviews are only added to structured data once real reviews exist.
 - Sitemap with all language versions (`@astrojs/sitemap`), `robots.txt`.
 - Headings in the right order (one `h1`), real text (not text inside images), alt text from keywords.
 - Performance counts for ranking: target **Lighthouse 95+** in all four categories on mobile.
 
 **Outside the site (biggest effect for local search):** a **Google Business Profile** for her business, with the site link, photos, hours and reviews. The site links to it when `social.googleBusiness` is set. I'll write the steps when we get there.
+
+### Share preview
+
+When someone pastes the link into Facebook, WhatsApp, Instagram messages, LinkedIn or X, the app shows a card built from the page's tags. The goal: just pasting the link makes a good-looking post, with no need to add a photo or text.
+
+**What the card shows, and where it comes from**
+- **Image:** a designed share image per language (`media.json` → `og`), 1200×630.
+- **Title:** `seo.json` → `share.title` — written to invite a click ("בית נקי ומסודר בבאר שבע"), can differ from the Google title.
+- **Description:** `seo.json` → `share.description` — one line with the offer and price, e.g. "ניקיון וסידור בתים · 100 ₪ לשעה · מזמינים בוואטסאפ". Uses `{rate}`/`{hours}` like the WhatsApp messages.
+- **Site name and link:** the business name and domain.
+- If `share.title` or `share.description` is empty, the SEO title/description are used.
+
+**Tags on every page:** `og:type`, `og:site_name`, `og:title`, `og:description`, `og:url`, `og:locale` (`he_IL` / `en_US`) with `og:locale:alternate` for the other languages, `og:image` (full absolute URL) with `og:image:width`, `og:image:height`, `og:image:type` and `og:image:alt`, and `twitter:card` = `summary_large_image`. Width and height are included so Facebook shows the image even the first time a link is shared.
+
+**The share image**
+- Design: the hero photo with a dark overlay, the logo/business name, the tagline, the price (₪100 per hour) and the area, in the site's colors and font. One per language.
+- **1200×630 JPEG, kept small (target under 300 KB)** — WhatsApp is known to skip large preview images.
+- **Important content in the center:** WhatsApp and some apps crop the image to a small square, so the name and price must still read in a centered square.
+- **Generated from the data,** so every new business gets its own share image without design work. The exact method is chosen in step 6.3; it must render Hebrew right-to-left correctly.
+
+**Instagram:** Instagram doesn't show link previews in regular posts, and links in captions aren't clickable. The link is used in the **bio** and in **story link stickers**; Instagram messages (DMs) do show the preview card.
+
+**After launch, and every time the image or text changes:** run the link through Facebook's **Sharing Debugger** and click "Scrape Again", because Facebook (and WhatsApp) cache the preview. I'll include this in the launch steps.
 
 ## 12. Accessibility (IS 5568 / WCAG AA)
 
@@ -478,7 +506,7 @@ Built in, not added on:
 **Photos and video (Google image and video tools, by you with my prompts):**
 - `hero.jpg` (wide, desktop) and `hero-mobile.jpg` (portrait, phones) — bright, tidy, modern living room in an Israeli apartment, morning light, no people's faces.
 - `about.jpg` — **must be a real photo of her** (not AI), when she's ready. Until then the section uses an illustration.
-- `og-he.jpg`, `og-en.jpg` — social share images (1200×630), I'll compose them from the hero image + text.
+- `og-he.jpg`, `og-en.jpg` — social share images (1200×630), generated from the hero image + business data (section 11, **Share preview**).
 - `hero.mp4` *(optional)* — short silent loop: a tidy room, slow camera move, sunlight.
 - Gallery — **real photos of her work only**, later.
 
