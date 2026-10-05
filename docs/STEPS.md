@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 3.7b
+**Current step:** 3.8
 
 ---
 
@@ -59,7 +59,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 - [x] **3.5 🤖 Service area** — place chips and the area graphic.
 - [x] **3.6 🤖 FAQ** — accordion, includes the price question.
 - [x] **3.7 🤖 Final call-to-action, footer, 404 page.** Footer includes work hours, payment methods, Save my number (`contact.vcf`, tracked as `save-contact`), and the online-booking link when `bookingUrl` is set.
-- [ ] **3.7b 🤖 QR code** — `qr.svg` and `qr.png` made at build time, pointing to the site.
+- [x] **3.7b 🤖 QR code** — `qr.svg` and `qr.png` made at build time, pointing to the site.
 - [ ] **3.8 🤖 Gallery and reviews** — built and tested with sample data, then switched off in `config.json`.
 - [ ] **3.9 🤖 Animations** — scroll reveals, shine, hero sparkles, press/hover effects; all off with reduced motion.
 - [ ] **3.10 🤖 Full responsive pass** — the whole page at every width in the matrix, portrait and landscape.
