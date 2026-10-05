@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 2.4
+**Current step:** 3.1
 
 ---
 
@@ -41,7 +41,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 - [x] **2.1 🤖 Icons and logo placeholder.** The SVG icon set (sparkle, broom, spray bottle, folded clothes, boxes, kitchen, window, shield, clock, map pin, phone, WhatsApp) and a text-based placeholder logo.
 - [x] **2.2 🤖 Two hero variations.** Both languages, screenshots on phone and desktop.
 - [x] **2.3 👤 Choose a hero** (or a mix of both). Chosen: **A · Glow** (dark, aqua glow, floating sparkles, centered headline).
-- [ ] **2.4 🤖 Finish the chosen hero and the header**, including the compact frosted header on scroll.
+- [x] **2.4 🤖 Finish the chosen hero and the header**, including the compact frosted header on scroll.
   *Check:* responsive matrix (PLAN section 9) for the hero and header.
 
 ## Phase 3 — Sections

@@ -45,6 +45,7 @@ html {
   color: var(--color-text);
   font-family: var(--font-sans);
   line-height: 1.6;
+  scroll-padding-block-start: 5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

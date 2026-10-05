@@ -5,18 +5,19 @@ import type { IconName } from '../lib/icons.ts';
 interface Props {
 	href: string;
 	variant?: 'primary' | 'secondary' | 'on-dark';
+	size?: 'md' | 'sm';
 	icon?: IconName;
 	newTab?: boolean;
 	newTabLabel?: string;
 	class?: string;
 }
 
-const { href, variant = 'primary', icon, newTab = false, newTabLabel, class: className } = Astro.props;
+const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabel, class: className } = Astro.props;
 ---
 
 <a
 	href={href}
-	class:list={['button', `button--${variant}`, className]}
+	class:list={['button', `button--${variant}`, `button--${size}`, className]}
 	target={newTab ? '_blank' : undefined}
 	rel={newTab ? 'noopener' : undefined}
 >
@@ -44,6 +45,12 @@ const { href, variant = 'primary', icon, newTab = false, newTabLabel, class: cla
 			transform 0.2s ease,
 			box-shadow 0.2s ease,
 			background-color 0.2s ease;
+	}
+
+	.button--sm {
+		min-block-size: 2.75rem;
+		padding-inline: var(--space-s);
+		font-size: var(--step--1);
 	}
 
 	.button--primary {

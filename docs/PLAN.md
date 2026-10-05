@@ -370,7 +370,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 
 One page per language, short, built for phones first. No forms, no steps.
 
-1. **Header** — logo/business name, language switcher, Call button (on desktop). Becomes compact and frosted when scrolling.
+1. **Header** — logo/business name, language switcher, Call button (from 960px wide; below that the bottom bar has it). Always one row: on phones (under 768px) the language switcher is a small globe button that opens a menu; from 768px the languages show as pills. Stays at the top while scrolling and turns frosted and slimmer — only its background changes, so the page never jumps.
 2. **Hero** — headline, one supporting line, 3 short badges (e.g. "reliable and responsible", "thorough", "Beer Sheva and area"), **Call** and **WhatsApp** buttons. Optional background video.
 3. **Services** — cards with icon, short text, and a WhatsApp button that opens the booking panel with that service already selected.
 4. **Price** — two cards side by side (stacked on phones): **Daytime** (until 19:00) · ₪100 per hour · minimum 4 hours = **₪400**, and **Evening** (from 19:00) · ₪150 per hour · minimum 4 hours = **₪600**. Each card has its own WhatsApp button that opens the booking panel with that time already selected, plus a short line on what's included and the payment methods. A clear price up front saves her the "how much?" messages and filters out visitors who aren't a fit. The same prices appear in the FAQ ("How much does it cost?").

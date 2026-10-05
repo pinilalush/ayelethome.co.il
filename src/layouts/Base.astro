@@ -1,11 +1,13 @@
 ---
 import '@fontsource-variable/rubik';
 import '../styles/global.css';
+import Button from '../components/Button.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import Logo from '../components/Logo.astro';
 import TestDataBanner from '../components/TestDataBanner.astro';
 import { getLocale, isTestData, site } from '../lib/data.ts';
 import { LANGUAGE_STORAGE_KEY, getLanguage, homeUrl } from '../lib/i18n.ts';
+import { telHref } from '../lib/contact.ts';
 import { themeCss } from '../lib/theme.ts';
 
 interface Props {
@@ -61,12 +63,24 @@ const detect = {
 		}
 	</head>
 	<body>
+		<div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
 		<a href="#main" class="skip-link">{ui.skipToContent}</a>
 		<TestDataBanner label={ui.testDataBanner} />
-		<header class="site-header" data-tone={headerTone}>
+		<header class="site-header" data-tone={headerTone} data-site-header>
 			<div class="container site-header__inner">
 				<Logo code={code} />
-				<LanguageSwitcher current={code} />
+				<div class="site-header__end">
+					<LanguageSwitcher current={code} />
+					<Button
+						href={telHref(site.business.phone)}
+						variant={headerTone === 'dark' ? 'on-dark' : 'secondary'}
+						size="sm"
+						icon="phone"
+						class="site-header__call"
+					>
+						{ui.call}
+					</Button>
+				</div>
 			</div>
 		</header>
 		<main id="main">
@@ -75,30 +89,99 @@ const detect = {
 	</body>
 </html>
 
+<script>
+	const header = document.querySelector<HTMLElement>('[data-site-header]');
+	const sentinel = document.querySelector('[data-header-sentinel]');
+	if (header && sentinel && 'IntersectionObserver' in window) {
+		new IntersectionObserver(([entry]) => header.toggleAttribute('data-scrolled', !entry.isIntersecting)).observe(sentinel);
+	}
+</script>
+
 <style>
+	.header-sentinel {
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 1px;
+		block-size: 8px;
+		pointer-events: none;
+	}
+
 	.site-header {
+		--header-solid: var(--color-surface);
+		position: sticky;
+		inset-block-start: 0;
+		z-index: 100;
+		isolation: isolate;
 		padding-block-start: max(var(--space-xs), var(--safe-top));
 		padding-block-end: var(--space-xs);
-		background: var(--color-surface);
+		color: var(--color-text);
+		pointer-events: none;
+	}
+
+	.site-header::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 -1px;
+		z-index: -1;
+		background: var(--header-solid);
+		transform-origin: top;
+		transition:
+			transform 0.3s ease,
+			background-color 0.3s ease,
+			box-shadow 0.3s ease;
 	}
 
 	.site-header[data-tone='alt'] {
-		background: var(--color-surface-alt);
+		--header-solid: var(--color-surface-alt);
 	}
 
 	.site-header[data-tone='dark'] {
+		--header-solid: var(--color-ink);
 		--color-text: var(--color-surface);
 		--color-text-muted: color-mix(in oklab, var(--color-surface) 72%, transparent);
 		--color-surface-alt: color-mix(in oklab, var(--color-surface) 12%, transparent);
-		background: var(--color-ink);
-		color: var(--color-text);
+	}
+
+	.site-header[data-scrolled]::before {
+		transform: scaleY(0.86);
+		background: color-mix(in oklab, var(--header-solid) 80%, transparent);
+		-webkit-backdrop-filter: blur(14px) saturate(1.4);
+		backdrop-filter: blur(14px) saturate(1.4);
+		box-shadow: 0 0.75rem 2rem -1.25rem color-mix(in oklab, var(--color-ink) 60%, transparent);
 	}
 
 	.site-header__inner {
 		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
 		align-items: center;
-		gap: var(--space-2xs) var(--space-s);
+		justify-content: space-between;
+		gap: var(--space-s);
+		pointer-events: auto;
+		transition: transform 0.3s ease;
+	}
+
+	.site-header[data-scrolled] .site-header__inner {
+		transform: translateY(-0.3rem);
+	}
+
+	.site-header__inner > :global(.logo) {
+		min-inline-size: 0;
+	}
+
+	.site-header__end {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.site-header :global(.site-header__call) {
+		display: none;
+	}
+
+	@media (min-width: 60rem) {
+		.site-header :global(.site-header__call) {
+			display: inline-flex;
+		}
 	}
 </style>
