@@ -4,6 +4,8 @@ export type QrColors = { dark: string; light: string };
 
 const QUIET_ZONE = 4;
 
+export const QR_TRACKING = '?utm_source=qr';
+
 export function qrMatrix(text: string): boolean[][] {
   return encode(text, { ecc: 'M', border: QUIET_ZONE }).data;
 }

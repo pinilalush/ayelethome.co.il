@@ -485,7 +485,7 @@ I'll check these in the browser and send you screenshots of each; you check on r
 - **WhatsApp:** `https://wa.me/972…?text=<message>`, the message built by the booking panel (section 7) in her contact language, URL-encoded.
 - **Online booking (optional):** `bookingUrl` from `business.json`, opened in a new tab; not shown when empty.
 - **Save my number:** a contact card file (`contact.vcf`) made at build time from `business.json` and `content.json`: business name, her name, phone, WhatsApp, email and the site address.
-- **QR code:** `qr.svg` (for print) and `qr.png`, made at build time, pointing to the site. Not shown on the page; it's for flyers, business cards and fridge magnets. The address is listed in `docs/NEW-SITE.md`.
+- **QR code:** `qr.svg` (for print) and `qr.png`, made at build time, pointing to the site with `?utm_source=qr`, so Umami can count visits from printed codes (the language redirect keeps the tag). Not shown on the page; it's for flyers, business cards and fridge magnets. The address is listed in `docs/NEW-SITE.md`.
 - Phone numbers display in local format and are readable by screen readers.
 
 ## 11. SEO
