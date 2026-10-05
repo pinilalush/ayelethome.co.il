@@ -74,6 +74,52 @@
     "googleBusiness": "Google"
   },
   "accessibilityStatement": "Accessibility statement",
+  "statement": {
+    "description": "The accessibility statement of {businessName}: what we've done to make the site accessible, known limitations, and how to report an accessibility problem.",
+    "intro": "{businessName} wants everyone to be able to use this site easily and comfortably, including people with disabilities. This page explains what we've done to make it accessible, what isn't perfect yet, and how to reach us about any problem.",
+    "level": {
+      "title": "Accessibility level",
+      "text": "The site is built to meet Israeli Standard IS 5568 Part 1 at level AA (which is based on WCAG), in line with the Equal Rights for Persons with Disabilities (Service Accessibility Adjustments) Regulations, 2013.",
+      "support": "It's designed for current versions of the major browsers (Chrome, Safari, Firefox, Edge and Samsung Internet) on phones, tablets and computers, and it can be used with a keyboard alone and with a screen reader."
+    },
+    "adjustments": {
+      "title": "What we've done to make the site accessible",
+      "items": [
+        "A clear structure: headings in order, marked regions (header, main content, footer) and lists, so screen readers can make sense of each page.",
+        "Full keyboard access, with a clearly visible focus indicator, and a link at the top of every page that skips straight to the main content.",
+        "Sufficient contrast between the site's text and background colors, checked automatically every time the site is updated.",
+        "Text can be enlarged to 200%, and pages can be zoomed on phones, without breaking the layout.",
+        "Every image has a text description, and purely decorative images are hidden from screen readers.",
+        "Large buttons and links that are easy to tap (at least 44 by 44 pixels).",
+        "Sections that expand and collapse, like the frequently asked questions and the language menu, tell screen readers whether they're open or closed.",
+        "The booking window works with a keyboard and a screen reader: focus moves into it when it opens and back when it closes, every control has a label, and the Esc key closes it.",
+        "When your device is set to reduce motion, animations are turned off. Nothing on the site plays sound by itself.",
+        "Every page states its language and text direction, so screen readers read it in the right language.",
+        "There's no accessibility menu or third-party accessibility plugin: the site itself is built to be accessible, and it works with your own device and browser settings (zoom, text size, screen reader)."
+      ]
+    },
+    "limitations": {
+      "title": "Known limitations",
+      "items": [
+        "WhatsApp messages are sent through WhatsApp's own app or website, whose accessibility we don't control. You can always call us instead.",
+        "Some links lead to other websites; their accessibility is the responsibility of whoever runs them.",
+        "Some parts of the site may still not be fully accessible. If you come across one, let us know and we'll fix it."
+      ]
+    },
+    "service": {
+      "title": "Accessibility of the service"
+    },
+    "report": {
+      "title": "Found an accessibility problem?",
+      "text": "If any part of the site isn't accessible to you, or you need the information in another format, contact us directly. We'll help you get the information and arrange the service, and we'll fix the problem as soon as we can.",
+      "phone": "Phone: {phone}",
+      "whatsapp": "WhatsApp: {whatsapp}",
+      "email": "Email: {email}",
+      "tips": "To help us respond quickly, please tell us which page the problem was on, what you were trying to do, and which device and browser you used (and any assistive technology)."
+    },
+    "counting": "Visits and taps on the contact buttons are counted anonymously, without cookies and without any personal data.",
+    "updated": "Statement last updated: {date}"
+  },
   "testDataBanner": "Test data: this is not a real business",
   "notFound": {
     "title": "Page not found",

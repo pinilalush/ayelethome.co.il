@@ -1,4 +1,5 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import '@fontsource-variable/rubik';
 import '../styles/global.css';
 import BookingPanel from '../components/BookingPanel.astro';
@@ -12,8 +13,9 @@ import TestDataBanner from '../components/TestDataBanner.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { trackAttrs } from '../lib/analytics.ts';
 import { getLocale, site } from '../lib/data.ts';
-import { LANGUAGE_STORAGE_KEY, callsInNote, getLanguage, homeUrl } from '../lib/i18n.ts';
+import { LANGUAGE_STORAGE_KEY, callsInNote, getLanguage } from '../lib/i18n.ts';
 import { telHref } from '../lib/contact.ts';
+import { pagePath } from '../lib/seo.ts';
 import { formatPhone } from '../lib/text.ts';
 
 interface Props {
@@ -27,11 +29,12 @@ const { code, title, description, headerTone = 'light' } = Astro.props;
 const language = getLanguage(code);
 const { ui } = getLocale(code);
 const callNote = callsInNote(code);
+const path = pagePath(Astro.url.pathname, code);
 
 const detect = {
 	storageKey: LANGUAGE_STORAGE_KEY,
 	defaultCode: site.defaultLanguage.code,
-	urls: Object.fromEntries(site.languages.map((l) => [l.code, homeUrl(l.code)])),
+	urls: Object.fromEntries(site.languages.map((l) => [l.code, getRelativeLocaleUrl(l.code, path)])),
 };
 ---
 
@@ -70,7 +73,7 @@ const detect = {
 			<div class="container site-header__inner">
 				<Logo code={code} />
 				<div class="site-header__end">
-					<LanguageSwitcher current={code} />
+					<LanguageSwitcher current={code} path={path} />
 					{callNote && <span id="call-note-header" class="site-header__note">{callNote}</span>}
 					<Button
 						href={telHref(site.business.phone)}

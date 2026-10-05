@@ -7,6 +7,7 @@ import {
   PUBLIC_MEDIA_DIR,
   formatIssues,
   formatPending,
+  formatWarnings,
   validateSiteData,
 } from '../src/lib/validate.ts';
 
@@ -49,6 +50,8 @@ const result = validateSiteData(files, {
   mediaFiles: listFiles(ASSETS_MEDIA_DIR),
   publicMediaFiles: listFiles(PUBLIC_MEDIA_DIR),
 });
+
+if (result.warnings.length) console.warn(`${formatWarnings(result.warnings)}\n`);
 
 if (result.issues.length) {
   console.error(formatIssues(result.issues));

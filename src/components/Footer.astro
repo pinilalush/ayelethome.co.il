@@ -22,6 +22,7 @@ const { content, ui } = getLocale(code);
 const { business } = site;
 const callNote = callsInNote(code);
 const hours = hoursLines(business.workHours, ui.days);
+const statementUrl = `${homeUrl(code)}accessibility/`;
 
 const SOCIAL_ICONS: Record<keyof Business['social'], IconName> = {
 	facebook: 'facebook',
@@ -103,12 +104,16 @@ const social = (Object.keys(SOCIAL_ICONS) as (keyof Business['social'])[])
 						</li>
 					)
 				}
-				<li>
-					<a href={`mailto:${business.email}`} class="site-footer__link">
-						<Icon name="mail" size="1.2rem" />
-						<span dir="ltr">{business.email}</span>
-					</a>
-				</li>
+				{
+					business.email && (
+						<li>
+							<a href={`mailto:${business.email}`} class="site-footer__link">
+								<Icon name="mail" size="1.2rem" />
+								<span dir="ltr">{business.email}</span>
+							</a>
+						</li>
+					)
+				}
 			</ul>
 		</div>
 
@@ -146,7 +151,16 @@ const social = (Object.keys(SOCIAL_ICONS) as (keyof Business['social'])[])
 	</div>
 
 	<div class="container">
-		<p class="site-footer__bottom">© {content.businessName}</p>
+		<div class="site-footer__bottom">
+			<p>© {content.businessName}</p>
+			<a
+				href={statementUrl}
+				class="site-footer__bottom-link"
+				aria-current={Astro.url.pathname === statementUrl ? 'page' : undefined}
+			>
+				{ui.accessibilityStatement}
+			</a>
+		</div>
 	</div>
 </footer>
 
@@ -302,10 +316,33 @@ const social = (Object.keys(SOCIAL_ICONS) as (keyof Business['social'])[])
 	}
 
 	.site-footer__bottom {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		column-gap: var(--space-m);
 		margin-block-start: var(--space-xl);
-		padding-block-start: var(--space-s);
+		padding-block-start: var(--space-2xs);
 		border-block-start: 1px solid color-mix(in oklab, var(--color-surface) 10%, transparent);
 		color: var(--color-text-muted);
 		font-size: var(--step--1);
+	}
+
+	@media (min-width: 60rem) {
+		.site-footer__bottom {
+			padding-inline-end: calc(3.75rem + var(--space-m));
+		}
+	}
+
+	.site-footer__bottom-link {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: 2.75rem;
+		color: var(--color-text);
+	}
+
+	@media (hover: hover) {
+		.site-footer__bottom-link:hover {
+			color: var(--color-accent);
+		}
 	}
 </style>

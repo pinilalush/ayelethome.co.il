@@ -76,7 +76,7 @@ export const businessSchema = z.strictObject({
   basePath: z.string().regex(/^\/([\w.-]+\/)*$/, 'expected "/" or a path like "/repo-name/"'),
   phone,
   whatsapp: phone,
-  email,
+  email: z.union([z.literal(''), email]).optional(),
   city: text,
   geo: z.strictObject({
     lat: z.number().min(-90).max(90),
@@ -180,6 +180,7 @@ export const contentSchema = z.strictObject({
   reviews: z.array(z.strictObject({ name: text, area: text, text, date: isoDate })),
   faq: z.array(z.strictObject({ q: text, a: text })),
   finalCta: titleText,
+  accessibilityService: text,
   media: z.record(altKey, text),
 });
 
@@ -260,6 +261,17 @@ export const uiSchema = z.strictObject({
     googleBusiness: text,
   }),
   accessibilityStatement: text,
+  statement: z.strictObject({
+    description: text,
+    intro: text,
+    level: z.strictObject({ title: text, text, support: text }),
+    adjustments: z.strictObject({ title: text, items: z.array(text).min(1, 'at least one item is required') }),
+    limitations: z.strictObject({ title: text, items: z.array(text).min(1, 'at least one item is required') }),
+    service: z.strictObject({ title: text }),
+    report: z.strictObject({ title: text, text, phone: text, whatsapp: text, email: text, tips: text }),
+    counting: text,
+    updated: text,
+  }),
   testDataBanner: text,
   notFound: z.strictObject({ title: text, text, back: text }),
 });

@@ -1,0 +1,24 @@
+---
+import AccessibilityStatement from '../../components/AccessibilityStatement.astro';
+import Base from '../../layouts/Base.astro';
+import { getLocale, site } from '../../lib/data.ts';
+import { fill } from '../../lib/text.ts';
+
+export function getStaticPaths() {
+	return site.languages.map((l) => ({
+		params: { lang: l.default ? undefined : l.code },
+		props: { code: l.code },
+	}));
+}
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+---
+
+<Base code={code} title={`${ui.accessibilityStatement} | ${content.businessName}`} description={fill(ui.statement.description, { businessName: content.businessName })} headerTone="alt">
+	<AccessibilityStatement code={code} />
+</Base>

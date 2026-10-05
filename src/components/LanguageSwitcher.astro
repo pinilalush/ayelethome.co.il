@@ -1,13 +1,15 @@
 ---
 import Icon from './Icon.astro';
 import { getLocale, site } from '../lib/data.ts';
-import { LANGUAGE_STORAGE_KEY, getLanguage, homeUrl } from '../lib/i18n.ts';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { LANGUAGE_STORAGE_KEY, getLanguage } from '../lib/i18n.ts';
 
 interface Props {
 	current: string;
+	path: string;
 }
 
-const { current } = Astro.props;
+const { current, path } = Astro.props;
 const { ui } = getLocale(current);
 const currentLanguage = getLanguage(current);
 ---
@@ -18,7 +20,7 @@ const currentLanguage = getLanguage(current);
 			site.languages.map((l) => (
 				<li>
 					<a
-						href={homeUrl(l.code)}
+						href={getRelativeLocaleUrl(l.code, path)}
 						lang={l.code}
 						hreflang={l.code}
 						data-lang={l.code}
@@ -43,7 +45,7 @@ const currentLanguage = getLanguage(current);
 				site.languages.map((l) => (
 					<li>
 						<a
-							href={homeUrl(l.code)}
+							href={getRelativeLocaleUrl(l.code, path)}
 							lang={l.code}
 							hreflang={l.code}
 							data-lang={l.code}

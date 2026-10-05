@@ -8,15 +8,36 @@ export const DATA_DIR = 'src/data';
 export const ASSETS_MEDIA_DIR = 'src/assets/media';
 export const PUBLIC_MEDIA_DIR = 'public/media';
 export const TEST_PHONE = '+972500000000';
+export const TEMPLATE_BASE_PATH = '/landing-template/';
 
 export type RawFiles = Record<string, unknown>;
-export type PendingReason = 'todo' | 'test-phone' | 'missing-media';
+export type PendingReason = 'todo' | 'test-phone' | 'demo-path' | 'missing-media';
 export type Pending = { file: string; field: string; reason: PendingReason; detail?: string };
 export type ValidationOptions = { mediaFiles?: string[]; publicMediaFiles?: string[] };
-export type ValidationResult = { data?: SiteData; issues: string[]; pending: Pending[] };
+export type ValidationResult = { data?: SiteData; issues: string[]; pending: Pending[]; warnings: string[] };
 
 const PLACEHOLDER = /\bTODO\b/;
 const PLACEHOLDER_PREFIX = /^TODO(?::\s*|\s+|$)/;
+
+const UI_ON_PAGE = ['call', 'callNow', 'bookOnWhatsapp', 'sendWhatsapp', 'sections', 'booking', 'payment', 'contact', 'workHours', 'saveContact'];
+const CONTENT_SECTION: Record<string, keyof Config['sections']> = {
+  services: 'services',
+  pricing: 'pricing',
+  why: 'why',
+  about: 'why',
+  area: 'area',
+  reviews: 'reviews',
+  faq: 'faq',
+  finalCta: 'finalCta',
+};
+const NOT_SHOWN = new Set(['id', 'icon', 'bookingName', 'inMessage']);
+const MESSAGE_ONLY = new Set(['message', 'price', 'availability', 'when']);
+const SENTENCE_END = /[.!?;:·|()[\]\n]+|\s[-–—]\s/;
+const WORD = /[\p{L}\p{N}]+(?:['"][\p{L}\p{N}]+)*/gu;
+const HEBREW_MARKS = /[\u0591-\u05BD\u05BF\u05C1\u05C2\u05C4\u05C5\u05C7]/g;
+const HEBREW_PREFIX = /^[משהוכלב]{1,3}$/;
+const RUSSIAN_ENDING = /(?:ами|ями|ого|его|ому|ему|ыми|ими|ой|ей|ий|ый|ая|яя|ое|ее|ую|юю|ов|ев|ам|ям|ах|ях|ом|ем|ы|и|а|я|о|е|у|ю|ь)$/;
+const MAX_GAP = 3;
 
 function formatPath(path: PropertyKey[]): string {
   return path.reduce<string>(
@@ -229,6 +250,68 @@ function checkContrast(config: Config, issues: string[]) {
   }
 }
 
+function pageTexts(config: Config, { content, ui }: Locale): string[] {
+  const texts: string[] = [];
+  eachString(content, [], (text, path) => {
+    const [top, sub] = path.map(String);
+    const section = CONTENT_SECTION[top];
+    if (section && !config.sections[section]) return;
+    if (top === 'media' || top === 'accessibilityService' || NOT_SHOWN.has(String(path.at(-1)))) return;
+    if (top === 'booking' && MESSAGE_ONLY.has(sub)) return;
+    texts.push(text);
+  });
+  for (const key of UI_ON_PAGE) eachString((ui as Record<string, unknown>)[key], [], (text) => texts.push(text));
+  return texts;
+}
+
+function words(text: string): string[] {
+  const plain = text.normalize('NFC').replace(HEBREW_MARKS, '').replace(/[׳’`]/g, "'").replace(/[״“”]/g, '"');
+  return [...plain.toLowerCase().replace(/ё/g, 'е').matchAll(WORD)].map((m) => m[0]);
+}
+
+function stem(word: string): string {
+  if (/[а-я]/.test(word)) {
+    const base = word.replace(RUSSIAN_ENDING, '');
+    return base.length >= 3 ? base : word;
+  }
+  return word.length > 3 && !word.endsWith('ss') ? word.replace(/'?s$/, '') : word;
+}
+
+function sameWord(a: string, b: string): boolean {
+  if (a === b) return true;
+  if (/[\u05D0-\u05EA]/.test(a)) {
+    const [short, long] = a.length < b.length ? [a, b] : [b, a];
+    return short.length >= 2 && long.endsWith(short) && HEBREW_PREFIX.test(long.slice(0, long.length - short.length));
+  }
+  return stem(a) === stem(b);
+}
+
+function containsKeyword(sentence: string[], keyword: string[]): boolean {
+  const rest = (from: number, k: number): boolean => {
+    if (k === keyword.length) return true;
+    for (let j = from; j < Math.min(sentence.length, from + MAX_GAP + 1); j++) {
+      if (sameWord(sentence[j], keyword[k]) && rest(j + 1, k + 1)) return true;
+    }
+    return false;
+  };
+  return sentence.some((word, i) => sameWord(word, keyword[0]) && rest(i + 1, 1));
+}
+
+function checkKeywords(config: Config, locales: Record<string, Locale>, warnings: string[]) {
+  for (const [code, locale] of Object.entries(locales)) {
+    const sentences = pageTexts(config, locale)
+      .flatMap((text) => text.split(SENTENCE_END))
+      .map(words)
+      .filter((s) => s.length > 0);
+    for (const [i, keyword] of locale.seo.keywords.primary.entries()) {
+      const wanted = words(keyword);
+      if (wanted.length && !sentences.some((s) => containsKeyword(s, wanted))) {
+        warnings.push(`${where(`locales/${code}/seo.json`, ['keywords', 'primary', i])}: "${keyword}" isn't used anywhere in the page text (work it into a heading, a service or an FAQ answer in content.json)`);
+      }
+    }
+  }
+}
+
 function checkMediaFiles(config: Config, media: Media, options: ValidationOptions, pending: Pending[]) {
   const wanted: Array<{ path: PropertyKey[]; file: string; dir: 'assets' | 'public' }> = [
     ...(media.logo ? [{ path: ['logo', 'file'], file: media.logo.file, dir: 'assets' as const }] : []),
@@ -253,10 +336,12 @@ function checkMediaFiles(config: Config, media: Media, options: ValidationOption
 export function validateSiteData(raw: RawFiles, options: ValidationOptions = {}): ValidationResult {
   const issues: string[] = [];
   const pending: Pending[] = [];
+  const warnings: string[] = [];
 
   const config = parseFile(raw, 'config.json', configSchema, issues, pending);
   const business = parseFile(raw, 'business.json', businessSchema, issues, pending);
   const media = parseFile(raw, 'media.json', mediaSchema, issues, pending);
+  if (business?.basePath === TEMPLATE_BASE_PATH) pending.push({ file: `${DATA_DIR}/business.json`, field: 'basePath', reason: 'demo-path' });
 
   const locales: Record<string, Locale> = {};
   for (const code of languageCodes(config, raw)) {
@@ -271,16 +356,18 @@ export function validateSiteData(raw: RawFiles, options: ValidationOptions = {})
   if (config) {
     checkLanguagesMatch(config, locales, issues);
     checkContrast(config, issues);
+    checkKeywords(config, locales, warnings);
   }
   if (config && media) checkMediaFiles(config, media, options, pending);
 
-  if (!config || !business || !media || issues.length) return { issues, pending };
+  if (!config || !business || !media || issues.length) return { issues, pending, warnings };
 
   const defaultLanguage = config.languages.find((l) => l.default)!;
   return {
     data: { config, business, media, languages: config.languages, defaultLanguage, locales },
     issues,
     pending,
+    warnings,
   };
 }
 
@@ -289,9 +376,15 @@ export function formatIssues(issues: string[]): string {
   return `The data in ${DATA_DIR} has ${count}:\n${issues.map((i) => `  • ${i}`).join('\n')}`;
 }
 
+export function formatWarnings(warnings: string[]): string {
+  const count = `${warnings.length} warning${warnings.length === 1 ? '' : 's'}`;
+  return `Data check: ${count} (the build still runs):\n${warnings.map((w) => `  • ${w}`).join('\n')}`;
+}
+
 const REASON_LABEL: Record<PendingReason, string> = {
   todo: 'still test data (TODO)',
   'test-phone': 'test phone number',
+  'demo-path': "the template's demo address",
   'missing-media': 'image or video file not found',
 };
 

@@ -1,6 +1,6 @@
 import { ALLOW_PLACEHOLDERS } from 'astro:env/server';
 import type { Locale, SiteData } from './schema.ts';
-import { formatIssues, formatPending, validateSiteData, type Pending, type RawFiles } from './validate.ts';
+import { formatIssues, formatPending, formatWarnings, validateSiteData, type Pending, type RawFiles } from './validate.ts';
 
 const modules = import.meta.glob<unknown>('../data/**/*.json', { eager: true, import: 'default' });
 const raw: RawFiles = Object.fromEntries(
@@ -19,6 +19,7 @@ if (result.pending.length) {
   }
   if (import.meta.env.DEV) console.warn(report);
 }
+if (import.meta.env.DEV && result.warnings.length) console.warn(formatWarnings(result.warnings));
 
 export const site: SiteData = result.data;
 export const pending: Pending[] = result.pending;

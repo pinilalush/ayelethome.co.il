@@ -15,6 +15,12 @@ const RULES: Record<string, string[]> = {
   'ui:booking.minimum': ['hours'],
   'ui:booking.contactNote': ['name', 'language'],
   'ui:duration.other': ['n'],
+  'ui:statement.description': ['businessName'],
+  'ui:statement.intro': ['businessName'],
+  'ui:statement.report.phone': ['phone'],
+  'ui:statement.report.whatsapp': ['whatsapp'],
+  'ui:statement.report.email': ['email'],
+  'ui:statement.updated': ['date'],
 };
 
 const NEEDS_PRICING = new Set(['hours', 'duration', 'rate', 'total', 'price', 'dayDuration', 'eveningDuration', 'eveningFrom', 'eveningRate', 'cancellationFee']);

@@ -4,7 +4,7 @@ export type VCard = {
   title: string;
   phone: string;
   whatsapp: string;
-  email: string;
+  email?: string;
   url: string;
 };
 
@@ -39,7 +39,7 @@ export function buildVCard(card: VCard): string {
     `TITLE:${escapeText(card.title)}`,
     `TEL;TYPE=CELL,VOICE:${card.phone}`,
     ...(card.whatsapp === card.phone ? [] : [`item1.TEL;TYPE=CELL:${card.whatsapp}`, 'item1.X-ABLabel:WhatsApp']),
-    `EMAIL;TYPE=INTERNET:${card.email}`,
+    ...(card.email ? [`EMAIL;TYPE=INTERNET:${card.email}`] : []),
     `URL:${card.url}`,
     'END:VCARD',
   ];

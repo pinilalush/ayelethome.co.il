@@ -1,0 +1,264 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { analyticsId, trackAttrs } from '../lib/analytics.ts';
+import { telHref, whatsappHref } from '../lib/contact.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { callsInNote } from '../lib/i18n.ts';
+import { fill, formatPhone } from '../lib/text.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+const { statement } = ui;
+const { business } = site;
+const callNote = callsInNote(code);
+const dateFormat = new Intl.DateTimeFormat(code, { dateStyle: 'long', timeZone: 'UTC' });
+const date = dateFormat.format(new Date(business.accessibilityStatementDate));
+
+const pieces = (template: string) => template.split(/\{(\w+)\}/).map((text, i) => ({ text, token: i % 2 === 1 }));
+---
+
+<div class="statement">
+	<header class="statement__head">
+		<div class="container">
+			<h1 class="statement__title">{ui.accessibilityStatement}</h1>
+			<p class="statement__intro">{fill(statement.intro, { businessName: content.businessName })}</p>
+		</div>
+	</header>
+
+	<div class="container">
+		<div class="statement__body">
+			<section class="statement__part">
+				<h2>{statement.level.title}</h2>
+				<p>{statement.level.text}</p>
+				<p>{statement.level.support}</p>
+			</section>
+
+			<section class="statement__part">
+				<h2>{statement.adjustments.title}</h2>
+				<ul class="statement__checks">
+					{
+						statement.adjustments.items.map((item) => (
+							<li>
+								<Icon name="check" size="1.25rem" />
+								<span>{item}</span>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="statement__part">
+				<h2>{statement.limitations.title}</h2>
+				<ul class="statement__bullets">
+					{statement.limitations.items.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="statement__part">
+				<h2>{statement.service.title}</h2>
+				<p>{content.accessibilityService}</p>
+			</section>
+
+			<section class="statement__part statement__report">
+				<h2>{statement.report.title}</h2>
+				<p>{statement.report.text}</p>
+				<ul class="statement__contact">
+					<li>
+						<Button
+							href={telHref(business.phone)}
+							variant="secondary"
+							icon="phone"
+							describedBy={callNote ? 'call-note-statement' : undefined}
+							class="statement__contact-link"
+							{...trackAttrs('call', { source: 'statement' })}
+						>
+							{
+								pieces(statement.report.phone).map((p) =>
+									p.token ? <span dir="ltr" class="statement__phone">{formatPhone(business.phone)}</span> : p.text,
+								)
+							}
+						</Button>
+						{callNote && <span id="call-note-statement" class="statement__note">{callNote}</span>}
+					</li>
+					<li>
+						<Button href={whatsappHref(business.whatsapp)} variant="secondary" icon="whatsapp" class="statement__contact-link">
+							{
+								pieces(statement.report.whatsapp).map((p) =>
+									p.token ? <span dir="ltr" class="statement__phone">{formatPhone(business.whatsapp)}</span> : p.text,
+								)
+							}
+						</Button>
+					</li>
+					{
+						business.email && (
+							<li>
+								<Button href={`mailto:${business.email}`} variant="secondary" icon="mail" class="statement__contact-link">
+									{pieces(statement.report.email).map((p) =>
+										p.token ? <span dir="ltr" class="statement__email">{business.email}</span> : p.text,
+									)}
+								</Button>
+							</li>
+						)
+					}
+				</ul>
+				<p class="statement__tips">{statement.report.tips}</p>
+			</section>
+
+			<div class="statement__meta">
+				{analyticsId && <p>{statement.counting}</p>}
+				<p>
+					{
+						pieces(statement.updated).map((p) =>
+							p.token ? <time datetime={business.accessibilityStatementDate}>{date}</time> : p.text,
+						)
+					}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.statement__head {
+		padding-block: var(--space-xl) var(--space-l);
+		background: var(--color-surface-alt);
+		text-align: center;
+	}
+
+	.statement__title {
+		font-size: var(--step-5);
+	}
+
+	.statement__title::after {
+		content: '';
+		display: block;
+		inline-size: 3rem;
+		block-size: 0.3rem;
+		margin: var(--space-xs) auto 0;
+		border-radius: 999px;
+		background: var(--color-primary);
+	}
+
+	.statement__intro {
+		max-inline-size: 40rem;
+		margin: var(--space-s) auto 0;
+		color: var(--color-text-muted);
+		font-size: var(--step-1);
+	}
+
+	.statement__body {
+		max-inline-size: var(--measure);
+		margin-inline: auto;
+		padding-block: var(--space-xl) var(--space-2xl);
+	}
+
+	.statement__part + .statement__part {
+		margin-block-start: var(--space-l);
+	}
+
+	.statement__part h2 {
+		margin-block-end: var(--space-xs);
+		font-size: var(--step-2);
+	}
+
+	.statement__part p + p {
+		margin-block-start: var(--space-xs);
+	}
+
+	.statement__checks,
+	.statement__contact {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.statement__checks {
+		display: grid;
+		gap: var(--space-xs);
+	}
+
+	.statement__checks li {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--space-2xs);
+		align-items: start;
+	}
+
+	.statement__checks :global(svg) {
+		margin-block-start: 0.2em;
+		color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+	}
+
+	.statement__bullets {
+		display: grid;
+		gap: var(--space-2xs);
+		margin: 0;
+		padding-inline-start: 1.25em;
+	}
+
+	.statement__bullets li::marker {
+		color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+	}
+
+	.statement__report {
+		padding: var(--space-m);
+		border: 1px solid color-mix(in oklab, var(--color-primary) 35%, transparent);
+		border-radius: var(--radius);
+		background: color-mix(in oklab, var(--color-primary) 6%, var(--color-surface));
+	}
+
+	.statement__contact {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xs) var(--space-s);
+		margin-block: var(--space-s);
+	}
+
+	.statement__contact li {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-3xs);
+		max-inline-size: 100%;
+	}
+
+	.statement :global(.statement__contact-link) {
+		max-inline-size: 100%;
+		background: var(--color-surface);
+		text-align: start;
+	}
+
+	.statement__phone {
+		white-space: nowrap;
+	}
+
+	.statement__email {
+		overflow-wrap: anywhere;
+	}
+
+	.statement__note {
+		padding-inline-start: var(--space-s);
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.statement__tips {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.statement__meta {
+		display: grid;
+		gap: var(--space-3xs);
+		margin-block-start: var(--space-l);
+		padding-block-start: var(--space-s);
+		border-block-start: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+</style>

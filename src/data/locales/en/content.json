@@ -4,7 +4,7 @@
   "tagline": "TODO Home cleaning and household management in Beer Sheva",
   "hero": {
     "title": "TODO A clean, tidy home, and your time back for everything else",
-    "subtitle": "TODO Cleaning, organizing and whatever else the home needs, in Beer Sheva. Book with one WhatsApp message.",
+    "subtitle": "TODO House and apartment cleaning in Beer Sheva, organizing and more. Book with one WhatsApp message.",
     "badges": ["TODO Reliable and responsible", "TODO Thorough work", "TODO All of Beer Sheva"]
   },
   "services": [
@@ -12,28 +12,28 @@
       "id": "regular",
       "icon": "sparkle",
       "title": "TODO Regular cleaning",
-      "text": "TODO Routine cleaning of the whole home: dusting, floors, kitchen and bathrooms, so you always come back to a clean home.",
+      "text": "TODO Cleaning the whole home every week or two: dusting, floors, kitchen and bathrooms, so you always come back to a clean home.",
       "bookingName": "TODO a regular cleaning"
     },
     {
       "id": "deep",
       "icon": "spray",
       "title": "TODO Deep cleaning",
-      "text": "TODO A thorough clean of every corner: behind furniture, inside cabinets, tiles, windows and tracks.",
+      "text": "TODO A thorough clean of every corner of the home: behind furniture, inside cabinets, tiles, windows and window tracks.",
       "bookingName": "TODO a deep cleaning"
     },
     {
       "id": "household",
       "icon": "washer",
       "title": "TODO Household management",
-      "text": "TODO Laundry, ironing, changing bedding, dishes and whatever else the home needs, in the same visit.",
+      "text": "TODO Laundry and ironing, changing bedding, dishes and whatever else the home needs, in the same visit.",
       "bookingName": "TODO household management"
     },
     {
       "id": "organizing",
       "icon": "clothes",
       "title": "TODO Home organizing",
-      "text": "TODO Organizing closets, kitchen, pantry and kids' rooms, with a system that's easy to keep up afterwards.",
+      "text": "TODO Organizing closets, the kitchen and pantry, and kids' rooms, with a system that's easy to keep up.",
       "bookingName": "TODO home organizing"
     },
     {
@@ -54,7 +54,7 @@
       "id": "holidays",
       "icon": "kitchen",
       "title": "TODO Passover and holiday cleaning",
-      "text": "TODO A thorough clean of the kitchen, cabinets and the whole home before the holiday.",
+      "text": "TODO A thorough clean of the kitchen, cabinets and the whole home before Passover or any other holiday.",
       "bookingName": "TODO a holiday cleaning"
     }
   ],
@@ -96,18 +96,18 @@
   },
   "area": {
     "title": "Service area",
-    "text": "TODO I cover every neighborhood in Beer Sheva.",
+    "text": "TODO Home cleaning and organizing all over Beer Sheva.",
     "places": ["TODO Beer Sheva"]
   },
   "reviews": [],
   "faq": [
-    { "q": "TODO How much does it cost?", "a": "TODO {rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit, then by the half hour." },
+    { "q": "TODO How much does house cleaning cost?", "a": "TODO {rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit, then by the half hour." },
     { "q": "TODO What if the visit runs past {eveningFrom}?", "a": "TODO The hours until {eveningFrom} are {rate} per hour, and the hours after are {eveningRate} per hour." },
-    { "q": "TODO What else can I ask for besides cleaning?", "a": "TODO Laundry, ironing, changing bedding, dishes, tidying — whatever the home needs, in the same visit. Just mention it in your WhatsApp message." },
+    { "q": "TODO What else can I ask for besides cleaning?", "a": "TODO Laundry and ironing, changing bedding, dishes, tidying — whatever the home needs, in the same visit. Just mention it in your WhatsApp message." },
     { "q": "TODO How do I book?", "a": "TODO Send a WhatsApp message or call, and we'll set a day and time." },
     { "q": "TODO What if I need to cancel?", "a": "TODO A cancellation costs a one-time fee of {cancellationFee}." },
     { "q": "TODO Do I need to provide cleaning supplies?", "a": "TODO We can agree on that in advance over WhatsApp." },
-    { "q": "TODO Which areas do you cover?", "a": "TODO Every neighborhood in Beer Sheva." },
+    { "q": "TODO Which neighborhoods in Beer Sheva do you cover?", "a": "TODO Every neighborhood in Beer Sheva, from the Old City to Ramot and Neve Ze'ev." },
     { "q": "TODO Can I book a regular cleaning?", "a": "TODO Yes, weekly or every two weeks on a fixed day." },
     { "q": "TODO Do I need to be home during the cleaning?", "a": "TODO No. We agree in advance how I get in and how the key is returned." }
   ],
@@ -115,8 +115,9 @@
     "title": "TODO Want a clean, tidy home?",
     "text": "TODO Send a message and we'll find a time that works for you."
   },
+  "accessibilityService": "TODO The service takes place in your home, so there's no office or premises open to the public. If you need any adjustments when booking or during the visit itself, tell us in advance and we'll be glad to help.",
   "media": {
-    "hero": "TODO A bright, clean and tidy living room",
-    "about": "TODO Photo of the business owner"
+    "hero": "TODO A bright, clean and tidy living room in an apartment",
+    "about": "TODO The business owner, home cleaning and household management in Beer Sheva"
   }
 }
