@@ -1,0 +1,252 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Section from './Section.astro';
+import { formatMoney, formatMoneyParts } from '../lib/booking.ts';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { getLocale, site } from '../lib/data.ts';
+import type { IconName } from '../lib/icons.ts';
+import { fill } from '../lib/text.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+const { business } = site;
+const pricing = business.pricing!;
+const texts = content.pricing!;
+const money = (amount: number) => formatMoney(code, amount, pricing.currency);
+const moneyParts = (amount: number) => formatMoneyParts(code, amount, pricing.currency);
+const minimum = fill(texts.minimum, { hours: pricing.minimumHours });
+
+const evening = pricing.evening && content.booking.slots.evening;
+const plans = [
+	{
+		slot: 'day' as const,
+		icon: 'sun' as IconName,
+		title: evening ? content.booking.slots.day.title : undefined,
+		hint: evening ? fill(content.booking.slots.day.hint, { eveningFrom: pricing.evening!.from }) : undefined,
+		rate: pricing.hourlyRate,
+	},
+	...(pricing.evening && content.booking.slots.evening
+		? [
+				{
+					slot: 'evening' as const,
+					icon: 'moon' as IconName,
+					title: content.booking.slots.evening.title,
+					hint: fill(content.booking.slots.evening.hint, { eveningFrom: pricing.evening.from }),
+					rate: pricing.evening.hourlyRate,
+				},
+			]
+		: []),
+];
+
+const PAYMENT_ICONS: Record<string, IconName> = {
+	bit: 'mobilepay',
+	paybox: 'mobilepay',
+	cash: 'cash',
+	transfer: 'bank',
+	credit: 'card',
+};
+---
+
+<Section id="pricing" title={texts.title} tone="alt">
+	<div class="plans">
+		{
+			plans.map((plan) => (
+				<article class="plan" data-slot={plan.slot}>
+					{plan.title && (
+						<header class="plan__head">
+							<span class="plan__icon" aria-hidden="true">
+								<Icon name={plan.icon} size="1.5rem" />
+							</span>
+							<div>
+								<h3 class="plan__title">{plan.title}</h3>
+								<p class="plan__hint">{plan.hint}</p>
+							</div>
+						</header>
+					)}
+					<p class="plan__price">
+						<span class="plan__amount">
+							{moneyParts(plan.rate).map((part) => (part.type === 'currency' ? <span class="plan__currency">{part.value}</span> : part.value))}
+						</span>
+						<span class="plan__unit">{texts.perHour}</span>
+					</p>
+					<p class="plan__minimum">
+						{minimum} · {money(plan.rate * pricing.minimumHours)}
+					</p>
+					<Button
+						href={defaultWhatsappHref(code)}
+						icon="whatsapp"
+						class="plan__book"
+						data-booking-open
+						data-booking-slot={plan.slot}
+						data-booking-source="price"
+					>
+						{ui.bookOnWhatsapp}
+						{plan.title && <span class="visually-hidden"> – {plan.title}</span>}
+					</Button>
+				</article>
+			))
+		}
+	</div>
+
+	{texts.note && <p class="pricing-note">{texts.note}</p>}
+
+	{
+		business.payment.length > 0 && (
+			<div class="payment">
+				<p class="payment__title">{ui.payment.title}</p>
+				<ul class="payment__list">
+					{business.payment.map((method) => (
+						<li class="payment__item">
+							<Icon name={PAYMENT_ICONS[method]} size="1.25rem" />
+							<span>{ui.payment[method]}</span>
+						</li>
+					))}
+				</ul>
+			</div>
+		)
+	}
+</Section>
+
+<style>
+	.plans {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+		gap: var(--space-s);
+		max-inline-size: 52rem;
+		margin-inline: auto;
+	}
+
+	.plan {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		padding: var(--space-m);
+		border: 1px solid color-mix(in oklab, var(--color-text) 9%, transparent);
+		border-radius: calc(var(--radius) * 1.2);
+		background: var(--color-surface);
+		box-shadow: 0 1rem 2.5rem -2rem color-mix(in oklab, var(--color-ink) 50%, transparent);
+	}
+
+	.plan[data-slot='evening'] {
+		--color-text: var(--color-surface);
+		--color-text-muted: color-mix(in oklab, var(--color-surface) 72%, transparent);
+		border-color: transparent;
+		background:
+			radial-gradient(80% 60% at 100% 0%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%),
+			var(--color-ink);
+		color: var(--color-text);
+	}
+
+	.plan__head {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.plan__icon {
+		display: grid;
+		flex: none;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		border-radius: 50%;
+		background: color-mix(in oklab, var(--color-primary) 16%, transparent);
+		color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+	}
+
+	.plan[data-slot='evening'] .plan__icon {
+		background: color-mix(in oklab, var(--color-accent) 18%, transparent);
+		color: var(--color-accent);
+	}
+
+	.plan__title {
+		font-size: var(--step-1);
+	}
+
+	.plan__hint {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.plan__price {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.35em;
+		margin-block-start: var(--space-2xs);
+	}
+
+	.plan__amount {
+		font-size: var(--step-5);
+		font-weight: 800;
+		line-height: 1;
+	}
+
+	.plan__currency {
+		font-size: 0.55em;
+		font-weight: 700;
+	}
+
+	.plan__unit {
+		color: var(--color-text-muted);
+		font-size: var(--step-0);
+		font-weight: 600;
+	}
+
+	.plan__minimum {
+		color: var(--color-text-muted);
+	}
+
+	.plan :global(.plan__book) {
+		align-self: stretch;
+		margin-block-start: auto;
+	}
+
+	.pricing-note {
+		max-inline-size: 52rem;
+		margin: var(--space-m) auto 0;
+		color: var(--color-text-muted);
+		text-align: center;
+	}
+
+	.payment {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-2xs) var(--space-s);
+		margin-block-start: var(--space-m);
+	}
+
+	.payment__title {
+		font-size: var(--step--1);
+		font-weight: 700;
+	}
+
+	.payment__list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-2xs);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.payment__item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45em;
+		padding: 0.4em 0.9em;
+		border: 1px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+		border-radius: 999px;
+		background: var(--color-surface);
+		font-size: var(--step--1);
+		font-weight: 600;
+	}
+</style>

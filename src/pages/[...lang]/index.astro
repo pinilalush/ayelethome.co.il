@@ -1,5 +1,6 @@
 ---
 import HeroGlow from '../../components/HeroGlow.astro';
+import Pricing from '../../components/Pricing.astro';
 import Services from '../../components/Services.astro';
 import Base from '../../layouts/Base.astro';
 import { getLocale, site } from '../../lib/data.ts';
@@ -22,4 +23,5 @@ const { seo } = getLocale(code);
 <Base code={code} title={seo.title} headerTone="dark">
 	<HeroGlow code={code} />
 	{site.config.sections.services && <Services code={code} />}
+	{site.config.sections.pricing && site.business.pricing && <Pricing code={code} />}
 </Base>

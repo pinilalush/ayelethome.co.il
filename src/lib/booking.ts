@@ -58,6 +58,10 @@ export function formatMoney(lang: string, amount: number, currency: string): str
   return new Intl.NumberFormat(lang, { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount);
 }
 
+export function formatMoneyParts(lang: string, amount: number, currency: string): Intl.NumberFormatPart[] {
+  return new Intl.NumberFormat(lang, { style: 'currency', currency, maximumFractionDigits: 0 }).formatToParts(amount);
+}
+
 export function formatNumber(lang: string, value: number): string {
   return new Intl.NumberFormat(lang, { maximumFractionDigits: 2 }).format(value);
 }

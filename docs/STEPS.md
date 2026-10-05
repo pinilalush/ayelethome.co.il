@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 3.3
+**Current step:** 3.4
 
 ---
 
@@ -54,7 +54,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 - [x] **3.1c 🤖 Optional settings** — Umami counting (page views and taps on WhatsApp, Call, Save my number, booking link) when `analytics.umamiWebsiteId` is set; the "choose a time online" link when `bookingUrl` is set. Both hidden and nothing loaded when empty.
   *Check:* with both empty, the built site loads no outside script; with test values, the script and link appear.
 - [x] **3.2 🤖 Services** — cards with a WhatsApp button per service.
-- [ ] **3.3 🤖 Price** — two cards: day ₪100 per hour (at least ₪400) and evening from 19:00 ₪150 per hour (at least ₪600), what's included, a WhatsApp button on each.
+- [x] **3.3 🤖 Price** — two cards: day ₪100 per hour (at least ₪400) and evening from 19:00 ₪150 per hour (at least ₪600), what's included, a WhatsApp button on each.
 - [ ] **3.4 🤖 Why her + about.**
 - [ ] **3.5 🤖 Service area** — place chips and the area graphic.
 - [ ] **3.6 🤖 FAQ** — accordion, includes the price question.
