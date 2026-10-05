@@ -1,14 +1,23 @@
 ---
+import { getLocale, placeholders, site } from '../lib/data.ts';
+
+const { code, dir } = site.defaultLanguage;
+const { content, seo } = getLocale(code);
 ---
 
-<html lang="he" dir="rtl">
+<html lang={code} dir={dir}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
-		<title>landing-template</title>
+		<title>{seo.title}</title>
 	</head>
 	<body>
-		<h1>landing-template</h1>
+		<h1>{content.businessName}</h1>
+		<p>{content.tagline}</p>
+		<ul>
+			{site.languages.map((l) => <li>{l.name} ({l.code}, {l.dir})</li>)}
+		</ul>
+		<p>Placeholders left: {placeholders.length}</p>
 	</body>
 </html>

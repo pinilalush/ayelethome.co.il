@@ -13,50 +13,55 @@
       "icon": "sparkle",
       "title": "TODO Regular cleaning",
       "text": "TODO Routine cleaning of the whole home: dusting, floors, kitchen and bathrooms, so you always come back to a clean home.",
-      "whatsappMessage": "TODO Hi, I'd like to book you for regular cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+      "whatsappMessage": "TODO Hi, I'd like to book you for regular cleaning {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
     },
     {
       "id": "deep",
       "icon": "spray",
       "title": "TODO Deep cleaning",
       "text": "TODO A thorough clean of every corner: behind furniture, inside cabinets, tiles, windows and tracks.",
-      "whatsappMessage": "TODO Hi, I'd like to book you for deep cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+      "whatsappMessage": "TODO Hi, I'd like to book you for deep cleaning {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
     },
     {
       "id": "organizing",
       "icon": "clothes",
       "title": "TODO Home organizing",
       "text": "TODO Organizing closets, kitchen, pantry and kids' rooms, with a system that's easy to keep up afterwards.",
-      "whatsappMessage": "TODO Hi, I'd like to book you for home organizing. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+      "whatsappMessage": "TODO Hi, I'd like to book you for home organizing {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
     },
     {
       "id": "moving",
       "icon": "boxes",
       "title": "TODO Move-in and move-out cleaning",
       "text": "TODO Cleaning before you move in or after you move out, so you get or hand over a spotless apartment.",
-      "whatsappMessage": "TODO Hi, I'd like to book you for move-in/move-out cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+      "whatsappMessage": "TODO Hi, I'd like to book you for move-in/move-out cleaning {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
     },
     {
       "id": "renovation",
       "icon": "broom",
       "title": "TODO After-renovation cleaning",
       "text": "TODO Removing construction dust, paint stains and silicone leftovers until the home is ready to live in.",
-      "whatsappMessage": "TODO Hi, I'd like to book you for after-renovation cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+      "whatsappMessage": "TODO Hi, I'd like to book you for after-renovation cleaning {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
     },
     {
       "id": "holidays",
       "icon": "kitchen",
       "title": "TODO Passover and holiday cleaning",
       "text": "TODO A thorough clean of the kitchen, cabinets and the whole home before the holiday.",
-      "whatsappMessage": "TODO Hi, I'd like to book you for holiday cleaning. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+      "whatsappMessage": "TODO Hi, I'd like to book you for holiday cleaning {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
     }
   ],
   "pricing": {
     "title": "Price",
     "perHour": "per hour",
-    "minimum": "Minimum {hours} hours per visit ({total})",
+    "minimum": "Minimum {hours} hours per visit",
     "note": "TODO What the price includes",
-    "whatsappMessage": "TODO Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    "chooseTitle": "When suits you?",
+    "slots": {
+      "day": { "title": "Daytime", "hint": "until {eveningFrom}", "inMessage": "during the day" },
+      "evening": { "title": "Evening", "hint": "from {eveningFrom}", "inMessage": "in the evening" }
+    },
+    "whatsappMessage": "TODO Hi, I'd like to book you {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
   },
   "why": [
     { "icon": "shield", "title": "TODO Reliable and discreet", "text": "TODO I work in your home with respect, quietly and carefully, as if it were my own." },
@@ -74,7 +79,7 @@
   },
   "reviews": [],
   "faq": [
-    { "q": "TODO How much does it cost?", "a": "TODO {rate} per hour, with a minimum of {hours} hours per visit ({total})." },
+    { "q": "TODO How much does it cost?", "a": "TODO {rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit." },
     { "q": "TODO How do I book?", "a": "TODO Send a WhatsApp message or call, and we'll set a day and time." },
     { "q": "TODO Do I need to provide cleaning supplies?", "a": "TODO We can agree on that in advance over WhatsApp." },
     { "q": "TODO Which areas do you cover?", "a": "TODO Every neighborhood in Beer Sheva, plus Omer, Lehavim and Meitar." },
@@ -86,8 +91,8 @@
     "text": "TODO Send a message and we'll find a time that works for you."
   },
   "whatsapp": {
-    "default": "TODO Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour.",
-    "floating": "TODO Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+    "default": "TODO Hi, I'd like to book you {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}.",
+    "floating": "TODO Hi, I'd like to book you {slot}. When are you available? I understand the minimum is {hours} hours at {rate} per hour, so at least {total}."
   },
   "media": {
     "logo": "TODO Business name logo",

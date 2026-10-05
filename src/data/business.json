@@ -3,28 +3,27 @@
   "basePath": "/",
   "phone": "+972500000000",
   "whatsapp": "+972500000000",
-  "email": "TODO@example.com",
+  "email": "TODO name@example.com",
   "city": "TODO Beer Sheva",
   "geo": { "lat": 31.252, "lng": 34.7915 },
   "pricing": {
     "currency": "ILS",
     "hourlyRate": 100,
-    "minimumHours": 4
+    "minimumHours": 4,
+    "evening": {
+      "from": "19:00",
+      "hourlyRate": 150
+    }
   },
-  "hours": [
-    { "days": ["Su", "Mo", "Tu", "We", "Th"], "open": "TODO 08:00", "close": "TODO 18:00" },
-    { "days": ["Fr"], "open": "TODO 08:00", "close": "TODO 13:00" }
+  "workHours": [
+    { "days": ["Su", "Mo", "Tu", "We", "Th"], "from": "TODO 08:00", "to": "TODO 22:00" },
+    { "days": ["Fr"], "from": "TODO 08:00", "to": "TODO 13:00" }
   ],
   "social": {
     "facebook": "",
     "instagram": "",
     "tiktok": "",
     "googleBusiness": ""
-  },
-  "accessibilityContact": {
-    "name": "TODO שם רכז/ת הנגישות",
-    "phone": "+972500000000",
-    "email": "TODO@example.com"
   },
   "accessibilityStatementDate": "TODO 2026-10-05"
 }

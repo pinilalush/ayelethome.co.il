@@ -2,7 +2,7 @@
 
 A static landing-page template built with Astro. Every business-specific detail lives in JSON files and media folders, so a new business site means: create a repo from this template, replace the data and media, push.
 
-The first site built on it: **Ayelet**, who cleans and organizes homes in Beer Sheva (₪100 per hour, minimum 4 hours per visit). Her name and details go only into her own repo's data — the template keeps `TODO` test data.
+The first site built on it: **Ayelet**, who cleans and organizes homes in Beer Sheva (₪100 per hour, ₪150 per hour from 19:00, minimum 4 hours per visit). Her name and details go only into her own repo's data — the template keeps `TODO` test data.
 
 Status: **plan for review — no code yet.**
 
@@ -120,7 +120,8 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 {
   "languages": [
     { "code": "he", "name": "עברית", "dir": "rtl", "default": true },
-    { "code": "en", "name": "English", "dir": "ltr" }
+    { "code": "en", "name": "English", "dir": "ltr" },
+    { "code": "ru", "name": "Русский", "dir": "ltr" }
   ],
   "theme": {
     "colors": {
@@ -167,11 +168,15 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   "pricing": {
     "currency": "ILS",
     "hourlyRate": 100,
-    "minimumHours": 4
+    "minimumHours": 4,
+    "evening": {
+      "from": "19:00",
+      "hourlyRate": 150
+    }
   },
-  "hours": [
-    { "days": ["Su", "Mo", "Tu", "We", "Th"], "open": "08:00", "close": "18:00" },
-    { "days": ["Fr"], "open": "08:00", "close": "13:00" }
+  "workHours": [
+    { "days": ["Su", "Mo", "Tu", "We", "Th"], "from": "08:00", "to": "22:00" },
+    { "days": ["Fr"], "from": "08:00", "to": "13:00" }
   ],
   "social": {
     "facebook": "",
@@ -179,18 +184,19 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     "tiktok": "",
     "googleBusiness": ""
   },
-  "accessibilityContact": {
-    "name": "TODO: accessibility coordinator name",
-    "phone": "+972500000000",
-    "email": "TODO@example.com"
-  },
+  "contactLanguages": ["he"],
+  "payment": ["bit", "paybox", "cash", "transfer"],
   "accessibilityStatementDate": "2026-10-05"
 }
 ```
 
 - Phone numbers are stored in international format (`+972…`); the site shows them in local format (`050-000-0000`).
-- `pricing` holds only numbers; the words around them ("per hour", "minimum") come from `content.json` per language. The minimum visit price is calculated by the site (4 × ₪100 = ₪400), so changing the rate updates everything.
+- `pricing` holds only numbers; the words around them ("per hour", "minimum") come from `content.json` per language. The minimum visit price is calculated by the site (4 × ₪100 = ₪400 by day, 4 × ₪150 = ₪600 in the evening), so changing a rate updates everything.
+- `pricing.evening` is optional: a business without an evening rate leaves it out, and the day/evening choice (section 7) disappears. If it's there, the check fails unless some `workHours` run past `evening.from`.
+- `workHours` are the times she works (not shop opening hours). They're shown in the footer and used in the structured data for Google.
 - Empty social links are simply not shown.
+- `contactLanguages` — the languages she speaks with customers, first one is the main one (section 6). Each must be one of the site's languages.
+- `payment` — how customers can pay, from a fixed list: `bit`, `paybox`, `cash`, `transfer`, `credit`. Shown as small labeled icons near the price; an empty list hides them. Generic icons with the name, not the companies' logos.
 - `basePath` is `/landing-template/` only while testing on `pinilalush.github.io/landing-template`; it's `/` once a domain is connected.
 
 ### 5.3 `locales/<lang>/content.json` — business text
@@ -211,15 +217,31 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
       "icon": "sparkle",
       "title": "ניקיון שוטף",
       "text": "TODO",
-      "whatsappMessage": "היי, אשמח להזמין אותך לניקיון שוטף, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
+      "bookingName": "לניקיון שוטף"
     }
   ],
   "pricing": {
     "title": "מחיר",
     "perHour": "לשעה",
-    "minimum": "מינימום {hours} שעות לביקור ({total})",
-    "note": "TODO: מה כלול במחיר",
-    "whatsappMessage": "היי, אשמח להזמין אותך, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
+    "minimum": "מינימום {hours} שעות לביקור",
+    "note": "TODO: מה כלול במחיר"
+  },
+  "booking": {
+    "generalName": "TODO: לניקיון וסידור הבית",
+    "slots": {
+      "day": { "title": "שעות היום", "hint": "עד {eveningFrom}", "inMessage": "בשעות היום" },
+      "evening": { "title": "שעות הערב", "hint": "מ־{eveningFrom}", "inMessage": "בשעות הערב" }
+    },
+    "hoursGuide": [
+      { "label": "TODO: דירת 2–3 חדרים", "hours": 4 },
+      { "label": "TODO: דירת 4–5 חדרים", "hours": 6 }
+    ],
+    "message": "היי, אשמח להזמין אותך {service} ל־{hours} שעות {slot}. {availability} הבנתי שהמחיר {rate} לשעה, כלומר {total}.",
+    "availability": {
+      "open": "מתי את פנויה?",
+      "dated": "רציתי לבדוק אם את פנויה {when}, ואם לא, מתי כן נוח לך?"
+    },
+    "when": { "date": "ביום {weekday} {date}", "time": "מ־{time}" }
   },
   "why": [
     { "icon": "shield", "title": "TODO", "text": "TODO" }
@@ -234,17 +256,24 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   "faq": [
     { "q": "TODO", "a": "TODO" }
   ],
-  "finalCta": { "title": "TODO", "text": "TODO" },
-  "whatsapp": {
-    "default": "היי, אשמח להזמין אותך, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה.",
-    "floating": "היי, אשמח להזמין אותך, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
-  }
+  "finalCta": { "title": "TODO", "text": "TODO" }
 }
 ```
 
-- Every service has its own prefilled WhatsApp message, in the same style: it asks to book, asks when she's free, and confirms the customer saw the minimum and the hourly rate. Example for regular cleaning: "היי, אשמח להזמין אותך לניקיון שוטף, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
-- `{hours}` and `{rate}` are filled in from `business.json` → `pricing` when the page is built (e.g. "4" and "100 ₪", formatted for the language), so changing the price in one place updates every message. The check script fails if a message uses `{rate}` or `{hours}` and `pricing` is missing.
-- English messages follow the same pattern: "Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
+- **One WhatsApp message pattern for the whole site** (`booking.message`), built from the customer's choices in the booking panel (section 7). Each service only gives its short name for the message (`bookingName`, e.g. "לניקיון שוטף"); buttons that aren't for a specific service use `booking.generalName`.
+- **The message asks, it doesn't assume.** With no day chosen: "…מתי את פנויה?". With a day and/or time: "רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך?" — so the customer suggests a time and she confirms or offers another.
+- Full examples:
+  - defaults (one tap): "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. מתי את פנויה? הבנתי שהמחיר 100 ₪ לשעה, כלומר 400 ₪."
+  - with choices: "היי, אשמח להזמין אותך לניקיון שוטף ל־5 שעות בשעות הערב. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר 150 ₪ לשעה, כלומר 750 ₪."
+- **The message is always written in a language she speaks** (`business.json` → `contactLanguages`, section 6), so it's built from that language's `booking` texts even when the visitor reads the site in English or Russian.
+- `hoursGuide` is the "how many hours do I need?" list shown next to the hours selector; tapping a line sets the hours. Real numbers come from her.
+- **Placeholders**, filled in from `business.json` → `pricing` and formatted for the language, so changing a price in one place updates every text:
+  - `{hours}` — the minimum hours (4) in normal text; the chosen hours in the message
+  - `{rate}`, `{total}` — the day rate and minimum total (100 ₪, 400 ₪) in normal text; in the message, the chosen slot's rate and chosen hours × rate
+  - `{eveningFrom}` — when the evening rate starts (19:00); `{eveningRate}` — the evening hourly rate (150 ₪)
+  - message only: `{service}`, `{slot}`, `{availability}`, `{when}`, `{weekday}`, `{date}`, `{time}`
+  - without an evening rate, `{slot}` is empty and the day/evening choice isn't shown
+- The check script fails if a text uses a placeholder whose value is missing (e.g. `{eveningRate}` with no evening rate), or a placeholder name it doesn't know (a typo like `{rte}`).
 - `reviews` stays empty (section hidden) until there are real reviews from real customers. Each review will hold the customer's first name, area, text, and the date.
 
 ### 5.4 `locales/<lang>/seo.json` — search and sharing
@@ -281,7 +310,7 @@ English list covers the same services, plus the spellings people use for the cit
 
 ### 5.5 `locales/<lang>/ui.json` — fixed interface text
 
-Text that's the same for any business: "Call now", "Send a WhatsApp message", "Services", "Frequently asked questions", "Accessibility statement", "Skip to content", language switcher labels, screen-reader labels, the accessibility statement template text. A new business normally doesn't edit this file; a new language does.
+Text that's the same for any business: "Call now", "Send a WhatsApp message", "Services", "Frequently asked questions", "Accessibility statement", "Skip to content", language switcher labels, screen-reader labels, the accessibility statement template text, the booking panel's labels ("How many hours?", "Day (optional)", "Total", "Send on WhatsApp"), the names of the languages, the payment method names, "Save my number", and the contact-language notes ("The message will be sent in Hebrew", "Calls in Hebrew"). A new business normally doesn't edit this file; a new language does.
 
 ### 5.6 `media.json` — every image and video
 
@@ -291,7 +320,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
   "hero": { "file": "hero.jpg", "fileMobile": "hero-mobile.jpg", "alt": "hero" },
   "heroVideo": { "file": "hero.mp4", "poster": "hero.jpg" },
   "about": { "file": "about.jpg", "alt": "about" },
-  "og": { "he": "og-he.jpg", "en": "og-en.jpg" },
+  "og": { "he": "og-he.jpg", "en": "og-en.jpg", "ru": "og-ru.jpg" },
   "gallery": []
 }
 ```
@@ -300,7 +329,8 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 
 ## 6. Languages and RTL
 
-- **URLs:** default language at `/`, others at `/<code>/` (e.g. `/en/`). Each language is a separate real page, so Google indexes each one.
+- **Languages for Ayelet's site:** Hebrew (default), English and **Russian** — Beer Sheva has a large Russian-speaking community. I draft the Russian; a native speaker checks it before launch.
+- **URLs:** default language at `/`, others at `/<code>/` (e.g. `/en/`, `/ru/`). Each language is a separate real page, so Google indexes each one.
 - **Direction:** the layout sets `<html lang="he" dir="rtl">` from `config.json`. All CSS uses logical properties (`margin-inline-start`, `padding-inline`, `inset-inline-end`), so nothing needs rewriting for RTL. Directional icons (arrows) flip automatically.
 - **Device language:** on a visitor's **first** visit to `/`, a small inline script compares `navigator.languages` with the `languages` array. If a supported non-default language matches, it goes to that language's URL. No match → the default stays.
 - **Manual choice wins:** the language switcher is always visible in the header. When a visitor picks a language, it's remembered in the browser, and device detection never overrides it again.
@@ -310,6 +340,11 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
   2. Add `{ "code": "<code>", "name": "…", "dir": "rtl" | "ltr" }` to `languages`.
   3. Add the OG image for it in `media.json`.
   4. `npm run build` — the check script fails if any key is missing compared with the default language.
+  5. Add it to `business.json` → `contactLanguages` only if the business actually speaks it.
+- **Contact language vs. site language.** The site can be in any language, but she answers WhatsApp and calls only in the languages in `business.json` → `contactLanguages` (Ayelet: Hebrew only).
+  - The WhatsApp message is built in the visitor's language if she speaks it, otherwise in her main contact language. A Russian visitor's message goes in Hebrew.
+  - In that case the booking panel says so in the visitor's language ("Ayelet speaks Hebrew, so the message will be sent in Hebrew") and shows what the message says in their language under the Hebrew preview.
+  - Next to the Call button on those pages: "Calls in Hebrew".
 - **Mixed text:** phone numbers and English words inside Hebrew are wrapped so they don't get scrambled by the bidirectional algorithm (`dir="ltr"` on phone numbers, `<bdi>` where needed).
 
 ## 7. Page and sections
@@ -318,21 +353,39 @@ One page per language, short, built for phones first. No forms, no steps.
 
 1. **Header** — logo/business name, language switcher, Call button (on desktop). Becomes compact and frosted when scrolling.
 2. **Hero** — headline, one supporting line, 3 short badges (e.g. "reliable", "discreet", "Beer Sheva and area"), **Call** and **WhatsApp** buttons. Optional background video.
-3. **Services** — cards with icon, short text, and a WhatsApp button that opens the chat with that service's message.
-4. **Price** — one clear card: **₪100 per hour · minimum 4 hours per visit (₪400)**, a short line on what's included, and a WhatsApp button to book. A clear price up front saves her the "how much?" messages and filters out visitors who aren't a fit. The same price appears in the FAQ ("How much does it cost?").
+3. **Services** — cards with icon, short text, and a WhatsApp button that opens the booking panel with that service already selected.
+4. **Price** — two cards side by side (stacked on phones): **Daytime** (until 19:00) · ₪100 per hour · minimum 4 hours = **₪400**, and **Evening** (from 19:00) · ₪150 per hour · minimum 4 hours = **₪600**. Each card has its own WhatsApp button that opens the booking panel with that time already selected, plus a short line on what's included and the payment methods. A clear price up front saves her the "how much?" messages and filters out visitors who aren't a fit. The same prices appear in the FAQ ("How much does it cost?").
 5. **Why her** — three short points with icons, plus a short "about" line and her photo.
 6. **Service area** — the places she serves, as chips, with a stylized area graphic (no embedded Google Map: it's heavy and loads third-party cookies).
 7. **Gallery** *(off until real photos)*.
 8. **Reviews** *(off until real reviews)*.
 9. **FAQ** — 5–7 short questions (accordion), written around search keywords.
 10. **Final call-to-action** — one line + Call / WhatsApp.
-11. **Footer** — contact, hours, social links, accessibility statement link.
+11. **Footer** — contact, work hours, payment methods, social links, **Save my number** (downloads a contact card, so her number is saved in one tap), accessibility statement link.
 
 **Always visible:**
 - **Phones:** a bar fixed to the bottom of the screen with **Call | WhatsApp**, side by side, large tap targets.
 - **Desktop:** a floating WhatsApp button in the corner (it moves to the correct side in RTL/LTR).
 
 **Other pages:** `/accessibility` (statement, per language) and a styled 404.
+
+**The booking panel.** Every WhatsApp button opens one small panel that builds the message from a few taps, so the customer sees the price before sending anything:
+1. **Service** — already selected when they came from a service card; otherwise optional.
+2. **Day or evening** — two big buttons with their rates (day ₪100/hour, evening ₪150/hour from 19:00). Already selected when they came from a price card.
+3. **How many hours** — a − 4 + stepper that starts at the minimum. The total updates live: "5 שעות × 150 ₪ = 750 ₪". Next to it, the "how many hours do I need?" guide (`booking.hoursGuide`); tapping a line sets the hours.
+4. **Day (optional)** — the next 14 days as buttons, only days she works; evening is disabled on days whose work hours end before 19:00 (e.g. Friday).
+5. **Start time (optional)** — only times inside her work hours for that day and the chosen day/evening.
+6. **Message preview**, then one big **Send on WhatsApp** button.
+
+- **Everything starts filled in** (general cleaning, daytime, 4 hours, no day), so a customer can still send with **one tap**. The extra choices never become required steps.
+- **The message asks whether she's free** at the chosen day/time and, if not, when she is (section 5.3) — the customer suggests, she confirms.
+- **Always in her language** (section 6): the message is built in a language she speaks, with a note and a translation for visitors in other languages.
+- **Built in the browser** with a small script (no server), from texts and prices placed in the page at build time.
+- **Looks and feels light:** a bottom sheet on phones, a small dialog on desktop; closes with Esc, a tap outside, or the phone's back button.
+- **Accessible:** a real dialog, focus moves into it and back, every control labeled, works with keyboard and screen readers.
+- **Without JavaScript**, the buttons still work as plain links with the default message (daytime, 4 hours).
+- **A visit that crosses 19:00:** depends on her rule (section 19); until then, start times are limited so the chosen visit stays inside the chosen day/evening period.
+- If a business has no evening rate, the day/evening choice isn't shown.
 
 **Prices** are on by default (`sections.pricing`); a future business that doesn't want to show prices turns the section off and the FAQ answer comes from its own `content.json`.
 
@@ -392,7 +445,7 @@ The site has to look designed (not just "fit") on every phone, tablet, laptop an
 
 **Browsers:** current and previous major versions of Chrome, Safari (iOS and macOS), Firefox, Edge and Samsung Internet. Newer CSS features (like scroll-driven animations) have a fallback where a browser doesn't support them yet.
 
-**Test matrix** — checked at the end of every build step, in both Hebrew and English:
+**Test matrix** — checked at the end of every build step, in every language (Hebrew right-to-left, English and Russian left-to-right):
 
 | Group | Widths (px) |
 |---|---|
@@ -408,7 +461,9 @@ I'll check these in the browser and send you screenshots of each; you check on r
 ## 10. Contact links
 
 - **Call:** `tel:+972…` from `business.json`.
-- **WhatsApp:** `https://wa.me/972…?text=<message>`, the message from `content.json` for the current language, with `{hours}` and `{rate}` filled in from the pricing, URL-encoded. Each service button sends its own message.
+- **WhatsApp:** `https://wa.me/972…?text=<message>`, the message built by the booking panel (section 7) in her contact language, URL-encoded.
+- **Save my number:** a contact card file (`contact.vcf`) made at build time from `business.json` and `content.json`: business name, her name, phone, WhatsApp, email and the site address.
+- **QR code:** `qr.svg` (for print) and `qr.png`, made at build time, pointing to the site. Not shown on the page; it's for flyers, business cards and fridge magnets. The address is listed in `docs/NEW-SITE.md`.
 - Phone numbers display in local format and are readable by screen readers.
 
 ## 11. SEO
@@ -416,7 +471,7 @@ I'll check these in the browser and send you screenshots of each; you check on r
 - `<title>` and description per language from `seo.json`.
 - Canonical URL, `hreflang` for every language plus `x-default`.
 - Open Graph + Twitter card tags, OG image per language (1200×630) — see **Share preview** below.
-- **Structured data (JSON-LD):** `LocalBusiness` with name, phone, area served (every place in `area.places`), opening hours, geo, social links (`sameAs`), and the services as an offer catalog with the hourly price (₪100 per hour, from `business.json`). Reviews are only added to structured data once real reviews exist.
+- **Structured data (JSON-LD):** `LocalBusiness` with name, phone, area served (every place in `area.places`), opening hours from `workHours`, geo, social links (`sameAs`), and the services as an offer catalog with both hourly prices (₪100 by day, ₪150 from 19:00, from `business.json`). Reviews are only added to structured data once real reviews exist.
 - Sitemap with all language versions (`@astrojs/sitemap`), `robots.txt`.
 - Headings in the right order (one `h1`), real text (not text inside images), alt text from keywords.
 - Performance counts for ranking: target **Lighthouse 95+** in all four categories on mobile.
@@ -459,7 +514,7 @@ Built in, not added on:
 - `prefers-reduced-motion` respected; no autoplaying sound; hero video muted, pausable.
 - `lang` and `dir` correct on every page.
 
-**Accessibility statement page** per language: what's accessible, known limitations, the coordinator's name and contact (from `business.json`), and the date. Template text in `ui.json`, details from the data.
+**Accessibility statement page** per language: what's accessible, known limitations, how to report an accessibility problem (the business's own phone and email from `business.json`), and the date. No accessibility coordinator: the law requires one only from 25 employees. Template text in `ui.json`, details from the data.
 
 **No third-party "accessibility overlay" widget.** They don't make a site compliant and often break screen readers.
 
@@ -506,7 +561,7 @@ Built in, not added on:
 **Photos and video (Google image and video tools, by you with my prompts):**
 - `hero.jpg` (wide, desktop) and `hero-mobile.jpg` (portrait, phones) — bright, tidy, modern living room in an Israeli apartment, morning light, no people's faces.
 - `about.jpg` — **must be a real photo of her** (not AI), when she's ready. Until then the section uses an illustration.
-- `og-he.jpg`, `og-en.jpg` — social share images (1200×630), generated from the hero image + business data (section 11, **Share preview**).
+- `og-he.jpg`, `og-en.jpg`, `og-ru.jpg` — social share images (1200×630), generated from the hero image + business data (section 11, **Share preview**).
 - `hero.mp4` *(optional)* — short silent loop: a tidy room, slow camera move, sunlight.
 - Gallery — **real photos of her work only**, later.
 
@@ -516,14 +571,15 @@ Built in, not added on:
 
 - No cookies, no analytics, no forms, no tracking scripts → no cookie banner needed.
 - Fonts and all assets self-hosted; the only outside links are `tel:`, WhatsApp and social links.
-- If analytics is wanted later: a cookie-less option, added as a template setting.
+- **Counting taps (decision pending, section 19):** a cookie-free counter of visits and of taps on WhatsApp and Call, so you can see whether the site brings customers. No cookies and no personal data, so still no cookie banner. Candidate: Umami Cloud's free plan (100K events a month, one website per free account, 6 months of history). It would be a template setting, off by default.
 
 ## 17. Quality checks
 
 - `npm run check` — data check + Astro type check.
 - Lighthouse (mobile) on the preview build: 95+ performance, accessibility, best practices, SEO.
-- Keyboard-only walk-through and a screen-reader pass (NVDA or VoiceOver) in Hebrew and English.
-- Responsive: the full test matrix in section 9, Hebrew and English, screenshots at every width.
+- Keyboard-only walk-through and a screen-reader pass (NVDA or VoiceOver) in every language.
+- Responsive: the full test matrix in section 9, every language, screenshots at every width.
+- Booking panel: every combination of service, day/evening, hours, day and time produces the right Hebrew message and price, from every language's page.
 - Real devices: at least one Android phone, one iPhone and one tablet, portrait and landscape.
 - Links: every Call and WhatsApp button opens the right number with the right message.
 
@@ -535,5 +591,9 @@ The work is split into small steps in **[`docs/STEPS.md`](STEPS.md)**: each step
 
 - Hero background video: yes / no (can decide after seeing the hero).
 - The exact list of services she offers, her hours, and the places she serves.
-- Who writes the English text: I draft it from the Hebrew, you or she approves.
+- Who writes the English and Russian text: I draft both from the Hebrew; you or she approves the English, and a native Russian speaker checks the Russian.
+- Counting taps on WhatsApp and Call (section 16): yes / no.
+- "How many hours do I need?" — her real estimates by home size and service (the guide in the booking panel).
+- More price questions for her: is Friday (or a holiday eve) a different rate; after the 4-hour minimum, is extra time charged by the hour or the half hour; a lower rate for a regular weekly/bi-weekly cleaning; a cancellation rule (e.g. free until 24 hours before).
+- Evening rule to confirm with her: a visit that starts before 19:00 and ends after it — are the hours after 19:00 charged ₪150, or does the start time decide the rate for the whole visit?
 - Price details to confirm with her: does ₪100 include VAT (or is she VAT-exempt, עוסק פטור), are cleaning materials included, is there a travel charge for towns outside Beer Sheva, does the 4-hour minimum apply to every service.
