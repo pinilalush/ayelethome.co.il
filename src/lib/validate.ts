@@ -113,6 +113,10 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
     }
   }
 
+  if (config.sections.gallery && media.gallery.length === 0) {
+    issues.push(`${where('media.json', ['gallery'])}: empty, but config.json → sections.gallery is true`);
+  }
+
   const altKeys = [...(media.logo ? [media.logo.alt] : []), media.hero.alt, media.about.alt, ...media.gallery.map((g) => g.alt)];
   for (const [code, { content, seo, ui }] of Object.entries(locales)) {
     const file = `locales/${code}/content.json`;
@@ -124,6 +128,9 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
     }
     if (business && !content.services.some((s) => s.id === business.defaultService)) {
       issues.push(`${where('business.json', ['defaultService'])}: "${business.defaultService}" is not one of the service ids in ${file} → services`);
+    }
+    if (config.sections.reviews && content.reviews.length === 0) {
+      issues.push(`${where(file, ['reviews'])}: empty, but config.json → sections.reviews is true`);
     }
     if (config.sections.faq && content.faq.length === 0) {
       issues.push(`${where(file, ['faq'])}: empty, but config.json → sections.faq is true`);

@@ -23,7 +23,8 @@ export type IconName =
   | 'facebook'
   | 'instagram'
   | 'tiktok'
-  | 'google';
+  | 'google'
+  | 'quote';
 
 const PHONE =
   'M8.6 3.5H6A2 2 0 0 0 4 5.6c.4 7.6 6.8 14 14.4 14.4a2 2 0 0 0 2.1-2v-2.6a1 1 0 0 0-.7-1l-3.3-1.1a1 1 0 0 0-1 .25l-1.6 1.6a12.4 12.4 0 0 1-5.1-5.1l1.6-1.6a1 1 0 0 0 .25-1L9.6 4.2a1 1 0 0 0-1-.7Z';
@@ -95,6 +96,9 @@ export const ICON_PATHS: Record<IconName, string> = {
   instagram: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.75"/><path d="M17.25 6.75h.01"/>',
   tiktok: '<path d="M14.5 3.5v11.25a3.25 3.25 0 1 1-3.25-3.25"/><path d="M14.5 3.5a4.5 4.5 0 0 0 4.5 4.5"/>',
   google: '<path d="M17.3 6.7A7.5 7.5 0 1 0 19.5 12h-7"/>',
+  quote:
+    '<path d="M9.5 6C6.4 7 4.5 9.6 4.5 12.8V18H10v-5.5H7c0-2.1 1.2-3.7 3-4.4Z" fill="currentColor" stroke="none"/>' +
+    '<path d="M19 6c-3.1 1-5 3.6-5 6.8V18h5.5v-5.5h-3c0-2.1 1.2-3.7 3-4.4Z" fill="currentColor" stroke="none"/>',
   whatsapp:
     '<path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4L3.5 20.5Z"/>' +
     `<path d="${PHONE}" transform="translate(12 12) scale(0.42) translate(-12 -12)" fill="currentColor" stroke="none"/>`,

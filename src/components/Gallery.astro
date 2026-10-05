@@ -1,0 +1,95 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Section from './Section.astro';
+import { getLocale, site } from '../lib/data.ts';
+import { findImage } from '../lib/media.ts';
+import type { Tone } from '../lib/sections.ts';
+
+interface Props {
+	code: string;
+	tone?: Tone;
+}
+
+const { code, tone = 'surface' } = Astro.props;
+const { content, ui } = getLocale(code);
+
+const photos = await Promise.all(
+	site.media.gallery.flatMap((item) => {
+		const image = findImage(item.file);
+		if (!image) return [];
+		return [
+			getImage({ src: image, width: Math.min(image.width, 1600), format: 'webp' }).then((large) => ({
+				image,
+				large: large.src,
+				alt: content.media[item.alt] ?? '',
+			})),
+		];
+	}),
+);
+---
+
+<Section id="gallery" title={ui.sections.gallery} tone={tone}>
+	<ul class="gallery">
+		{
+			photos.map((photo) => (
+				<li>
+					<a href={photo.large} class="gallery__link">
+						<Image
+							src={photo.image}
+							alt={photo.alt}
+							widths={[240, 360, 480, 720]}
+							sizes="(min-width: 72rem) 23rem, (min-width: 40rem) 33vw, 50vw"
+							class="gallery__image"
+							loading="lazy"
+						/>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</Section>
+
+<style>
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-2xs);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	@media (min-width: 40rem) {
+		.gallery {
+			grid-template-columns: repeat(3, 1fr);
+			gap: var(--space-s);
+		}
+	}
+
+	.gallery__link {
+		display: block;
+		overflow: hidden;
+		aspect-ratio: 1;
+		border-radius: var(--radius);
+		background: color-mix(in oklab, var(--color-text) 6%, transparent);
+	}
+
+	@media (min-width: 40rem) {
+		.gallery__link {
+			aspect-ratio: 4 / 3;
+		}
+	}
+
+	.gallery__image {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		transition: transform 0.4s ease;
+	}
+
+	@media (hover: hover) {
+		.gallery__link:hover .gallery__image {
+			transform: scale(1.04);
+		}
+	}
+</style>

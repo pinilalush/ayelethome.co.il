@@ -2,16 +2,18 @@
 import Section from './Section.astro';
 import { getLocale } from '../lib/data.ts';
 import { fillPricing } from '../lib/pricing-text.ts';
+import type { Tone } from '../lib/sections.ts';
 
 interface Props {
 	code: string;
+	tone?: Tone;
 }
 
-const { code } = Astro.props;
+const { code, tone = 'surface' } = Astro.props;
 const { content, ui } = getLocale(code);
 ---
 
-<Section id="faq" title={ui.sections.faq}>
+<Section id="faq" title={ui.sections.faq} tone={tone}>
 	<ul class="faq">
 		{
 			content.faq.map((item) => (

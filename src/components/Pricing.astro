@@ -8,12 +8,14 @@ import { getLocale, site } from '../lib/data.ts';
 import type { IconName } from '../lib/icons.ts';
 import { PAYMENT_ICONS } from '../lib/payment.ts';
 import { fillPricing } from '../lib/pricing-text.ts';
+import type { Tone } from '../lib/sections.ts';
 
 interface Props {
 	code: string;
+	tone?: Tone;
 }
 
-const { code } = Astro.props;
+const { code, tone = 'alt' } = Astro.props;
 const { content, ui } = getLocale(code);
 const { business } = site;
 const pricing = business.pricing!;
@@ -45,7 +47,7 @@ const plans = [
 ];
 ---
 
-<Section id="pricing" title={texts.title} tone="alt">
+<Section id="pricing" title={texts.title} tone={tone}>
 	<div class="plans">
 		{
 			plans.map((plan) => (

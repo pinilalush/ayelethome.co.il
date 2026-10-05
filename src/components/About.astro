@@ -4,19 +4,21 @@ import Icon from './Icon.astro';
 import Section from './Section.astro';
 import { getLocale, site } from '../lib/data.ts';
 import { findImage } from '../lib/media.ts';
+import type { Tone } from '../lib/sections.ts';
 
 interface Props {
 	code: string;
+	tone?: Tone;
 }
 
-const { code } = Astro.props;
+const { code, tone = 'surface' } = Astro.props;
 const { content, ui } = getLocale(code);
 const photo = findImage(site.media.about.file);
 const photoAlt = content.media[site.media.about.alt] ?? content.ownerName;
 const initial = [...content.ownerName.trim()][0] ?? '';
 ---
 
-<Section id="why" title={ui.sections.why}>
+<Section id="why" title={ui.sections.why} tone={tone}>
 	<div class="about">
 		<div class="about__visual">
 			{

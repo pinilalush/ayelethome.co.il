@@ -2,17 +2,19 @@
 import Icon from './Icon.astro';
 import Section from './Section.astro';
 import { getLocale } from '../lib/data.ts';
+import type { Tone } from '../lib/sections.ts';
 
 interface Props {
 	code: string;
+	tone?: Tone;
 }
 
-const { code } = Astro.props;
+const { code, tone = 'alt' } = Astro.props;
 const { content } = getLocale(code);
 const { title, text, places } = content.area;
 ---
 
-<Section id="area" title={title} tone="alt">
+<Section id="area" title={title} tone={tone}>
 	<div class="area">
 		<div class="area__map" aria-hidden="true">
 			<span class="area__ring"></span>

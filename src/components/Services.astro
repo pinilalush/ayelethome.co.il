@@ -4,16 +4,18 @@ import Icon from './Icon.astro';
 import Section from './Section.astro';
 import { defaultWhatsappHref } from '../lib/booking-server.ts';
 import { getLocale } from '../lib/data.ts';
+import type { Tone } from '../lib/sections.ts';
 
 interface Props {
 	code: string;
+	tone?: Tone;
 }
 
-const { code } = Astro.props;
+const { code, tone = 'surface' } = Astro.props;
 const { content, ui } = getLocale(code);
 ---
 
-<Section id="services" title={ui.sections.services}>
+<Section id="services" title={ui.sections.services} tone={tone}>
 	<ul class="services">
 		{
 			content.services.map((service) => (
