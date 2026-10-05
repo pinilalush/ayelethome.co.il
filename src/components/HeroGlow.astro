@@ -163,6 +163,14 @@ const sparkles = [
 		opacity: 0.22;
 	}
 
+	.hero__photo img {
+		transition: opacity 1.2s ease;
+	}
+
+	.hero__decor:has(.hero__video[data-playing]) .hero__photo img {
+		opacity: 0;
+	}
+
 	.hero__video-toggle {
 		position: absolute;
 		inset-block-end: var(--space-m);
