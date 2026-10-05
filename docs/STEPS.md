@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 5.3 and 7.4 (Lighthouse and checks on the live demo), then Phase 9.
+**Current step:** Phase 9 (the template is finished).
 
 ---
 
@@ -17,7 +17,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 - [x] **0.1 👤 Review the plan.** Read `PLAN.md`, answer or note the open decisions (section 19).
 - [x] **0.2 👤 First push.** Push the two docs to `github.com/pinilalush/landing-template` (I'll give the commands).
-- [ ] **0.3 👤👩 Ask Ayelet the open questions** (services, hours, places, price details). Not needed to build the template, needed for her site in Phase 9 — can run in parallel.
+- [x] **0.3 👤👩 Ask Ayelet the open questions** (services, hours, places, price details). Not needed to build the template, needed for her site in Phase 9 — can run in parallel.
 
 ## Phase 1 — Base
 
@@ -77,7 +77,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 
 - [x] **5.1 🤖 Accessibility pass** — keyboard only, screen reader (every language), contrast, 200% zoom, focus order, reduced motion.
 - [x] **5.2 🤖 Accessibility statement page** in every language, details from `business.json`.
-- [ ] **5.3 🤖 Lighthouse on the local preview** — 95+ in all four categories on mobile.
+- [x] **5.3 🤖 Lighthouse on the local preview** — 95+ in all four categories on mobile.
 
 ## Phase 6 — Media
 
@@ -91,7 +91,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 - [x] **7.1 🤖 GitHub Actions workflow** (`.github/workflows/deploy.yml`).
 - [x] **7.2 👤 GitHub settings** — Pages source: GitHub Actions; repository variable `ALLOW_PLACEHOLDERS=1` (template repo only). I'll give exact clicks.
 - [x] **7.3 👤 Push** → site goes live at `https://pinilalush.github.io/landing-template/` with the test-data banner.
-- [ ] **7.4 🤖👤 Check the live demo** — Lighthouse, responsive matrix, real devices.
+- [x] **7.4 🤖👤 Check the live demo** — Lighthouse, responsive matrix, real devices.
 
 ## Phase 8 — Finish the template
 
