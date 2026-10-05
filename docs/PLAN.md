@@ -269,6 +269,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     { "q": "TODO", "a": "TODO" }
   ],
   "finalCta": { "title": "TODO", "text": "TODO" },
+  "accessibilityService": "TODO",
   "media": { "hero": "TODO", "about": "TODO" }
 }
 ```
@@ -317,9 +318,9 @@ Google ignores the `keywords` meta tag, so this list isn't just pasted into a ta
 
 Starting keyword list (Hebrew), to confirm with her — she should only list services she actually does:
 
-- **Primary:** ניהול משק בית בבאר שבע, ניקיון בתים בבאר שבע, סידור וארגון הבית בבאר שבע, עוזרת בית בבאר שבע, מארגנת בתים בבאר שבע
+- **Primary:** ניהול משק בית בבאר שבע, ניקיון בתים בבאר שבע, סידור וארגון הבית בבאר שבע, מארגנת בתים בבאר שבע
 - **Services:** ניהול משק בית, עזרה במשק הבית, עוזרת משק בית, כביסה וגיהוץ, גיהוץ, החלפת מצעים, ניקיון שוטף, ניקיון יסודי, ניקיון דירה, ניקיון לפני כניסה לדירה, ניקיון אחרי מעבר דירה, ניקיון אחרי שיפוץ, ניקיון לפני פסח, ניקיון לחגים, ניקיון מטבח, ניקיון חלונות, ניקיון חדרי רחצה, סידור ארונות, סידור ארון בגדים, ארגון מטבח, סידור מזווה, סידור חדרי ילדים, אריזה ופריקה במעבר דירה
-- **Phrases people search:** מנקה בבאר שבע, ניקיון דירה באר שבע מחיר, מסדרת בתים, סידור בית אחרי מעבר, עזרה בניקיון הבית, ניקיון בית לפני אירוע
+- **Phrases people search** (used for search only, not on the page): עוזרת בית בבאר שבע, מנקה בבאר שבע, ניקיון דירה באר שבע מחיר, מסדרת בתים, סידור בית אחרי מעבר, עזרה בניקיון הבית, ניקיון בית לפני אירוע
 - **Places (to verify with her):** באר שבע — רמות, נווה זאב, נווה נוי, נחל עשן, נחל בקע, הכלניות, סיגליות, העיר העתיקה, שכונות א׳–ו׳, ט׳, י״א. For now Ayelet serves Beer Sheva only; nearby towns (עומר, להבים, מיתר…) can be added to `area.places` and the keywords later.
 
 English list covers the same services, plus the spellings people use for the city: **Beer Sheva, Be'er Sheva, Beersheba, Beer-Sheva**.
@@ -532,7 +533,7 @@ Built in, not added on:
 - `prefers-reduced-motion` respected; no autoplaying sound; hero video muted, pausable.
 - `lang` and `dir` correct on every page.
 
-**Accessibility statement page** per language: what's accessible, known limitations, how to report an accessibility problem (the business's own phone and email from `business.json`), and the date. No accessibility coordinator: the law requires one only from 25 employees. Template text in `ui.json`, details from the data.
+**Accessibility statement page** per language: what's accessible, known limitations, how to report an accessibility problem (the business's own phone, WhatsApp and, when set, email from `business.json`), a paragraph on the accessibility of the service written for each business (`content.json` → `accessibilityService`: whether there's a place open to the public and how to ask for an adjustment), and the date. No accessibility coordinator: the law requires one only from 25 employees. Template text in `ui.json`, details from the data.
 
 **No third-party "accessibility overlay" widget.** They don't make a site compliant and often break screen readers.
 
