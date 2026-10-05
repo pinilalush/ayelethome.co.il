@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getLocale, pending, site } from '../../lib/data.ts';
+import { getLocale, site } from '../../lib/data.ts';
 
 export function getStaticPaths() {
 	return site.languages.map((l) => ({
@@ -18,7 +18,8 @@ const { content, seo } = getLocale(code);
 ---
 
 <Base code={code} title={seo.title}>
-	<h1>{content.businessName}</h1>
-	<p>{content.tagline}</p>
-	<p>Placeholders left: {pending.length}</p>
+	<div class="container flow">
+		<h1>{content.businessName}</h1>
+		<p class="muted">{content.tagline}</p>
+	</div>
 </Base>

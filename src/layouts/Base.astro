@@ -1,8 +1,11 @@
 ---
+import '@fontsource-variable/rubik';
+import '../styles/global.css';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import TestDataBanner from '../components/TestDataBanner.astro';
 import { getLocale, isTestData, site } from '../lib/data.ts';
 import { LANGUAGE_STORAGE_KEY, getLanguage, homeUrl } from '../lib/i18n.ts';
+import { themeCss } from '../lib/theme.ts';
 
 interface Props {
 	code: string;
@@ -23,10 +26,13 @@ const detect = {
 <html lang={code} dir={language.dir}>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="color-scheme" content="light" />
+		<meta name="theme-color" content={site.config.theme.colors.ink} />
 		<meta name="generator" content={Astro.generator} />
 		{isTestData && <meta name="robots" content="noindex, nofollow" />}
 		<title>{title}</title>
+		<style is:inline set:html={themeCss(site.config.theme)} />
 		{
 			language.default && (
 				<script is:inline define:vars={detect}>
@@ -54,11 +60,27 @@ const detect = {
 	<body>
 		<a href="#main" class="skip-link">{ui.skipToContent}</a>
 		<TestDataBanner label={ui.testDataBanner} />
-		<header>
-			<LanguageSwitcher current={code} />
+		<header class="site-header">
+			<div class="container site-header__inner">
+				<LanguageSwitcher current={code} />
+			</div>
 		</header>
 		<main id="main">
 			<slot />
 		</main>
 	</body>
 </html>
+
+<style>
+	.site-header {
+		padding-block-start: max(var(--space-xs), var(--safe-top));
+		padding-block-end: var(--space-xs);
+	}
+
+	.site-header__inner {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		gap: var(--space-s);
+	}
+</style>

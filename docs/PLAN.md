@@ -134,7 +134,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
       "primaryText": "#04201D",
       "accent": "#7FE3D6"
     },
-    "font": "heebo",
+    "font": "rubik",
     "radius": "1.25rem"
   },
   "sections": {
@@ -155,7 +155,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 ```
 
 - `analytics.umamiWebsiteId` — empty means no counting at all; filling in the business's Umami site ID turns it on (section 16).
-- `font` is chosen from the fonts installed in the template (Heebo to start; more can be added to the template later).
+- `font` is chosen from the fonts installed in the template (Rubik to start; more can be added to the template later). It must cover every language on the site.
 - The check script verifies **color contrast** (text on background, button text on button) meets WCAG AA, so a future business can't pick unreadable colors by accident.
 
 ### 5.2 `business.json` — facts that don't change by language
@@ -410,7 +410,7 @@ One page per language, short, built for phones first. No forms, no steps.
 
 - **Hero:** deep ink-navy background with a soft aqua/mint glow, large bold Hebrew headline, frosted-glass badges.
 - **Content sections:** bright white and very light cool-gray, with aqua accents — the "freshly cleaned" feel.
-- **Type:** Heebo (variable weight, Hebrew + Latin), big confident headings, comfortable reading size for body text.
+- **Type:** Rubik (variable weight, Hebrew + Latin + Cyrillic, also Arabic if ever added), big confident headings, comfortable reading size for body text. Heebo was the first choice but has no Cyrillic, so Russian would have fallen back to the phone's default font.
 - **Shapes:** rounded cards, subtle depth, thin borders, plenty of space.
 - **Icons and illustrations:** custom SVG set in one consistent line style (sparkle, broom, spray bottle, folded clothes, boxes, kitchen, window, shield, clock, map pin).
 

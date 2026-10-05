@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 1.6
+**Current step:** 2.1
 
 ---
 
@@ -33,7 +33,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
   *Check:* `npm run build` **fails** with the list; `ALLOW_PLACEHOLDERS=1 npm run build` passes and shows the banner.
 - [x] **1.5 🤖 Languages and RTL.** Routing (`/` Hebrew, `/en/` English), base layout with `lang`/`dir` from `config.json`, language switcher, device-language detection on first visit, remembered manual choice.
   *You see:* Hebrew right-to-left at `/`, English left-to-right at `/en/`. *Check:* browser set to English → goes to `/en/`; picking Hebrew in the switcher sticks after reload.
-- [ ] **1.6 🤖 Theme and responsive base.** Colors and radius from `config.json` as CSS variables, self-hosted Heebo, fluid type and spacing scale, safe-area handling, layout container.
+- [x] **1.6 🤖 Theme and responsive base.** Colors and radius from `config.json` as CSS variables, self-hosted Rubik, fluid type and spacing scale, safe-area handling, layout container.
   *Check:* changing a color in `config.json` changes the site; nothing overflows at 320px.
 
 ## Phase 2 — Design
