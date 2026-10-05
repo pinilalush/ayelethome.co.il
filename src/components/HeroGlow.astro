@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import Button from './Button.astro';
 import Icon from './Icon.astro';
 import { trackAttrs } from '../lib/analytics.ts';
@@ -6,6 +7,7 @@ import { defaultWhatsappHref } from '../lib/booking-server.ts';
 import { telHref } from '../lib/contact.ts';
 import { getLocale, site } from '../lib/data.ts';
 import { callsInNote } from '../lib/i18n.ts';
+import { findImage } from '../lib/media.ts';
 
 interface Props {
 	code: string;
@@ -15,6 +17,19 @@ const { code } = Astro.props;
 const { content, ui } = getLocale(code);
 const { business } = site;
 const callNote = callsInNote(code);
+
+const WIDTHS = [640, 960, 1280, 1920, 2400];
+async function sources(file: string | undefined) {
+	const image = findImage(file);
+	if (!image) return undefined;
+	const widths = WIDTHS.filter((w) => w < image.width).concat(image.width);
+	const [avif, webp, jpg] = await Promise.all(
+		(['avif', 'webp', 'jpg'] as const).map((format) => getImage({ src: image, widths, format, quality: 70 })),
+	);
+	return { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, jpg };
+}
+const photo = await sources(site.media.hero.file);
+const photoMobile = await sources(site.media.hero.fileMobile);
 
 const sparkles = [
 	{ top: '0.5rem', start: '7%', size: '1.5rem', delay: '0s' },
@@ -28,6 +43,17 @@ const sparkles = [
 
 <section class="hero" aria-labelledby="hero-title">
 	<div class="hero__decor" aria-hidden="true">
+		{
+			photo && (
+				<picture class="hero__photo">
+					{photoMobile && <source media="(max-aspect-ratio: 4/5)" type="image/avif" srcset={photoMobile.avif} sizes="100vw" />}
+					{photoMobile && <source media="(max-aspect-ratio: 4/5)" type="image/webp" srcset={photoMobile.webp} sizes="100vw" />}
+					<source type="image/avif" srcset={photo.avif} sizes="100vw" />
+					<source type="image/webp" srcset={photo.webp} sizes="100vw" />
+					<img src={photo.jpg.src} srcset={photo.jpg.srcSet.attribute} sizes="100vw" alt="" fetchpriority="high" decoding="async" />
+				</picture>
+			)
+		}
 		<div class="hero__glow hero__glow--a"></div>
 		<div class="hero__glow hero__glow--b"></div>
 		<div class="hero__dots"></div>
@@ -99,6 +125,16 @@ const sparkles = [
 		z-index: -1;
 		pointer-events: none;
 		mask-image: linear-gradient(to bottom, transparent, black 18%);
+	}
+
+	.hero__photo img {
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		opacity: 0.22;
+		filter: saturate(0.85);
 	}
 
 	.hero__glow {

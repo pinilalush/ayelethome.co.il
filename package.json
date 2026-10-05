@@ -8,10 +8,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/check-data.mjs",
+    "prebuild": "node scripts/share-images.mjs && node scripts/check-data.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "node scripts/check-data.mjs && astro check",
+    "share-images": "node scripts/share-images.mjs",
     "astro": "astro"
   },
   "dependencies": {
