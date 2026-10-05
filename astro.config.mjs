@@ -1,4 +1,5 @@
 // @ts-check
+import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField } from 'astro/config';
 import business from './src/data/business.json' with { type: 'json' };
 import config from './src/data/config.json' with { type: 'json' };
@@ -18,6 +19,14 @@ export default defineConfig({
       redirectToDefaultLocale: false,
     },
   },
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale,
+        locales: Object.fromEntries(locales.map((code) => [code, code])),
+      },
+    }),
+  ],
   env: {
     schema: {
       ALLOW_PLACEHOLDERS: envField.enum({

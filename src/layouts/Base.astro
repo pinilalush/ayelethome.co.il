@@ -19,10 +19,11 @@ import { formatPhone } from '../lib/text.ts';
 interface Props {
 	code: string;
 	title: string;
+	description?: string;
 	headerTone?: 'light' | 'alt' | 'dark';
 }
 
-const { code, title, headerTone = 'light' } = Astro.props;
+const { code, title, description, headerTone = 'light' } = Astro.props;
 const language = getLanguage(code);
 const { ui } = getLocale(code);
 const callNote = callsInNote(code);
@@ -36,7 +37,7 @@ const detect = {
 
 <html lang={code} dir={language.dir}>
 	<head>
-		<Head title={title} />
+		<Head code={code} title={title} description={description} />
 		{
 			language.default && (
 				<script is:inline define:vars={detect}>

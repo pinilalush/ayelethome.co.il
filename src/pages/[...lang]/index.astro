@@ -10,6 +10,7 @@ import Reviews from '../../components/Reviews.astro';
 import Services from '../../components/Services.astro';
 import Base from '../../layouts/Base.astro';
 import { getLocale, site } from '../../lib/data.ts';
+import { fillPricing } from '../../lib/pricing-text.ts';
 import { alternate } from '../../lib/sections.ts';
 
 export function getStaticPaths() {
@@ -39,7 +40,7 @@ const shown = {
 const tones = alternate((Object.keys(shown) as (keyof typeof shown)[]).filter((key) => shown[key]));
 ---
 
-<Base code={code} title={seo.title} headerTone="dark">
+<Base code={code} title={fillPricing(seo.title, code)} headerTone="dark">
 	<HeroGlow code={code} />
 	{shown.services && <Services code={code} tone={tones.services} />}
 	{shown.pricing && <Pricing code={code} tone={tones.pricing} />}

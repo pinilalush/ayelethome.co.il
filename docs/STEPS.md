@@ -68,10 +68,10 @@ Each section is checked at every width in the responsive matrix, in every langua
 ## Phase 4 — SEO
 
 - [ ] **4.1 🤖 Keyword lists** in `seo.json` (Hebrew, English and Russian), and the test content rewritten to use them naturally. Check script warns about primary keywords not used in the page.
-- [ ] **4.2 🤖 Head tags** — title, description, canonical, `hreflang`, and the full share-preview tags (PLAN section 11, **Share preview**).
+- [x] **4.2 🤖 Head tags** — title, description, canonical, `hreflang`, and the full share-preview tags (PLAN section 11, **Share preview**).
 - [ ] **4.3 🤖 Structured data** — `LocalBusiness` with area, hours, services and the hourly price.
   *Check:* passes Google's Rich Results Test and the schema.org validator.
-- [ ] **4.4 🤖 Sitemap and robots.txt.**
+- [x] **4.4 🤖 Sitemap and robots.txt.**
 
 ## Phase 5 — Accessibility
 
@@ -88,7 +88,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 
 ## Phase 7 — Deploy the template demo
 
-- [ ] **7.1 🤖 GitHub Actions workflow** (`.github/workflows/deploy.yml`).
+- [x] **7.1 🤖 GitHub Actions workflow** (`.github/workflows/deploy.yml`).
 - [ ] **7.2 👤 GitHub settings** — Pages source: GitHub Actions; repository variable `ALLOW_PLACEHOLDERS=1` (template repo only). I'll give exact clicks.
 - [ ] **7.3 👤 Push** → site goes live at `https://pinilalush.github.io/landing-template/` with the test-data banner.
 - [ ] **7.4 🤖👤 Check the live demo** — Lighthouse, responsive matrix, real devices.

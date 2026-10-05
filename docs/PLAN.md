@@ -87,7 +87,6 @@ landing-template/
     MEDIA-BRIEF.md               every image/video with its Google prompt (written in the media phase)
     NEW-SITE.md                  step-by-step for starting a new business
   public/
-    favicon.svg, robots.txt
     media/                       videos only (not processed by Astro)
   src/
     data/                        ← EVERYTHING business-specific
@@ -105,6 +104,7 @@ landing-template/
       [...lang]/index.astro      home page per language
       [...lang]/accessibility.astro
       404.astro
+      favicon.svg.ts, robots.txt.ts   generated from the data (theme colors; sitemap address)
     styles/                      global CSS, theme variables, animations
 ```
 
@@ -162,8 +162,8 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 
 ```json
 {
-  "siteUrl": "https://TODO-domain.co.il",
-  "basePath": "/",
+  "siteUrl": "https://pinilalush.github.io",
+  "basePath": "/landing-template/",
   "phone": "+972500000000",
   "whatsapp": "+972500000000",
   "email": "TODO@example.com",
@@ -210,7 +210,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 - `defaultService` — the `id` of the service a booking starts with when the customer didn't come from a service card (Ayelet: `household`, ניהול משק הבית). It's also the service in the default WhatsApp message. The check fails if it isn't one of the services in `content.json`.
 - `bookingUrl` — optional online booking page (e.g. her free Cal.com page). Empty means hidden; filled in, a small "or choose a time online" link appears in the booking panel and the footer. WhatsApp stays the main way to book.
 - `payment` — how customers can pay, from a fixed list: `bit`, `paybox`, `cash`, `transfer`, `credit`. Shown as small labeled icons near the price; an empty list hides them. Generic icons with the name, not the companies' logos.
-- `basePath` is `/landing-template/` only while testing on `pinilalush.github.io/landing-template`; it's `/` once a domain is connected.
+- `siteUrl` + `basePath` are where the site actually lives, because the site uses them for its QR code, contact card and the addresses it gives search engines. While testing on GitHub: `https://pinilalush.github.io` + `/<repo>/`. Once the domain is connected: `https://<domain>` + `/`. The template itself keeps its demo address (`https://pinilalush.github.io` + `/landing-template/`), and the data check counts the template's demo path `/landing-template/` as test data, so a business site can't go live with it by mistake (only the template uses that path).
 
 ### 5.3 `locales/<lang>/content.json` — business text
 
@@ -552,7 +552,7 @@ Built in, not added on:
   - the test phone number anywhere
   - a missing required field (Zod schema)
   - a language missing keys that the default language has
-  - a `siteUrl` that still contains `TODO`
+  - a `siteUrl` that still contains `TODO`, or the template's own demo path (`basePath` `/landing-template/`)
   - color contrast below WCAG AA
   - a file in `media.json` that doesn't exist in `src/assets/media/`
 - `npm run dev` shows the same list as warnings, and a small banner on the page saying how many placeholders are left, so you can work with test data.
@@ -574,7 +574,7 @@ Built in, not added on:
 - `www`: `CNAME` to `pinilalush.github.io`.
 - I'll re-check these values against GitHub's current docs when we reach this step.
 
-**Before the domain is bought:** the site can be tested at `https://pinilalush.github.io/<repo>/` by setting `basePath` to `/<repo>/` in `business.json`.
+**Before the domain is bought:** the site can be tested at `https://pinilalush.github.io/<repo>/` by setting `siteUrl` to `https://pinilalush.github.io` and `basePath` to `/<repo>/` in `business.json`; when the domain is connected they change to `https://<domain>` and `/`.
 
 ## 15. Media
 

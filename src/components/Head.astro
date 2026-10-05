@@ -1,15 +1,42 @@
 ---
 import { UMAMI_SCRIPT, analyticsId, trackingDomains } from '../lib/analytics.ts';
-import { isTestData, site } from '../lib/data.ts';
+import { getLocale, isTestData, site } from '../lib/data.ts';
+import { fillPricing } from '../lib/pricing-text.ts';
+import { alternates, jsonLd, localeUrl, ogLocale, pagePath, shareImage } from '../lib/seo.ts';
+import { localBusiness } from '../lib/structured-data.ts';
 import { themeCss } from '../lib/theme.ts';
 
 interface Props {
 	title: string;
+	code?: string;
+	description?: string;
 	noindex?: boolean;
 }
 
-const { title, noindex = false } = Astro.props;
+const { title, code, description, noindex = false } = Astro.props;
 const robots = isTestData ? 'noindex, nofollow' : noindex ? 'noindex' : undefined;
+
+function seoTags(code: string) {
+	const { content, seo } = getLocale(code);
+	const path = pagePath(Astro.url.pathname, code);
+	const isHome = path === '';
+	const pageDescription = fillPricing(description ?? seo.description, code);
+	return {
+		description: pageDescription,
+		canonical: localeUrl(code, path),
+		alternates: alternates(path),
+		siteName: content.businessName,
+		shareTitle: fillPricing((isHome && seo.share.title) || title, code),
+		shareDescription: (isHome && seo.share.description && fillPricing(seo.share.description, code)) || pageDescription,
+		locale: ogLocale(code),
+		otherLocales: site.languages.filter((l) => l.code !== code).map((l) => ogLocale(l.code)),
+		image: shareImage(code),
+		imageAlt: fillPricing(seo.share.imageAlt, code),
+		structuredData: isHome ? jsonLd(localBusiness(code)) : undefined,
+	};
+}
+
+const page = code ? seoTags(code) : undefined;
 ---
 
 <meta charset="utf-8" />
@@ -19,9 +46,40 @@ const robots = isTestData ? 'noindex, nofollow' : noindex ? 'noindex' : undefine
 <meta name="generator" content={Astro.generator} />
 {robots && <meta name="robots" content={robots} />}
 <title>{title}</title>
+{
+	page && (
+		<>
+			<meta name="description" content={page.description} />
+			<link rel="canonical" href={page.canonical} />
+			{page.alternates.map((l) => (
+				<link rel="alternate" hreflang={l.hreflang} href={l.href} />
+			))}
+			<meta property="og:type" content="website" />
+			<meta property="og:site_name" content={page.siteName} />
+			<meta property="og:title" content={page.shareTitle} />
+			<meta property="og:description" content={page.shareDescription} />
+			<meta property="og:url" content={page.canonical} />
+			<meta property="og:locale" content={page.locale} />
+			{page.otherLocales.map((locale) => (
+				<meta property="og:locale:alternate" content={locale} />
+			))}
+			{page.image && (
+				<>
+					<meta property="og:image" content={page.image.url} />
+					<meta property="og:image:width" content={String(page.image.width)} />
+					<meta property="og:image:height" content={String(page.image.height)} />
+					<meta property="og:image:type" content={page.image.type} />
+					<meta property="og:image:alt" content={page.imageAlt} />
+				</>
+			)}
+			<meta name="twitter:card" content="summary_large_image" />
+		</>
+	)
+}
 <link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.svg`} type="image/svg+xml" />
 <style is:inline set:html={themeCss(site.config.theme)} />
 <script is:inline>document.documentElement.dataset.js = '';</script>
+{page?.structuredData && <script is:inline type="application/ld+json" set:html={page.structuredData} />}
 {
 	analyticsId && (
 		<script is:inline defer src={UMAMI_SCRIPT} data-website-id={analyticsId} data-domains={trackingDomains()} data-do-not-track="true" />
