@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import Icon from './Icon.astro';
 import Section from './Section.astro';
 import { getLocale, site } from '../lib/data.ts';
@@ -23,9 +23,10 @@ const initial = [...content.ownerName.trim()][0] ?? '';
 		<div class="about__visual" data-reveal>
 			{
 				photo ? (
-					<Image
+					<Picture
 						src={photo}
 						alt={photoAlt}
+						formats={['avif', 'webp']}
 						widths={[360, 540, 720, 960]}
 						sizes="(min-width: 56rem) 40vw, min(100vw, 26rem)"
 						class="about__photo"

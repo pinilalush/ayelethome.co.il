@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import Section from './Section.astro';
 import { getLocale, site } from '../lib/data.ts';
 import { findImage } from '../lib/media.ts';
@@ -34,9 +34,10 @@ const photos = await Promise.all(
 			photos.map((photo) => (
 				<li data-reveal>
 					<a href={photo.large} class="gallery__link">
-						<Image
+						<Picture
 							src={photo.image}
 							alt={photo.alt}
+							formats={['avif', 'webp']}
 							widths={[240, 360, 480, 720]}
 							sizes="(min-width: 72rem) 23rem, (min-width: 40rem) 33vw, 50vw"
 							class="gallery__image"

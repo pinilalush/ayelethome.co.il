@@ -11,6 +11,9 @@ export default defineConfig({
   site: business.siteUrl,
   base: business.basePath,
   trailingSlash: 'always',
+  build: {
+    inlineStylesheets: 'always',
+  },
   i18n: {
     locales,
     defaultLocale,

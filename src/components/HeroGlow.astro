@@ -18,7 +18,7 @@ const { content, ui } = getLocale(code);
 const { business } = site;
 const callNote = callsInNote(code);
 
-const WIDTHS = [640, 960, 1280, 1920, 2400];
+const WIDTHS = [480, 640, 800, 960, 1280, 1600, 1920, 2400];
 async function sources(file: string | undefined) {
 	const image = findImage(file);
 	if (!image) return undefined;
@@ -26,7 +26,7 @@ async function sources(file: string | undefined) {
 	const [avif, webp, jpg] = await Promise.all(
 		(['avif', 'webp', 'jpg'] as const).map((format) => getImage({ src: image, widths, format, quality: 70 })),
 	);
-	return { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, jpg };
+	return { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, jpg, width: image.width, height: image.height };
 }
 const photo = await sources(site.media.hero.file);
 const photoMobile = await sources(site.media.hero.fileMobile);
@@ -51,7 +51,7 @@ const sparkles = [
 					{photoMobile && <source media="(max-aspect-ratio: 4/5)" type="image/webp" srcset={photoMobile.webp} sizes="100vw" />}
 					<source type="image/avif" srcset={photo.avif} sizes="100vw" />
 					<source type="image/webp" srcset={photo.webp} sizes="100vw" />
-					<img src={photo.jpg.src} srcset={photo.jpg.srcSet.attribute} sizes="100vw" alt="" fetchpriority="high" decoding="async" />
+					<img src={photo.jpg.src} srcset={photo.jpg.srcSet.attribute} sizes="100vw" width={photo.width} height={photo.height} alt="" fetchpriority="high" decoding="async" />
 				</picture>
 			)
 		}
