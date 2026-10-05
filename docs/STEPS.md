@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 9.5 (Ayelet's data filled, waiting for approval) and 9.7 (publish).
+**Current step:** 9.5 (Ayelet's texts waiting for approval), then 9.8 when the domain is published.
 
 ---
 
@@ -111,7 +111,7 @@ The domain steps (9.2–9.3) don't depend on the template and can be done any ti
 - [ ] **9.5b 👤 A native Russian speaker checks the Russian text** (site and booking-panel translation notes).
 - [x] **9.5c 👤 Open a free Umami Cloud account** for Ayelet's site and send me the site ID. *(Done — the ID goes into her repo's `config.json` in 9.5, not into the template.)* *(Optional, later:* a free Cal.com account if she wants online booking — test approval and Hebrew first.*)*
 - [x] **9.6 🤖 Build passes with no placeholders.**
-- [ ] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
+- [x] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
 - [ ] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Started: DNS is on Cloudflare with the GitHub records, and the GitHub verification record is in place; Verify waits until the registry publishes the domain.)*
 - [ ] **9.9 🤖👤 Final checks on the real domain** — every button, every language, Lighthouse, real devices, and the share preview: Facebook Sharing Debugger ("Scrape Again"), then paste the link in WhatsApp and Facebook to see the card.
 - [ ] **9.10 👤👩 Google Search Console** (submit the sitemap) and **Google Business Profile** for Ayelet — I'll write the steps.
