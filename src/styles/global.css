@@ -70,6 +70,10 @@ body {
 }
 
 @media (max-width: 59.99rem) {
+  html {
+    scroll-padding-block-end: calc(var(--bar-h) + var(--safe-bottom) + 1rem);
+  }
+
   body {
     padding-block-end: calc(var(--bar-h) + var(--safe-bottom));
   }
@@ -159,6 +163,9 @@ a {
   inset-block-start: calc(var(--space-xs) + var(--safe-top));
   inset-inline-start: var(--space-s);
   z-index: 2000;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
   padding: var(--space-2xs) var(--space-s);
   background: var(--color-ink);
   color: var(--color-surface);
