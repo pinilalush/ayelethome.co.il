@@ -745,6 +745,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 
 		let opener: HTMLElement | null = null;
 		let historyEntry = false;
+		if ((history.state as { booking?: boolean } | null)?.booking) history.replaceState(null, '');
 
 		function open(trigger: HTMLElement) {
 			state = defaults();
@@ -752,6 +753,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 			if (trigger.dataset.bookingSlot === 'evening' && slotInputs.length) state.slot = 'evening';
 			render();
 			opener = trigger;
+			trigger.focus({ preventScroll: true });
 			dialog.showModal();
 			(window as Window & { umami?: { track: (event: string, data?: Record<string, string>) => void } }).umami?.track('booking-open', {
 				source: trigger.dataset.bookingSource ?? 'other',

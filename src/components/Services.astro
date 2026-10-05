@@ -1,0 +1,116 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Section from './Section.astro';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { getLocale } from '../lib/data.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+---
+
+<Section id="services" title={ui.sections.services}>
+	<ul class="services">
+		{
+			content.services.map((service) => (
+				<li class="service">
+					<div class="service__head">
+						<span class="service__icon" aria-hidden="true">
+							<Icon name={service.icon} size="1.6rem" />
+						</span>
+						<h3 class="service__title">{service.title}</h3>
+					</div>
+					<p class="service__text">{service.text}</p>
+					<Button
+						href={defaultWhatsappHref(code, service.id)}
+						variant="secondary"
+						size="sm"
+						icon="whatsapp"
+						class="service__book"
+						data-booking-open
+						data-booking-service={service.id}
+						data-booking-source="service"
+					>
+						{ui.bookOnWhatsapp}
+						<span class="visually-hidden"> – {service.title}</span>
+					</Button>
+				</li>
+			))
+		}
+	</ul>
+</Section>
+
+<style>
+	.services {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+		gap: var(--space-s);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.service {
+		container-type: inline-size;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		padding: var(--space-m);
+		border: 1px solid color-mix(in oklab, var(--color-text) 9%, transparent);
+		border-radius: var(--radius);
+		background: var(--color-surface);
+		box-shadow: 0 0.75rem 2rem -1.75rem color-mix(in oklab, var(--color-ink) 45%, transparent);
+		transition:
+			transform 0.25s ease,
+			box-shadow 0.25s ease;
+	}
+
+	@media (hover: hover) {
+		.service:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 1.25rem 2.5rem -1.5rem color-mix(in oklab, var(--color-ink) 40%, transparent);
+		}
+	}
+
+	.service__head {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-xs);
+	}
+
+	@container (min-width: 15rem) {
+		.service__head {
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+
+	.service__icon {
+		display: grid;
+		flex: none;
+		place-items: center;
+		inline-size: 3rem;
+		block-size: 3rem;
+		border-radius: calc(var(--radius) * 0.7);
+		background: color-mix(in oklab, var(--color-primary) 14%, var(--color-surface));
+		color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+	}
+
+	.service__title {
+		font-size: var(--step-1);
+	}
+
+	.service__text {
+		color: var(--color-text-muted);
+	}
+
+	.service :global(.service__book) {
+		align-self: stretch;
+		margin-block-start: auto;
+	}
+</style>

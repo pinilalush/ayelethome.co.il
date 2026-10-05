@@ -7,18 +7,19 @@ export function contactLanguage(code: string): string {
   return contactLanguages.includes(code) ? code : contactLanguages[0];
 }
 
-export function defaultWhatsappHref(code: string): string {
+export function defaultWhatsappHref(code: string, serviceId?: string): string {
   const { business } = site;
   if (!business.pricing) return whatsappHref(business.whatsapp);
   const contact = contactLanguage(code);
   const { content, ui } = getLocale(contact);
+  const service = serviceId ? content.services.find((s) => s.id === serviceId) : undefined;
   const text = buildMessage({
     lang: contact,
     texts: content.booking,
     durations: ui.duration,
     days: ui.days as Record<DayCode, string>,
     pricing: business.pricing,
-    choice: { serviceName: content.booking.generalName, slot: 'day', hours: business.pricing.minimumHours },
+    choice: { serviceName: service?.bookingName ?? content.booking.generalName, slot: 'day', hours: business.pricing.minimumHours },
   });
   return whatsappHref(business.whatsapp, text);
 }
