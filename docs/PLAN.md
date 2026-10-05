@@ -116,7 +116,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   "languages": [
     { "code": "he", "name": "עברית", "dir": "rtl", "default": true },
     { "code": "en", "name": "English", "dir": "ltr" },
-    { "code": "ru", "name": "Русский", "dir": "ltr" }
+    { "code": "ru", "name": "Русский", "dir": "ltr", "deviceRedirect": true }
   ],
   "theme": {
     "colors": {
@@ -350,7 +350,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 - **Languages for Ayelet's site:** Hebrew (default), English and **Russian** — Beer Sheva has a large Russian-speaking community. I draft the Russian; a native speaker checks it before launch.
 - **URLs:** default language at `/`, others at `/<code>/` (e.g. `/en/`, `/ru/`). Each language is a separate real page, so Google indexes each one.
 - **Direction:** the layout sets `<html lang="he" dir="rtl">` from `config.json`. All CSS uses logical properties (`margin-inline-start`, `padding-inline`, `inset-inline-end`), so nothing needs rewriting for RTL. Directional icons (arrows) flip automatically.
-- **Device language:** on a visitor's **first** visit to `/`, a small inline script compares `navigator.languages` with the `languages` array. If a supported non-default language matches, it goes to that language's URL. No match → the default stays.
+- **Device language:** on a visitor's **first** visit to `/`, a small inline script reads `navigator.languages` in order. The first entry that is the default language or a language marked `"deviceRedirect": true` in `config.json` decides: a marked language goes to its URL, the default stays. Anything else → the default stays. **Only Russian is marked** (Pini, 2026-10-06): many Israelis use their phones and computers in English but read Hebrew, so they get Hebrew, and English is one click away in the switcher.
 - **Manual choice wins:** the language switcher is always visible in the header. When a visitor picks a language, it's remembered in the browser, and device detection never overrides it again.
 - **Google:** crawlers send no language preference, so they always see the default at `/`. `hreflang` tags on every page point to all language versions, plus `x-default`.
 - **Adding a language:**

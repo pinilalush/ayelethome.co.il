@@ -33,6 +33,7 @@ export const configSchema = z.strictObject({
         name: text,
         dir: z.enum(['rtl', 'ltr'], { error: 'expected "rtl" or "ltr"' }),
         default: z.boolean().optional(),
+        deviceRedirect: z.boolean().optional(),
       }),
     )
     .min(1, 'at least one language is required')

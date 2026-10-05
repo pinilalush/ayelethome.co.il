@@ -144,7 +144,7 @@ A good order to fill them in: `business.json`, then `config.json`, then the defa
 
 | Field | What it controls |
 |---|---|
-| `languages` | `code`, `name` (in its own language), `dir` (`"rtl"` / `"ltr"`), and exactly one `"default": true`. The default language is at `/`, the others at `/<code>/`. |
+| `languages` | `code`, `name` (in its own language), `dir` (`"rtl"` / `"ltr"`), and exactly one `"default": true`. The default language is at `/`, the others at `/<code>/`. `"deviceRedirect": true` sends first-time visitors whose device is set to that language to its page (the template marks only Russian); everyone else lands on the default. |
 | `theme.colors` | `ink` (hero, dark header and footer), `surface` (white sections, text on dark), `surfaceAlt` (light-gray sections), `text`, `textMuted`, `primary` (buttons, accents), `primaryText` (text on buttons), `accent` (glow and sparkles). **The check fails** if text on its background is under 4.5:1 contrast (WCAG AA). |
 | `theme.font` | `"rubik"`, the font installed in the template. It covers Hebrew, Latin and Cyrillic. |
 | `theme.radius` | Corner rounding, for example `"1.25rem"`. |
