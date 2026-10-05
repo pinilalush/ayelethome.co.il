@@ -1,6 +1,7 @@
 ---
 import Button from './Button.astro';
 import Icon from './Icon.astro';
+import { trackAttrs } from '../lib/analytics.ts';
 import { formatDuration, formatMoney, maxHours, type BookingConfig, type DayCode, type LocaleTexts } from '../lib/booking.ts';
 import { contactLanguage, defaultWhatsappHref } from '../lib/booking-server.ts';
 import { getLocale, site } from '../lib/data.ts';
@@ -174,11 +175,12 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 						newTabLabel={ui.opensInNewTab}
 						class="booking__send"
 						data-booking-send
+						{...trackAttrs('whatsapp-send', { lang: code })}
 					>
 						{ui.booking.send}
 					</Button>
 					{business.bookingUrl && (
-						<a class="booking__online" href={business.bookingUrl} target="_blank" rel="noopener">
+						<a class="booking__online" href={business.bookingUrl} target="_blank" rel="noopener" {...trackAttrs('online-booking', { source: 'panel' })}>
 							{ui.booking.onlineBooking}
 							<span class="visually-hidden"> ({ui.opensInNewTab})</span>
 						</a>
@@ -696,6 +698,12 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 			preview.textContent = visitorMessage;
 			if (sent) sent.textContent = contactMessage;
 			send.href = whatsappHref(config.whatsapp, contactMessage);
+			if (send.hasAttribute('data-umami-event')) {
+				send.dataset.umamiEventService = state.service || 'general';
+				send.dataset.umamiEventSlot = state.slot;
+				send.dataset.umamiEventHours = String(state.hours);
+				send.dataset.umamiEventDay = state.day >= 0 ? 'chosen' : 'flexible';
+			}
 		}
 
 		const clampHours = (hours: number) => Math.min(config.maxHours, Math.max(pricing.minimumHours, hours));
@@ -745,6 +753,9 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 			render();
 			opener = trigger;
 			dialog.showModal();
+			(window as Window & { umami?: { track: (event: string, data?: Record<string, string>) => void } }).umami?.track('booking-open', {
+				source: trigger.dataset.bookingSource ?? 'other',
+			});
 			history.pushState({ booking: true }, '');
 			historyEntry = true;
 		}

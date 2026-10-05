@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 3.1c
+**Current step:** 3.2
 
 ---
 
@@ -51,14 +51,14 @@ Each section is checked at every width in the responsive matrix, in every langua
 - [x] **3.1 🤖 Contact buttons.** Call link, bottom Call | WhatsApp bar (phones, tablets portrait), floating WhatsApp button (desktop), Call button in the header, "Calls in Hebrew" note on other languages' pages.
 - [x] **3.1b 🤖 Booking panel.** Service, day/evening, hours in half-hour steps with live price and the hours guide, optional day and start time limited to her work hours, split price for visits that cross 19:00, message preview in the visitor's language plus the Hebrew that's sent, Send on WhatsApp; works as a plain link without JavaScript.
   *Check:* every combination gives the right Hebrew message and price from every language's page, including 17:00–21:00 = ₪500, and correct singular wording when a split gives 1 hour or half an hour; one tap still sends the default message; keyboard, screen reader and the phone's back button work.
-- [ ] **3.1c 🤖 Optional settings** — Umami counting (page views and taps on WhatsApp, Call, Save my number, booking link) when `analytics.umamiWebsiteId` is set; the "choose a time online" link when `bookingUrl` is set. Both hidden and nothing loaded when empty.
+- [x] **3.1c 🤖 Optional settings** — Umami counting (page views and taps on WhatsApp, Call, Save my number, booking link) when `analytics.umamiWebsiteId` is set; the "choose a time online" link when `bookingUrl` is set. Both hidden and nothing loaded when empty.
   *Check:* with both empty, the built site loads no outside script; with test values, the script and link appear.
 - [ ] **3.2 🤖 Services** — cards with a WhatsApp button per service.
 - [ ] **3.3 🤖 Price** — two cards: day ₪100 per hour (at least ₪400) and evening from 19:00 ₪150 per hour (at least ₪600), what's included, a WhatsApp button on each.
 - [ ] **3.4 🤖 Why her + about.**
 - [ ] **3.5 🤖 Service area** — place chips and the area graphic.
 - [ ] **3.6 🤖 FAQ** — accordion, includes the price question.
-- [ ] **3.7 🤖 Final call-to-action, footer, 404 page.** Footer includes work hours, payment methods, and Save my number (`contact.vcf`).
+- [ ] **3.7 🤖 Final call-to-action, footer, 404 page.** Footer includes work hours, payment methods, Save my number (`contact.vcf`, tracked as `save-contact`), and the online-booking link when `bookingUrl` is set.
 - [ ] **3.7b 🤖 QR code** — `qr.svg` and `qr.png` made at build time, pointing to the site.
 - [ ] **3.8 🤖 Gallery and reviews** — built and tested with sample data, then switched off in `config.json`.
 - [ ] **3.9 🤖 Animations** — scroll reveals, shine, hero sparkles, press/hover effects; all off with reduced motion.

@@ -8,6 +8,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import Logo from '../components/Logo.astro';
 import TestDataBanner from '../components/TestDataBanner.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
+import { UMAMI_SCRIPT, analyticsId, trackAttrs, trackingDomains } from '../lib/analytics.ts';
 import { getLocale, isTestData, site } from '../lib/data.ts';
 import { LANGUAGE_STORAGE_KEY, callsInNote, getLanguage, homeUrl } from '../lib/i18n.ts';
 import { telHref } from '../lib/contact.ts';
@@ -44,6 +45,11 @@ const detect = {
 		<link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}favicon.svg`} type="image/svg+xml" />
 		<style is:inline set:html={themeCss(site.config.theme)} />
 		<script is:inline>document.documentElement.dataset.js = '';</script>
+		{
+			analyticsId && (
+				<script is:inline defer src={UMAMI_SCRIPT} data-website-id={analyticsId} data-domains={trackingDomains()} data-do-not-track="true" />
+			)
+		}
 		{
 			language.default && (
 				<script is:inline define:vars={detect}>
@@ -85,6 +91,7 @@ const detect = {
 						icon="phone"
 						describedBy={callNote ? 'call-note-header' : undefined}
 						class="site-header__call"
+						{...trackAttrs('call', { source: 'header' })}
 					>
 						<span class="visually-hidden">{ui.call} </span>
 						<span dir="ltr">{formatPhone(site.business.phone)}</span>

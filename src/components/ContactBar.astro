@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro';
+import { trackAttrs } from '../lib/analytics.ts';
 import { defaultWhatsappHref } from '../lib/booking-server.ts';
 import { telHref } from '../lib/contact.ts';
 import { getLocale, site } from '../lib/data.ts';
@@ -16,10 +17,16 @@ const note = callsInNote(code);
 
 <aside class="contact-bar" aria-label={ui.contact} data-contact-bar>
 	<div class="contact-bar__inner">
-		<Button href={defaultWhatsappHref(code)} icon="whatsapp" class="contact-bar__button" data-booking-open>
+		<Button href={defaultWhatsappHref(code)} icon="whatsapp" class="contact-bar__button" data-booking-open data-booking-source="bar">
 			{ui.whatsapp}
 		</Button>
-		<Button href={telHref(site.business.phone)} variant="on-dark" icon="phone" class="contact-bar__button">
+		<Button
+			href={telHref(site.business.phone)}
+			variant="on-dark"
+			icon="phone"
+			class="contact-bar__button"
+			{...trackAttrs('call', { source: 'bar' })}
+		>
 			<span class="contact-bar__label">{ui.call}</span>
 			{note && <span class="contact-bar__note">{note}</span>}
 		</Button>

@@ -593,6 +593,8 @@ Built in, not added on:
 - No cookies, no analytics, no forms, no tracking scripts → no cookie banner needed.
 - Fonts and all assets self-hosted; the only outside links are `tel:`, WhatsApp and social links.
 - **Counting visits and taps (optional, off by default):** with `analytics.umamiWebsiteId` filled in, the site loads Umami's small script and counts page views plus taps on WhatsApp (Send, per service and day/evening), Call, Save my number and the booking link. No cookies, nothing stored on the visitor's device, no personal data — so still no cookie banner. The counts live in the business's own **Umami Cloud** account (free plan: 100K events a month, one website per account, 6 months of history); you see them on Umami's dashboard. It counts taps, not sent messages, and visitors with ad blockers aren't counted.
+- Events recorded: `booking-open` (with `source`: hero, bar, floating), `whatsapp-send` (with the page `lang` and the chosen `service`, `slot`, `hours`, `day`), `call` (with `source`: hero, header, bar), `online-booking`, and later `save-contact`. The script only counts on the real domain (`data-domains`: the site's domain with and without `www.`) and respects the visitor's Do Not Track setting.
+- The buttons that open the booking panel are tracked from the panel's own script, not with Umami's link attribute: for a same-tab link, Umami's script cancels the click and navigates to the link itself, which would skip the panel.
 - The accessibility statement page gets one line saying visits are counted anonymously, without cookies, when counting is on.
 
 ## 17. Quality checks

@@ -11,7 +11,14 @@ const { code } = Astro.props;
 const { ui } = getLocale(code);
 ---
 
-<a href={defaultWhatsappHref(code)} class="fab" aria-label={ui.sendWhatsapp} title={ui.sendWhatsapp} data-booking-open>
+<a
+	href={defaultWhatsappHref(code)}
+	class="fab"
+	aria-label={ui.sendWhatsapp}
+	title={ui.sendWhatsapp}
+	data-booking-open
+	data-booking-source="floating"
+>
 	<Icon name="whatsapp" size="1.75rem" />
 </a>
 
