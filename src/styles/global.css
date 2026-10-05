@@ -172,6 +172,92 @@ a {
   transform: none;
 }
 
+:root,
+[dir='ltr'] {
+  --shine-from: -100%;
+  --shine-to: 100%;
+}
+
+[dir='rtl'] {
+  --shine-from: 100%;
+  --shine-to: -100%;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 var(--space-m);
+  }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation-name: reveal;
+      animation-timing-function: ease-out;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 4rem;
+    }
+
+    [data-reveal]:focus-within {
+      animation: none;
+    }
+  }
+
+  [data-reveal='hidden']:not(:focus-within) {
+    opacity: 0;
+    translate: 0 var(--space-m);
+  }
+
+  [data-reveal='shown'] {
+    animation: reveal 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+}
+
+@media screen and (max-width: 59.99rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation-timeline: view(block auto calc(var(--bar-h) + var(--safe-bottom)));
+    }
+  }
+}
+
+.lift {
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.lift::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 1.25rem 2.5rem -1.5rem color-mix(in oklab, var(--color-ink) 40%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+@media (hover: hover) {
+  .lift:hover::after {
+    opacity: 1;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  .lift:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

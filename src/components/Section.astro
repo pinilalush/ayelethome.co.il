@@ -10,7 +10,7 @@ const { id, title, tone = 'surface' } = Astro.props;
 
 <section id={id} class="section" data-tone={tone} aria-labelledby={`${id}-title`}>
 	<div class="container">
-		<h2 id={`${id}-title`} class="section__title">{title}</h2>
+		<h2 id={`${id}-title`} class="section__title" data-reveal>{title}</h2>
 		<slot />
 	</div>
 </section>

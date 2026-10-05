@@ -76,10 +76,6 @@ const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabe
 	}
 
 	@media (hover: hover) {
-		.button:hover {
-			transform: translateY(-2px);
-		}
-
 		.button--primary:hover {
 			box-shadow: 0 0.75rem 2rem -0.75rem color-mix(in oklab, var(--color-primary) 90%, transparent);
 		}
@@ -93,7 +89,49 @@ const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabe
 		}
 	}
 
-	.button:active {
-		transform: scale(0.98);
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		.button:hover {
+			transform: translateY(-2px);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.button:active {
+			transform: scale(0.98);
+		}
+	}
+
+	.button[data-shine] {
+		position: relative;
+		isolation: isolate;
+		overflow: clip;
+	}
+
+	@media screen and (prefers-reduced-motion: no-preference) {
+		@supports (overflow: clip) {
+			.button[data-shine='on']::after {
+				content: '';
+				position: absolute;
+				inset: 0;
+				z-index: -1;
+				background: linear-gradient(
+					105deg,
+					transparent 30%,
+					color-mix(in oklab, var(--color-surface) 55%, transparent) 50%,
+					transparent 70%
+				);
+				pointer-events: none;
+				animation: button-shine 1.1s ease-in-out var(--shine-delay, 0.5s) both;
+			}
+		}
+	}
+
+	@keyframes button-shine {
+		from {
+			transform: translateX(var(--shine-from));
+		}
+		to {
+			transform: translateX(var(--shine-to));
+		}
 	}
 </style>

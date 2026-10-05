@@ -1,0 +1,35 @@
+<script>
+	if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+		const shine = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.intersectionRatio < 0.9) continue;
+					entry.target.setAttribute('data-shine', 'on');
+					shine.unobserve(entry.target);
+				}
+			},
+			{ rootMargin: '0px 0px -10% 0px', threshold: 0.9 },
+		);
+		for (const element of document.querySelectorAll('[data-shine]')) shine.observe(element);
+
+		if (!CSS.supports('animation-timeline: view()')) {
+			const reveal = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) continue;
+						entry.target.setAttribute('data-reveal', 'shown');
+						reveal.unobserve(entry.target);
+					}
+				},
+				{ rootMargin: '0px 0px -8% 0px' },
+			);
+			for (const element of document.querySelectorAll('[data-reveal]')) {
+				if (element.getBoundingClientRect().top < innerHeight) continue;
+				element.setAttribute('data-reveal', 'hidden');
+				reveal.observe(element);
+			}
+		}
+
+		document.addEventListener('touchstart', () => {}, { passive: true });
+	}
+</script>

@@ -9,6 +9,7 @@ import Footer from '../components/Footer.astro';
 import Head from '../components/Head.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import Logo from '../components/Logo.astro';
+import Motion from '../components/Motion.astro';
 import TestDataBanner from '../components/TestDataBanner.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { trackAttrs } from '../lib/analytics.ts';
@@ -97,6 +98,7 @@ const detect = {
 		<ContactBar code={code} />
 		<WhatsAppFab code={code} />
 		<BookingPanel code={code} />
+		<Motion />
 	</body>
 </html>
 

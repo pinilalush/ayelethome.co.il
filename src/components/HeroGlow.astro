@@ -45,10 +45,10 @@ const sparkles = [
 			<Icon name="sparkle" size="1.1em" />
 			<span>{content.tagline}</span>
 		</p>
-		<h1 id="hero-title" class="hero__title">{content.hero.title}</h1>
+		<h1 id="hero-title" class="hero__title" data-shine>{content.hero.title}<span class="hero__shine" aria-hidden="true" data-text={content.hero.title} /></h1>
 		<p class="hero__subtitle">{content.hero.subtitle}</p>
 		<div class="hero__actions" data-hero-actions>
-			<Button href={defaultWhatsappHref(code)} icon="whatsapp" data-booking-open data-booking-source="hero">{ui.bookOnWhatsapp}</Button>
+			<Button href={defaultWhatsappHref(code)} icon="whatsapp" data-booking-open data-booking-source="hero" data-shine>{ui.bookOnWhatsapp}</Button>
 			<Button
 				href={telHref(business.phone)}
 				variant="on-dark"
@@ -186,6 +186,7 @@ const sparkles = [
 	}
 
 	.hero__title {
+		position: relative;
 		max-inline-size: 18ch;
 		font-size: clamp(2.25rem, 1.55rem + 3.5vw, 4.75rem);
 		line-height: 1.06;
@@ -196,10 +197,58 @@ const sparkles = [
 		color: transparent;
 	}
 
+	.hero__shine {
+		display: none;
+	}
+
+	@media screen and (prefers-reduced-motion: no-preference) {
+		.hero__title[data-shine='on'] .hero__shine {
+			display: block;
+			position: absolute;
+			inset: -0.3em;
+			overflow: clip;
+			pointer-events: none;
+			-webkit-mask-image: linear-gradient(100deg, transparent 32%, #000 50%, transparent 68%);
+			mask-image: linear-gradient(100deg, transparent 32%, #000 50%, transparent 68%);
+			animation: hero-shine 1.6s ease-in-out 0.2s both;
+		}
+
+		.hero__title[data-shine='on'] .hero__shine::before {
+			content: attr(data-text);
+			display: block;
+			padding: 0.3em;
+			color: var(--color-surface);
+			text-shadow: 0 0 0.35em color-mix(in oklab, var(--color-accent) 85%, transparent);
+			animation: hero-shine-text 1.6s ease-in-out 0.2s both;
+		}
+	}
+
+	@keyframes hero-shine {
+		from {
+			transform: translateX(var(--shine-from));
+		}
+		to {
+			transform: translateX(var(--shine-to));
+		}
+	}
+
+	@keyframes hero-shine-text {
+		from {
+			transform: translateX(calc(var(--shine-from) * -1));
+		}
+		to {
+			transform: translateX(calc(var(--shine-to) * -1));
+		}
+	}
+
 	@media (forced-colors: active) {
 		.hero__title {
 			background: none;
 			color: CanvasText;
+		}
+
+		.hero__title[data-shine] .hero__shine {
+			display: none;
 		}
 	}
 
@@ -210,6 +259,7 @@ const sparkles = [
 	}
 
 	.hero__actions {
+		--shine-delay: 1.4s;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;

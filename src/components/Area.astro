@@ -16,7 +16,7 @@ const { title, text, places } = content.area;
 
 <Section id="area" title={title} tone={tone}>
 	<div class="area">
-		<div class="area__map" aria-hidden="true">
+		<div class="area__map" aria-hidden="true" data-reveal>
 			<span class="area__ring"></span>
 			<span class="area__ring"></span>
 			<span class="area__ring"></span>
@@ -26,7 +26,7 @@ const { title, text, places } = content.area;
 			<span class="area__label">{places[0]}</span>
 		</div>
 
-		<div class="area__text">
+		<div class="area__text" data-reveal>
 			<p class="area__lead">{text}</p>
 			<ul class="area__places">
 				{

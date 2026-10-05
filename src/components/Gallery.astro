@@ -32,7 +32,7 @@ const photos = await Promise.all(
 	<ul class="gallery">
 		{
 			photos.map((photo) => (
-				<li>
+				<li data-reveal>
 					<a href={photo.large} class="gallery__link">
 						<Image
 							src={photo.image}
@@ -72,6 +72,7 @@ const photos = await Promise.all(
 		aspect-ratio: 1;
 		border-radius: var(--radius);
 		background: color-mix(in oklab, var(--color-text) 6%, transparent);
+		transition: transform 0.25s ease;
 	}
 
 	@media (min-width: 40rem) {
@@ -87,9 +88,16 @@ const photos = await Promise.all(
 		transition: transform 0.4s ease;
 	}
 
-	@media (hover: hover) {
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
 		.gallery__link:hover .gallery__image {
 			transform: scale(1.04);
+		}
+	}
+
+	@media (hover: none) and (prefers-reduced-motion: no-preference) {
+		.gallery__link:active {
+			transform: scale(0.98);
+			transition-duration: 0.1s;
 		}
 	}
 </style>

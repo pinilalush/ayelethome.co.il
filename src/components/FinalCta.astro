@@ -35,11 +35,11 @@ const sparkles = [
 		}
 	</div>
 
-	<div class="container cta__inner">
+	<div class="container cta__inner" data-reveal>
 		<h2 id="contact-title" class="cta__title">{content.finalCta.title}</h2>
 		<p class="cta__text">{content.finalCta.text}</p>
 		<div class="cta__actions">
-			<Button href={defaultWhatsappHref(code)} icon="whatsapp" data-booking-open data-booking-source="final">{ui.bookOnWhatsapp}</Button>
+			<Button href={defaultWhatsappHref(code)} icon="whatsapp" data-booking-open data-booking-source="final" data-shine>{ui.bookOnWhatsapp}</Button>
 			<Button
 				href={telHref(site.business.phone)}
 				variant="on-dark"
@@ -66,6 +66,7 @@ const sparkles = [
 		position: relative;
 		isolation: isolate;
 		overflow: hidden;
+		overflow: clip;
 		padding-block: var(--space-3xl);
 		border-start-start-radius: clamp(1.5rem, 4vw, 3rem);
 		border-start-end-radius: clamp(1.5rem, 4vw, 3rem);

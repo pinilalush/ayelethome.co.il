@@ -18,7 +18,7 @@ const month = new Intl.DateTimeFormat(code, { month: 'long', year: 'numeric', ti
 	<ul class="reviews">
 		{
 			content.reviews.map((review) => (
-				<li class="review">
+				<li class="review lift" data-reveal>
 					<figure class="review__figure">
 						<Icon name="quote" size="2rem" class="review__mark" />
 						<blockquote class="review__text">

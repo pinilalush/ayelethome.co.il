@@ -17,7 +17,7 @@ const { content, ui } = getLocale(code);
 	<ul class="faq">
 		{
 			content.faq.map((item) => (
-				<li>
+				<li data-reveal>
 					<details class="faq__item">
 						<summary class="faq__question">
 							<span>{fillPricing(item.q, code)}</span>

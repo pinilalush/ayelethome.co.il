@@ -51,7 +51,7 @@ const plans = [
 	<div class="plans">
 		{
 			plans.map((plan) => (
-				<article class="plan" data-slot={plan.slot}>
+				<article class="plan lift" data-slot={plan.slot} data-reveal>
 					{plan.title && (
 						<header class="plan__head">
 							<span class="plan__icon" aria-hidden="true">
@@ -79,6 +79,7 @@ const plans = [
 						data-booking-open
 						data-booking-slot={plan.slot}
 						data-booking-source="price"
+						data-shine
 					>
 						{ui.bookOnWhatsapp}
 						{plan.title && <span class="visually-hidden"> – {plan.title}</span>}
@@ -88,11 +89,11 @@ const plans = [
 		}
 	</div>
 
-	{texts.note && <p class="pricing-note">{texts.note}</p>}
+	{texts.note && <p class="pricing-note" data-reveal>{texts.note}</p>}
 
 	{
 		business.payment.length > 0 && (
-			<div class="payment">
+			<div class="payment" data-reveal>
 				<p class="payment__title">{ui.payment.title}</p>
 				<ul class="payment__list">
 					{business.payment.map((method) => (

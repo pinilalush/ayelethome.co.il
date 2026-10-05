@@ -20,7 +20,7 @@ const initial = [...content.ownerName.trim()][0] ?? '';
 
 <Section id="why" title={ui.sections.why} tone={tone}>
 	<div class="about">
-		<div class="about__visual">
+		<div class="about__visual" data-reveal>
 			{
 				photo ? (
 					<Image
@@ -46,14 +46,14 @@ const initial = [...content.ownerName.trim()][0] ?? '';
 		</div>
 
 		<div class="about__text">
-			<h3 class="about__title">{content.about.title}</h3>
-			<p class="about__body">{content.about.text}</p>
-			<p class="about__signature">{content.ownerName}</p>
+			<h3 class="about__title" data-reveal>{content.about.title}</h3>
+			<p class="about__body" data-reveal>{content.about.text}</p>
+			<p class="about__signature" data-reveal>{content.ownerName}</p>
 
 			<ul class="points">
 				{
 					content.why.map((point) => (
-						<li class="point">
+						<li class="point" data-reveal>
 							<span class="point__icon" aria-hidden="true">
 								<Icon name={point.icon} size="1.4rem" />
 							</span>
