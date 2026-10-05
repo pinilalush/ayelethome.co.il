@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 7.3. Steps 3.10, 5.1 and 5.3 run later as one combined test session, after 8.1 and before Phase 9 (Pini, 2026-10-06).
+**Current step:** 8.3. Steps 3.10, 5.1, 5.3 and 7.4 run later as one combined test session, after 8.3 and before Phase 9 (Pini, 2026-10-06).
 
 ---
 
@@ -90,12 +90,12 @@ Each section is checked at every width in the responsive matrix, in every langua
 
 - [x] **7.1 🤖 GitHub Actions workflow** (`.github/workflows/deploy.yml`).
 - [x] **7.2 👤 GitHub settings** — Pages source: GitHub Actions; repository variable `ALLOW_PLACEHOLDERS=1` (template repo only). I'll give exact clicks.
-- [ ] **7.3 👤 Push** → site goes live at `https://pinilalush.github.io/landing-template/` with the test-data banner.
+- [x] **7.3 👤 Push** → site goes live at `https://pinilalush.github.io/landing-template/` with the test-data banner.
 - [ ] **7.4 🤖👤 Check the live demo** — Lighthouse, responsive matrix, real devices.
 
 ## Phase 8 — Finish the template
 
-- [ ] **8.1 🤖 `docs/NEW-SITE.md` and `README.md`** — how to start a new business site, step by step.
+- [x] **8.1 🤖 `docs/NEW-SITE.md` and `README.md`** — how to start a new business site, step by step.
 - [x] **8.2 👤 Mark the repo as a template** (Settings → Template repository).
 - [ ] **8.3 👤🤖 Dry run** — create a throwaway repo from the template, confirm its build fails on placeholders (no variable copied), then you delete the throwaway repo.
 
