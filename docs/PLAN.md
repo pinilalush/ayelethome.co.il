@@ -147,10 +147,14 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     "faq": true,
     "finalCta": true
   },
-  "heroVideo": false
+  "heroVideo": false,
+  "analytics": {
+    "umamiWebsiteId": ""
+  }
 }
 ```
 
+- `analytics.umamiWebsiteId` — empty means no counting at all; filling in the business's Umami site ID turns it on (section 16).
 - `font` is chosen from the fonts installed in the template (Heebo to start; more can be added to the template later).
 - The check script verifies **color contrast** (text on background, button text on button) meets WCAG AA, so a future business can't pick unreadable colors by accident.
 
@@ -169,6 +173,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     "currency": "ILS",
     "hourlyRate": 100,
     "minimumHours": 4,
+    "step": 0.5,
     "evening": {
       "from": "19:00",
       "hourlyRate": 150
@@ -186,16 +191,20 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   },
   "contactLanguages": ["he"],
   "payment": ["bit", "paybox", "cash", "transfer"],
+  "bookingUrl": "",
   "accessibilityStatementDate": "2026-10-05"
 }
 ```
 
 - Phone numbers are stored in international format (`+972…`); the site shows them in local format (`050-000-0000`).
 - `pricing` holds only numbers; the words around them ("per hour", "minimum") come from `content.json` per language. The minimum visit price is calculated by the site (4 × ₪100 = ₪400 by day, 4 × ₪150 = ₪600 in the evening), so changing a rate updates everything.
+- `pricing.step` — how extra time is charged after the minimum, in hours: `0.5` means by the half hour, so the booking panel offers 4, 4.5, 5….
+- **A visit that crosses `evening.from`** is split: the hours before 19:00 at the day rate, the hours after at the evening rate (e.g. 17:00–21:00 = 2 × ₪100 + 2 × ₪150 = ₪500). Same rates every work day, Friday and holiday eves included.
 - `pricing.evening` is optional: a business without an evening rate leaves it out, and the day/evening choice (section 7) disappears. If it's there, the check fails unless some `workHours` run past `evening.from`.
 - `workHours` are the times she works (not shop opening hours). They're shown in the footer and used in the structured data for Google.
 - Empty social links are simply not shown.
 - `contactLanguages` — the languages she speaks with customers, first one is the main one (section 6). Each must be one of the site's languages.
+- `bookingUrl` — optional online booking page (e.g. her free Cal.com page). Empty means hidden; filled in, a small "or choose a time online" link appears in the booking panel and the footer. WhatsApp stays the main way to book.
 - `payment` — how customers can pay, from a fixed list: `bit`, `paybox`, `cash`, `transfer`, `credit`. Shown as small labeled icons near the price; an empty list hides them. Generic icons with the name, not the companies' logos.
 - `basePath` is `/landing-template/` only while testing on `pinilalush.github.io/landing-template`; it's `/` once a domain is connected.
 
@@ -236,7 +245,11 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
       { "label": "TODO: דירת 2–3 חדרים", "hours": 4 },
       { "label": "TODO: דירת 4–5 חדרים", "hours": 6 }
     ],
-    "message": "היי, אשמח להזמין אותך {service} ל־{hours} שעות {slot}. {availability} הבנתי שהמחיר {rate} לשעה, כלומר {total}.",
+    "message": "היי, אשמח להזמין אותך {service} ל־{hours} שעות {slot}. {availability} הבנתי שהמחיר {price}.",
+    "price": {
+      "single": "{rate} לשעה, כלומר {total}",
+      "split": "{dayHours} שעות × {rate} ו־{eveningHours} שעות × {eveningRate}, כלומר {total}"
+    },
     "availability": {
       "open": "מתי את פנויה?",
       "dated": "רציתי לבדוק אם את פנויה {when}, ואם לא, מתי כן נוח לך?"
@@ -264,14 +277,15 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 - **The message asks, it doesn't assume.** With no day chosen: "…מתי את פנויה?". With a day and/or time: "רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך?" — so the customer suggests a time and she confirms or offers another.
 - Full examples:
   - defaults (one tap): "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. מתי את פנויה? הבנתי שהמחיר 100 ₪ לשעה, כלומר 400 ₪."
-  - with choices: "היי, אשמח להזמין אותך לניקיון שוטף ל־5 שעות בשעות הערב. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר 150 ₪ לשעה, כלומר 750 ₪."
+  - with choices: "היי, אשמח להזמין אותך לניקיון שוטף ל־4.5 שעות בשעות הערב. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר 150 ₪ לשעה, כלומר 675 ₪."
+  - crossing 19:00: "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־17:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר 2 שעות × 100 ₪ ו־2 שעות × 150 ₪, כלומר 500 ₪."
 - **The message is always written in a language she speaks** (`business.json` → `contactLanguages`, section 6), so it's built from that language's `booking` texts even when the visitor reads the site in English or Russian.
 - `hoursGuide` is the "how many hours do I need?" list shown next to the hours selector; tapping a line sets the hours. Real numbers come from her.
 - **Placeholders**, filled in from `business.json` → `pricing` and formatted for the language, so changing a price in one place updates every text:
   - `{hours}` — the minimum hours (4) in normal text; the chosen hours in the message
   - `{rate}`, `{total}` — the day rate and minimum total (100 ₪, 400 ₪) in normal text; in the message, the chosen slot's rate and chosen hours × rate
   - `{eveningFrom}` — when the evening rate starts (19:00); `{eveningRate}` — the evening hourly rate (150 ₪)
-  - message only: `{service}`, `{slot}`, `{availability}`, `{when}`, `{weekday}`, `{date}`, `{time}`
+  - message only: `{service}`, `{slot}`, `{availability}`, `{when}`, `{weekday}`, `{date}`, `{time}`, `{price}`, and inside `price.split`: `{dayHours}`, `{eveningHours}`
   - without an evening rate, `{slot}` is empty and the day/evening choice isn't shown
 - The check script fails if a text uses a placeholder whose value is missing (e.g. `{eveningRate}` with no evening rate), or a placeholder name it doesn't know (a typo like `{rte}`).
 - `reviews` stays empty (section hidden) until there are real reviews from real customers. Each review will hold the customer's first name, area, text, and the date.
@@ -343,7 +357,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
   5. Add it to `business.json` → `contactLanguages` only if the business actually speaks it.
 - **Contact language vs. site language.** The site can be in any language, but she answers WhatsApp and calls only in the languages in `business.json` → `contactLanguages` (Ayelet: Hebrew only).
   - The WhatsApp message is built in the visitor's language if she speaks it, otherwise in her main contact language. A Russian visitor's message goes in Hebrew.
-  - In that case the booking panel says so in the visitor's language ("Ayelet speaks Hebrew, so the message will be sent in Hebrew") and shows what the message says in their language under the Hebrew preview.
+  - In that case the booking panel shows the message **in the visitor's language first**, so they understand every detail (service, hours, day, time, price), with a note: "Ayelet speaks Hebrew, so this is sent in Hebrew". The Hebrew text that will actually be sent is shown under it.
   - Next to the Call button on those pages: "Calls in Hebrew".
 - **Mixed text:** phone numbers and English words inside Hebrew are wrapped so they don't get scrambled by the bidirectional algorithm (`dir="ltr"` on phone numbers, `<bdi>` where needed).
 
@@ -372,10 +386,10 @@ One page per language, short, built for phones first. No forms, no steps.
 **The booking panel.** Every WhatsApp button opens one small panel that builds the message from a few taps, so the customer sees the price before sending anything:
 1. **Service** — already selected when they came from a service card; otherwise optional.
 2. **Day or evening** — two big buttons with their rates (day ₪100/hour, evening ₪150/hour from 19:00). Already selected when they came from a price card.
-3. **How many hours** — a − 4 + stepper that starts at the minimum. The total updates live: "5 שעות × 150 ₪ = 750 ₪". Next to it, the "how many hours do I need?" guide (`booking.hoursGuide`); tapping a line sets the hours.
+3. **How many hours** — a − 4 + stepper that starts at the minimum and moves by `pricing.step` (half hours: 4, 4.5, 5…). The total updates live: "4.5 שעות × 150 ₪ = 675 ₪". Next to it, the "how many hours do I need?" guide (`booking.hoursGuide`); tapping a line sets the hours.
 4. **Day (optional)** — the next 14 days as buttons, only days she works; evening is disabled on days whose work hours end before 19:00 (e.g. Friday).
-5. **Start time (optional)** — only times inside her work hours for that day and the chosen day/evening.
-6. **Message preview**, then one big **Send on WhatsApp** button.
+5. **Start time (optional)** — every half hour inside her work hours for that day, so the whole visit fits before her work day ends. Daytime lists start times before 19:00, evening from 19:00. A daytime visit may run past 19:00: the price then splits automatically and shows it, e.g. "2 שעות × 100 ₪ + 2 שעות × 150 ₪ = 500 ₪".
+6. **Message preview** — in the visitor's language first, plus the Hebrew that will be sent when the visitor's language isn't hers (section 6) — then one big **Send on WhatsApp** button.
 
 - **Everything starts filled in** (general cleaning, daytime, 4 hours, no day), so a customer can still send with **one tap**. The extra choices never become required steps.
 - **The message asks whether she's free** at the chosen day/time and, if not, when she is (section 5.3) — the customer suggests, she confirms.
@@ -384,8 +398,8 @@ One page per language, short, built for phones first. No forms, no steps.
 - **Looks and feels light:** a bottom sheet on phones, a small dialog on desktop; closes with Esc, a tap outside, or the phone's back button.
 - **Accessible:** a real dialog, focus moves into it and back, every control labeled, works with keyboard and screen readers.
 - **Without JavaScript**, the buttons still work as plain links with the default message (daytime, 4 hours).
-- **A visit that crosses 19:00:** depends on her rule (section 19); until then, start times are limited so the chosen visit stays inside the chosen day/evening period.
 - If a business has no evening rate, the day/evening choice isn't shown.
+- If `bookingUrl` is filled in, the panel ends with a small "or choose a time online" link to it.
 
 **Prices** are on by default (`sections.pricing`); a future business that doesn't want to show prices turns the section off and the FAQ answer comes from its own `content.json`.
 
@@ -462,6 +476,7 @@ I'll check these in the browser and send you screenshots of each; you check on r
 
 - **Call:** `tel:+972…` from `business.json`.
 - **WhatsApp:** `https://wa.me/972…?text=<message>`, the message built by the booking panel (section 7) in her contact language, URL-encoded.
+- **Online booking (optional):** `bookingUrl` from `business.json`, opened in a new tab; not shown when empty.
 - **Save my number:** a contact card file (`contact.vcf`) made at build time from `business.json` and `content.json`: business name, her name, phone, WhatsApp, email and the site address.
 - **QR code:** `qr.svg` (for print) and `qr.png`, made at build time, pointing to the site. Not shown on the page; it's for flyers, business cards and fridge magnets. The address is listed in `docs/NEW-SITE.md`.
 - Phone numbers display in local format and are readable by screen readers.
@@ -571,7 +586,8 @@ Built in, not added on:
 
 - No cookies, no analytics, no forms, no tracking scripts → no cookie banner needed.
 - Fonts and all assets self-hosted; the only outside links are `tel:`, WhatsApp and social links.
-- **Counting taps (decision pending, section 19):** a cookie-free counter of visits and of taps on WhatsApp and Call, so you can see whether the site brings customers. No cookies and no personal data, so still no cookie banner. Candidate: Umami Cloud's free plan (100K events a month, one website per free account, 6 months of history). It would be a template setting, off by default.
+- **Counting visits and taps (optional, off by default):** with `analytics.umamiWebsiteId` filled in, the site loads Umami's small script and counts page views plus taps on WhatsApp (Send, per service and day/evening), Call, Save my number and the booking link. No cookies, nothing stored on the visitor's device, no personal data — so still no cookie banner. The counts live in the business's own **Umami Cloud** account (free plan: 100K events a month, one website per account, 6 months of history); you see them on Umami's dashboard. It counts taps, not sent messages, and visitors with ad blockers aren't counted.
+- The accessibility statement page gets one line saying visits are counted anonymously, without cookies, when counting is on.
 
 ## 17. Quality checks
 
@@ -592,8 +608,8 @@ The work is split into small steps in **[`docs/STEPS.md`](STEPS.md)**: each step
 - Hero background video: yes / no (can decide after seeing the hero).
 - The exact list of services she offers, her hours, and the places she serves.
 - Who writes the English and Russian text: I draft both from the Hebrew; you or she approves the English, and a native Russian speaker checks the Russian.
-- Counting taps on WhatsApp and Call (section 16): yes / no.
+- Before Ayelet uses online booking: check with a free Cal.com test account that approving each booking ("Requires confirmation") and a Hebrew booking page are in the free plan.
 - "How many hours do I need?" — her real estimates by home size and service (the guide in the booking panel).
-- More price questions for her: is Friday (or a holiday eve) a different rate; after the 4-hour minimum, is extra time charged by the hour or the half hour; a lower rate for a regular weekly/bi-weekly cleaning; a cancellation rule (e.g. free until 24 hours before).
-- Evening rule to confirm with her: a visit that starts before 19:00 and ends after it — are the hours after 19:00 charged ₪150, or does the start time decide the rate for the whole visit?
+- More price questions for her (text only, filled in with her data): a lower rate for a regular weekly/bi-weekly cleaning; a cancellation rule (e.g. free until 24 hours before).
+- Decided: visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days.
 - Price details to confirm with her: does ₪100 include VAT (or is she VAT-exempt, עוסק פטור), are cleaning materials included, is there a travel charge for towns outside Beer Sheva, does the 4-hour minimum apply to every service.

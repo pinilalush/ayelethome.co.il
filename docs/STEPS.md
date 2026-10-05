@@ -27,7 +27,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
   *Check:* every field from PLAN section 5 exists.
 - [x] **1.3 🤖 Schemas and data loading.** Zod schemas for every file, helpers that load the data for a given language.
   *Check:* a wrong type or missing field gives a clear error naming the file and field.
-- [ ] **1.3b 🤖 Data for the new decisions.** Russian files, contact language, payment methods, and the booking panel texts (service names for the message, one message pattern, hours guide) in the data files and rules, replacing the per-button messages.
+- [ ] **1.3b 🤖 Data for the new decisions.** Russian files, contact language, payment methods, half-hour step, booking link and Umami settings (empty), and the booking panel texts (service names for the message, one message pattern with single and split price, hours guide) in the data files and rules, replacing the per-button messages.
   *Check:* all three languages load; the rules catch a contact language that isn't a site language and an unknown payment method.
 - [ ] **1.4 🤖 Placeholder and data check.** `scripts/check-data.mjs`: `TODO` values, test phone, missing fields, missing language keys, color contrast, missing media files, unknown or unfillable placeholders (`{rte}`, or `{eveningRate}` with no evening rate). Wired to run before every build; `ALLOW_PLACEHOLDERS` override; "test data" banner + `noindex` when placeholders are allowed.
   *Check:* `npm run build` **fails** with the list; `ALLOW_PLACEHOLDERS=1 npm run build` passes and shows the banner.
@@ -49,8 +49,10 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 Each section is checked at every width in the responsive matrix, in every language, before moving on.
 
 - [ ] **3.1 🤖 Contact buttons.** Call link, bottom Call | WhatsApp bar (phones, tablets portrait), floating WhatsApp button (desktop), Call button in the header, "Calls in Hebrew" note on other languages' pages.
-- [ ] **3.1b 🤖 Booking panel.** Service, day/evening, hours with live price and the hours guide, optional day and start time limited to her work hours, message preview in her language (with a translation for other languages), Send on WhatsApp; works as a plain link without JavaScript.
-  *Check:* every combination gives the right Hebrew message and price from every language's page; one tap still sends the default message; keyboard, screen reader and the phone's back button work.
+- [ ] **3.1b 🤖 Booking panel.** Service, day/evening, hours in half-hour steps with live price and the hours guide, optional day and start time limited to her work hours, split price for visits that cross 19:00, message preview in the visitor's language plus the Hebrew that's sent, Send on WhatsApp; works as a plain link without JavaScript.
+  *Check:* every combination gives the right Hebrew message and price from every language's page, including 17:00–21:00 = ₪500; one tap still sends the default message; keyboard, screen reader and the phone's back button work.
+- [ ] **3.1c 🤖 Optional settings** — Umami counting (page views and taps on WhatsApp, Call, Save my number, booking link) when `analytics.umamiWebsiteId` is set; the "choose a time online" link when `bookingUrl` is set. Both hidden and nothing loaded when empty.
+  *Check:* with both empty, the built site loads no outside script; with test values, the script and link appear.
 - [ ] **3.2 🤖 Services** — cards with a WhatsApp button per service.
 - [ ] **3.3 🤖 Price** — two cards: day ₪100 per hour (at least ₪400) and evening from 19:00 ₪150 per hour (at least ₪600), what's included, a WhatsApp button on each.
 - [ ] **3.4 🤖 Why her + about.**
@@ -107,6 +109,7 @@ The domain steps (9.2–9.3) don't depend on the template and can be done any ti
 - [ ] **9.4 👤 Create Ayelet's repo** from the template ("Use this template"), named after the domain, public, cloned into `private-landings/`.
 - [ ] **9.5 🤖 Fill Ayelet's data** — Hebrew content from her answers, English and Russian drafts, her hours guide, her pricing (₪100 per hour, ₪150 from 19:00, 4-hour minimum unless she says otherwise). 👤👩 Approve the texts.
 - [ ] **9.5b 👤 A native Russian speaker checks the Russian text** (site and booking-panel translation notes).
+- [ ] **9.5c 👤 Open a free Umami Cloud account** for Ayelet's site and send me the site ID. *(Optional, later:* a free Cal.com account if she wants online booking — test approval and Hebrew first.*)*
 - [ ] **9.6 🤖 Build passes with no placeholders.**
 - [ ] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
 - [ ] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values.
