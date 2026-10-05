@@ -1,6 +1,6 @@
 import { z } from 'astro/zod';
 
-export const ICONS = ['sparkle', 'broom', 'spray', 'clothes', 'boxes', 'kitchen', 'window', 'shield', 'clock', 'pin'] as const;
+export const ICONS = ['sparkle', 'broom', 'spray', 'clothes', 'washer', 'boxes', 'kitchen', 'window', 'shield', 'clock', 'pin'] as const;
 export const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'] as const;
 export const FONTS = ['rubik'] as const;
 export const PAYMENTS = ['bit', 'paybox', 'cash', 'transfer', 'credit'] as const;

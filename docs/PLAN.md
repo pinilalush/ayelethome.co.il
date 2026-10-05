@@ -2,7 +2,7 @@
 
 A static landing-page template built with Astro. Every business-specific detail lives in JSON files and media folders, so a new business site means: create a repo from this template, replace the data and media, push.
 
-The first site built on it: **Ayelet**, who cleans and organizes homes in Beer Sheva (₪100 per hour, ₪150 per hour from 19:00, minimum 4 hours per visit). Her name and details go only into her own repo's data — the template keeps `TODO` test data.
+The first site built on it: **Ayelet**, who cleans, organizes and helps with whatever else the household needs (laundry, ironing, changing bedding, dishes…) in Beer Sheva (₪100 per hour, ₪150 per hour from 19:00, minimum 4 hours per visit). Her name and details go only into her own repo's data — the template keeps `TODO` test data.
 
 Status: **plan for review — no code yet.**
 
@@ -320,8 +320,8 @@ Google ignores the `keywords` meta tag, so this list isn't just pasted into a ta
 
 Starting keyword list (Hebrew), to confirm with her — she should only list services she actually does:
 
-- **Primary:** ניקיון בתים בבאר שבע, סידור וארגון הבית בבאר שבע, עוזרת בית בבאר שבע, מארגנת בתים בבאר שבע
-- **Services:** ניקיון שוטף, ניקיון יסודי, ניקיון דירה, ניקיון לפני כניסה לדירה, ניקיון אחרי מעבר דירה, ניקיון אחרי שיפוץ, ניקיון לפני פסח, ניקיון לחגים, ניקיון מטבח, ניקיון חלונות, ניקיון חדרי רחצה, סידור ארונות, סידור ארון בגדים, ארגון מטבח, סידור מזווה, סידור חדרי ילדים, אריזה ופריקה במעבר דירה
+- **Primary:** ניהול משק בית בבאר שבע, ניקיון בתים בבאר שבע, סידור וארגון הבית בבאר שבע, עוזרת בית בבאר שבע, מארגנת בתים בבאר שבע
+- **Services:** ניהול משק בית, עזרה במשק הבית, עוזרת משק בית, כביסה וגיהוץ, גיהוץ, החלפת מצעים, ניקיון שוטף, ניקיון יסודי, ניקיון דירה, ניקיון לפני כניסה לדירה, ניקיון אחרי מעבר דירה, ניקיון אחרי שיפוץ, ניקיון לפני פסח, ניקיון לחגים, ניקיון מטבח, ניקיון חלונות, ניקיון חדרי רחצה, סידור ארונות, סידור ארון בגדים, ארגון מטבח, סידור מזווה, סידור חדרי ילדים, אריזה ופריקה במעבר דירה
 - **Phrases people search:** מנקה בבאר שבע, ניקיון דירה באר שבע מחיר, מסדרת בתים, סידור בית אחרי מעבר, עזרה בניקיון הבית, ניקיון בית לפני אירוע
 - **Places (to verify with her):** באר שבע — רמות, נווה זאב, נווה נוי, נחל עשן, נחל בקע, הכלניות, סיגליות, העיר העתיקה, שכונות א׳–ו׳, ט׳, י״א; nearby — עומר, להבים, מיתר, and any other towns she actually serves
 

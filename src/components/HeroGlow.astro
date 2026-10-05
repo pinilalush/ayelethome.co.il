@@ -16,8 +16,8 @@ const { business } = site;
 const callNote = callsInNote(code);
 
 const sparkles = [
-	{ top: '0.5rem', start: '7%', size: '1.5rem', delay: '0s', edge: 'top' },
-	{ top: '1.5rem', start: '86%', size: '1.1rem', delay: '-2s', edge: 'top' },
+	{ top: '0.5rem', start: '7%', size: '1.5rem', delay: '0s' },
+	{ top: '1.5rem', start: '86%', size: '1.1rem', delay: '-2s' },
 	{ top: '91%', start: '6%', size: '1.1rem', delay: '-4s' },
 	{ top: '88%', start: '90%', size: '1.75rem', delay: '-1s' },
 	{ top: '56%', start: '97%', size: '0.8rem', delay: '-3s' },
@@ -32,10 +32,7 @@ const sparkles = [
 		<div class="hero__dots"></div>
 		{
 			sparkles.map((s) => (
-				<span
-					class:list={['hero__sparkle', s.edge && `hero__sparkle--${s.edge}`]}
-					style={`--top:${s.top};--start:${s.start};--size:${s.size};--delay:${s.delay}`}
-				>
+				<span class="hero__sparkle" style={`--top:${s.top};--start:${s.start};--size:${s.size};--delay:${s.delay}`}>
 					<Icon name="sparkle" size="100%" />
 				</span>
 			))
@@ -260,7 +257,7 @@ const sparkles = [
 		}
 
 		.hero__eyebrow,
-		.hero__sparkle--top {
+		.hero__sparkle {
 			display: none;
 		}
 

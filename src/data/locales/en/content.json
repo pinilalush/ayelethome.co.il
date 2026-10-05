@@ -1,10 +1,10 @@
 {
   "businessName": "TODO Business name",
   "ownerName": "TODO Owner name",
-  "tagline": "TODO Home cleaning and organizing in Beer Sheva",
+  "tagline": "TODO Home cleaning and household management in Beer Sheva",
   "hero": {
     "title": "TODO A clean, tidy home, and your time back for everything else",
-    "subtitle": "TODO Home cleaning and organizing in Beer Sheva and the area. Book with one WhatsApp message.",
+    "subtitle": "TODO Cleaning, organizing and whatever else the home needs, in Beer Sheva and the area. Book with one WhatsApp message.",
     "badges": ["TODO Reliable and responsible", "TODO Thorough work", "TODO Beer Sheva and area"]
   },
   "services": [
@@ -21,6 +21,13 @@
       "title": "TODO Deep cleaning",
       "text": "TODO A thorough clean of every corner: behind furniture, inside cabinets, tiles, windows and tracks.",
       "bookingName": "TODO a deep cleaning"
+    },
+    {
+      "id": "household",
+      "icon": "washer",
+      "title": "TODO Household management",
+      "text": "TODO Laundry, ironing, changing bedding, dishes and whatever else the home needs, in the same visit.",
+      "bookingName": "TODO household management"
     },
     {
       "id": "organizing",
@@ -58,7 +65,7 @@
     "note": "TODO What the price includes"
   },
   "booking": {
-    "generalName": "TODO a home cleaning",
+    "generalName": "TODO home cleaning and household management",
     "slots": {
       "day": { "title": "Daytime", "hint": "until {eveningFrom}", "inMessage": "during the day" },
       "evening": { "title": "Evening", "hint": "from {eveningFrom}", "inMessage": "in the evening" }
@@ -97,6 +104,7 @@
   "faq": [
     { "q": "TODO How much does it cost?", "a": "TODO {rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit, then by the half hour." },
     { "q": "TODO What if the visit runs past {eveningFrom}?", "a": "TODO The hours until {eveningFrom} are {rate} per hour, and the hours after are {eveningRate} per hour." },
+    { "q": "TODO What else can I ask for besides cleaning?", "a": "TODO Laundry, ironing, changing bedding, dishes, tidying — whatever the home needs, in the same visit. Just mention it in your WhatsApp message." },
     { "q": "TODO How do I book?", "a": "TODO Send a WhatsApp message or call, and we'll set a day and time." },
     { "q": "TODO What if I need to cancel?", "a": "TODO A cancellation costs a one-time fee of {cancellationFee}." },
     { "q": "TODO Do I need to provide cleaning supplies?", "a": "TODO We can agree on that in advance over WhatsApp." },
