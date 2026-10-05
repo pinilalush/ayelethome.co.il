@@ -27,7 +27,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
   *Check:* every field from PLAN section 5 exists.
 - [x] **1.3 🤖 Schemas and data loading.** Zod schemas for every file, helpers that load the data for a given language.
   *Check:* a wrong type or missing field gives a clear error naming the file and field.
-- [ ] **1.3b 🤖 Data for the new decisions.** Russian files, contact language, payment methods, half-hour step, booking link and Umami settings (empty), and the booking panel texts (service names for the message, one message pattern with single and split price, hours guide) in the data files and rules, replacing the per-button messages.
+- [x] **1.3b 🤖 Data for the new decisions.** Russian files, contact language, payment methods, half-hour step, booking link and Umami settings (empty), and the booking panel texts (service names for the message, one message pattern with single and split price, hours guide) in the data files and rules, replacing the per-button messages.
   *Check:* all three languages load; the rules catch a contact language that isn't a site language and an unknown payment method.
 - [ ] **1.4 🤖 Placeholder and data check.** `scripts/check-data.mjs`: `TODO` values, test phone, missing fields, missing language keys, color contrast, missing media files, unknown or unfillable placeholders (`{rte}`, or `{eveningRate}` with no evening rate). Wired to run before every build; `ALLOW_PLACEHOLDERS` override; "test data" banner + `noindex` when placeholders are allowed.
   *Check:* `npm run build` **fails** with the list; `ALLOW_PLACEHOLDERS=1 npm run build` passes and shows the banner.
@@ -50,7 +50,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 
 - [ ] **3.1 🤖 Contact buttons.** Call link, bottom Call | WhatsApp bar (phones, tablets portrait), floating WhatsApp button (desktop), Call button in the header, "Calls in Hebrew" note on other languages' pages.
 - [ ] **3.1b 🤖 Booking panel.** Service, day/evening, hours in half-hour steps with live price and the hours guide, optional day and start time limited to her work hours, split price for visits that cross 19:00, message preview in the visitor's language plus the Hebrew that's sent, Send on WhatsApp; works as a plain link without JavaScript.
-  *Check:* every combination gives the right Hebrew message and price from every language's page, including 17:00–21:00 = ₪500; one tap still sends the default message; keyboard, screen reader and the phone's back button work.
+  *Check:* every combination gives the right Hebrew message and price from every language's page, including 17:00–21:00 = ₪500, and correct singular wording when a split gives 1 hour or half an hour; one tap still sends the default message; keyboard, screen reader and the phone's back button work.
 - [ ] **3.1c 🤖 Optional settings** — Umami counting (page views and taps on WhatsApp, Call, Save my number, booking link) when `analytics.umamiWebsiteId` is set; the "choose a time online" link when `bookingUrl` is set. Both hidden and nothing loaded when empty.
   *Check:* with both empty, the built site loads no outside script; with test values, the script and link appear.
 - [ ] **3.2 🤖 Services** — cards with a WhatsApp button per service.

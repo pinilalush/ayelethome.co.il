@@ -1,7 +1,8 @@
 {
   "languages": [
     { "code": "he", "name": "עברית", "dir": "rtl", "default": true },
-    { "code": "en", "name": "English", "dir": "ltr" }
+    { "code": "en", "name": "English", "dir": "ltr" },
+    { "code": "ru", "name": "Русский", "dir": "ltr" }
   ],
   "theme": {
     "colors": {
@@ -27,5 +28,8 @@
     "faq": true,
     "finalCta": true
   },
-  "heroVideo": false
+  "heroVideo": false,
+  "analytics": {
+    "umamiWebsiteId": ""
+  }
 }

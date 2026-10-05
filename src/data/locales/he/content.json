@@ -13,55 +13,71 @@
       "icon": "sparkle",
       "title": "TODO ניקיון שוטף",
       "text": "TODO ניקיון קבוע של כל הבית: אבק, רצפות, מטבח וחדרי רחצה, כדי שתחזרו כל פעם לבית נקי.",
-      "whatsappMessage": "TODO היי, אשמח להזמין אותך לניקיון שוטף {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
+      "bookingName": "TODO לניקיון שוטף"
     },
     {
       "id": "deep",
       "icon": "spray",
       "title": "TODO ניקיון יסודי",
       "text": "TODO ניקיון מעמיק לכל פינה: מאחורי הרהיטים, בתוך הארונות, אריחים, חלונות ומסילות.",
-      "whatsappMessage": "TODO היי, אשמח להזמין אותך לניקיון יסודי {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
+      "bookingName": "TODO לניקיון יסודי"
     },
     {
       "id": "organizing",
       "icon": "clothes",
       "title": "TODO סידור וארגון הבית",
       "text": "TODO סידור ארונות בגדים, מטבח, מזווה וחדרי ילדים, בשיטה שקל לשמור עליה גם אחר כך.",
-      "whatsappMessage": "TODO היי, אשמח להזמין אותך לסידור וארגון הבית {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
+      "bookingName": "TODO לסידור וארגון הבית"
     },
     {
       "id": "moving",
       "icon": "boxes",
       "title": "TODO ניקיון במעבר דירה",
       "text": "TODO ניקיון לפני כניסה לדירה חדשה או אחרי יציאה, כדי לקבל או למסור דירה מבריקה.",
-      "whatsappMessage": "TODO היי, אשמח להזמין אותך לניקיון במעבר דירה {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
+      "bookingName": "TODO לניקיון במעבר דירה"
     },
     {
       "id": "renovation",
       "icon": "broom",
       "title": "TODO ניקיון אחרי שיפוץ",
       "text": "TODO הסרת אבק בנייה, כתמי צבע ושאריות סיליקון, עד שהבית מוכן למגורים.",
-      "whatsappMessage": "TODO היי, אשמח להזמין אותך לניקיון אחרי שיפוץ {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
+      "bookingName": "TODO לניקיון אחרי שיפוץ"
     },
     {
       "id": "holidays",
       "icon": "kitchen",
       "title": "TODO ניקיון לפני פסח וחגים",
       "text": "TODO ניקיון יסודי של המטבח, הארונות והבית כולו לקראת החג.",
-      "whatsappMessage": "TODO היי, אשמח להזמין אותך לניקיון לפני החג {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
+      "bookingName": "TODO לניקיון לפני החג"
     }
   ],
   "pricing": {
     "title": "מחיר",
     "perHour": "לשעה",
     "minimum": "מינימום {hours} שעות לביקור",
-    "note": "TODO מה כלול במחיר",
-    "chooseTitle": "מתי נוח לכם?",
+    "note": "TODO מה כלול במחיר"
+  },
+  "booking": {
+    "generalName": "TODO לניקיון וסידור הבית",
     "slots": {
       "day": { "title": "שעות היום", "hint": "עד {eveningFrom}", "inMessage": "בשעות היום" },
       "evening": { "title": "שעות הערב", "hint": "מ־{eveningFrom}", "inMessage": "בשעות הערב" }
     },
-    "whatsappMessage": "TODO היי, אשמח להזמין אותך {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
+    "hoursGuide": [
+      { "label": "TODO דירת 2–3 חדרים", "hours": 4 },
+      { "label": "TODO דירת 4 חדרים", "hours": 5 },
+      { "label": "TODO דירת 5 חדרים ומעלה", "hours": 6 }
+    ],
+    "message": "TODO היי, אשמח להזמין אותך {service} ל־{hours} שעות {slot}. {availability} הבנתי שהמחיר {price}.",
+    "price": {
+      "single": "{rate} לשעה, כלומר {total}",
+      "split": "{dayHours} שעות × {rate} ו־{eveningHours} שעות × {eveningRate}, כלומר {total}"
+    },
+    "availability": {
+      "open": "TODO מתי את פנויה?",
+      "dated": "TODO רציתי לבדוק אם את פנויה {when}, ואם לא, מתי כן נוח לך?"
+    },
+    "when": { "date": "ביום {weekday} {date}", "time": "מ־{time}" }
   },
   "why": [
     { "icon": "shield", "title": "TODO אמינה ודיסקרטית", "text": "TODO עובדת בבית שלכם בכבוד, בשקט ובזהירות, כאילו היה שלי." },
@@ -79,7 +95,8 @@
   },
   "reviews": [],
   "faq": [
-    { "q": "TODO כמה זה עולה?", "a": "TODO {rate} לשעה, ובשעות הערב (מ־{eveningFrom}) {eveningRate} לשעה. מינימום {hours} שעות לכל ביקור." },
+    { "q": "TODO כמה זה עולה?", "a": "TODO {rate} לשעה, ובשעות הערב (מ־{eveningFrom}) {eveningRate} לשעה. מינימום {hours} שעות לביקור, ואחר כך לפי חצאי שעה." },
+    { "q": "TODO ומה אם הביקור נמשך אחרי {eveningFrom}?", "a": "TODO השעות שעד {eveningFrom} לפי {rate} לשעה, והשעות שאחרי לפי {eveningRate} לשעה." },
     { "q": "TODO איך מזמינים?", "a": "TODO שולחים הודעה בוואטסאפ או מתקשרים, ומתאמים יום ושעה." },
     { "q": "TODO צריך להכין חומרי ניקיון?", "a": "TODO אפשר לסכם את זה מראש בהודעה בוואטסאפ." },
     { "q": "TODO לאילו אזורים את מגיעה?", "a": "TODO לכל שכונות באר שבע, ולעומר, להבים ומיתר." },
@@ -89,10 +106,6 @@
   "finalCta": {
     "title": "TODO רוצים בית נקי ומסודר?",
     "text": "TODO שלחו הודעה ונתאם מועד שמתאים לכם."
-  },
-  "whatsapp": {
-    "default": "TODO היי, אשמח להזמין אותך {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}.",
-    "floating": "TODO היי, אשמח להזמין אותך {slot}, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה, כלומר לפחות {total}."
   },
   "media": {
     "logo": "TODO הלוגו של שם העסק",

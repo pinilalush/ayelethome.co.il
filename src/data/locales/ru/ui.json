@@ -1,0 +1,73 @@
+{
+  "skipToContent": "Перейти к основному содержанию",
+  "call": "Позвонить",
+  "callNow": "Позвонить сейчас",
+  "callsIn": "Язык звонков: {language}",
+  "whatsapp": "WhatsApp",
+  "sendWhatsapp": "Написать в WhatsApp",
+  "bookOnWhatsapp": "Заказать в WhatsApp",
+  "languageSwitcher": "Выбор языка",
+  "languageNames": {
+    "he": "иврит",
+    "en": "английский",
+    "ru": "русский"
+  },
+  "opensInNewTab": "Открывается в новой вкладке",
+  "sections": {
+    "services": "Услуги",
+    "why": "Почему мы",
+    "gallery": "Галерея",
+    "reviews": "Отзывы",
+    "faq": "Частые вопросы"
+  },
+  "booking": {
+    "title": "Заказ визита",
+    "service": "Услуга",
+    "when": "Когда?",
+    "hours": "Сколько часов?",
+    "hoursGuide": "Сколько часов нужно?",
+    "minimum": "Минимум {hours} ч.",
+    "day": "День (необязательно)",
+    "time": "Время начала (необязательно)",
+    "flexible": "Гибко",
+    "total": "Итого",
+    "preview": "Ваше сообщение",
+    "contactNote": "Язык общения: {language}. Будет отправлено это сообщение:",
+    "send": "Отправить в WhatsApp",
+    "close": "Закрыть",
+    "onlineBooking": "или выбрать время онлайн"
+  },
+  "payment": {
+    "title": "Способы оплаты",
+    "bit": "Bit",
+    "paybox": "PayBox",
+    "cash": "Наличные",
+    "transfer": "Банковский перевод",
+    "credit": "Кредитная карта"
+  },
+  "saveContact": "Сохранить номер",
+  "contact": "Контакты",
+  "workHours": "Часы работы",
+  "days": {
+    "Su": "Вс",
+    "Mo": "Пн",
+    "Tu": "Вт",
+    "We": "Ср",
+    "Th": "Чт",
+    "Fr": "Пт",
+    "Sa": "Сб"
+  },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "googleBusiness": "Google"
+  },
+  "accessibilityStatement": "Заявление о доступности",
+  "testDataBanner": "Тестовые данные: это не настоящий бизнес",
+  "notFound": {
+    "title": "Страница не найдена",
+    "text": "Возможно, ссылка неверна или страница была удалена.",
+    "back": "Вернуться на главную"
+  }
+}

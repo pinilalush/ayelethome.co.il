@@ -2,10 +2,16 @@
   "skipToContent": "דילוג לתוכן הראשי",
   "call": "התקשרו",
   "callNow": "התקשרו עכשיו",
+  "callsIn": "שיחות ב{language}",
   "whatsapp": "וואטסאפ",
   "sendWhatsapp": "שליחת הודעה בוואטסאפ",
   "bookOnWhatsapp": "להזמנה בוואטסאפ",
   "languageSwitcher": "בחירת שפה",
+  "languageNames": {
+    "he": "עברית",
+    "en": "אנגלית",
+    "ru": "רוסית"
+  },
   "opensInNewTab": "נפתח בחלון חדש",
   "sections": {
     "services": "השירותים",
@@ -14,6 +20,32 @@
     "reviews": "המלצות",
     "faq": "שאלות נפוצות"
   },
+  "booking": {
+    "title": "תיאום ביקור",
+    "service": "שירות",
+    "when": "מתי?",
+    "hours": "כמה שעות?",
+    "hoursGuide": "כמה שעות צריך?",
+    "minimum": "מינימום {hours} שעות",
+    "day": "יום (לא חובה)",
+    "time": "שעת התחלה (לא חובה)",
+    "flexible": "גמיש",
+    "total": "סה״כ",
+    "preview": "ההודעה שלכם",
+    "contactNote": "השפה של {name}: {language}. זו ההודעה שתישלח:",
+    "send": "שליחה בוואטסאפ",
+    "close": "סגירה",
+    "onlineBooking": "או לבחור מועד באתר ההזמנות"
+  },
+  "payment": {
+    "title": "אמצעי תשלום",
+    "bit": "ביט",
+    "paybox": "פייבוקס",
+    "cash": "מזומן",
+    "transfer": "העברה בנקאית",
+    "credit": "כרטיס אשראי"
+  },
+  "saveContact": "שמירת המספר",
   "contact": "יצירת קשר",
   "workHours": "שעות עבודה",
   "days": {

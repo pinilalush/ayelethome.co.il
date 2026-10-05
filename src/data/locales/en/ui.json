@@ -2,10 +2,16 @@
   "skipToContent": "Skip to main content",
   "call": "Call",
   "callNow": "Call now",
+  "callsIn": "Calls in {language}",
   "whatsapp": "WhatsApp",
   "sendWhatsapp": "Send a WhatsApp message",
   "bookOnWhatsapp": "Book on WhatsApp",
   "languageSwitcher": "Choose language",
+  "languageNames": {
+    "he": "Hebrew",
+    "en": "English",
+    "ru": "Russian"
+  },
   "opensInNewTab": "Opens in a new tab",
   "sections": {
     "services": "Services",
@@ -14,6 +20,32 @@
     "reviews": "Reviews",
     "faq": "Frequently asked questions"
   },
+  "booking": {
+    "title": "Book a visit",
+    "service": "Service",
+    "when": "When?",
+    "hours": "How many hours?",
+    "hoursGuide": "How many hours do I need?",
+    "minimum": "Minimum {hours} hours",
+    "day": "Day (optional)",
+    "time": "Start time (optional)",
+    "flexible": "Flexible",
+    "total": "Total",
+    "preview": "Your message",
+    "contactNote": "{name} speaks {language}, so this is the message that will be sent:",
+    "send": "Send on WhatsApp",
+    "close": "Close",
+    "onlineBooking": "or choose a time online"
+  },
+  "payment": {
+    "title": "Payment methods",
+    "bit": "Bit",
+    "paybox": "PayBox",
+    "cash": "Cash",
+    "transfer": "Bank transfer",
+    "credit": "Credit card"
+  },
+  "saveContact": "Save my number",
   "contact": "Contact",
   "workHours": "Work hours",
   "days": {

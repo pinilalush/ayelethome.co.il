@@ -3,6 +3,7 @@ import { z } from 'astro/zod';
 export const ICONS = ['sparkle', 'broom', 'spray', 'clothes', 'boxes', 'kitchen', 'window', 'shield', 'clock', 'pin'] as const;
 export const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'] as const;
 export const FONTS = ['heebo'] as const;
+export const PAYMENTS = ['bit', 'paybox', 'cash', 'transfer', 'credit'] as const;
 
 const text = z.string().trim().min(1, 'must not be empty');
 const optionalText = z.string().trim();
@@ -21,6 +22,8 @@ const altKey = z.string().regex(/^[\w-]+$/, 'expected a key from content.json â†
 const slug = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'expected an id like deep-cleaning');
 const icon = z.enum(ICONS, { error: `expected one of: ${ICONS.join(', ')}` });
 const day = z.enum(DAYS, { error: `expected one of: ${DAYS.join(', ')}` });
+const payment = z.enum(PAYMENTS, { error: `expected one of: ${PAYMENTS.join(', ')}` });
+const positive = z.number().positive('must be more than 0');
 
 export const configSchema = z.strictObject({
   languages: z
@@ -60,6 +63,12 @@ export const configSchema = z.strictObject({
     finalCta: z.boolean(),
   }),
   heroVideo: z.boolean(),
+  analytics: z.strictObject({
+    umamiWebsiteId: z.union([
+      z.literal(''),
+      z.uuid('expected "" or an Umami website ID like 94db1cb1-74f4-4a40-ad6c-962362670409'),
+    ]),
+  }),
 });
 
 export const businessSchema = z.strictObject({
@@ -76,12 +85,13 @@ export const businessSchema = z.strictObject({
   pricing: z
     .strictObject({
       currency: z.string().regex(/^[A-Z]{3}$/, 'expected a currency code like ILS'),
-      hourlyRate: z.number().positive('must be more than 0'),
-      minimumHours: z.number().positive('must be more than 0'),
+      hourlyRate: positive,
+      minimumHours: positive,
+      step: positive,
       evening: z
         .strictObject({
           from: time,
-          hourlyRate: z.number().positive('must be more than 0'),
+          hourlyRate: positive,
         })
         .optional(),
     })
@@ -104,6 +114,12 @@ export const businessSchema = z.strictObject({
     tiktok: optionalUrl,
     googleBusiness: optionalUrl,
   }),
+  contactLanguages: z
+    .array(langCode)
+    .min(1, 'at least one contact language is required')
+    .refine((ls) => new Set(ls).size === ls.length, 'languages must not repeat'),
+  payment: z.array(payment).refine((ps) => new Set(ps).size === ps.length, 'payment methods must not repeat'),
+  bookingUrl: optionalUrl,
   accessibilityStatementDate: isoDate,
 });
 
@@ -120,6 +136,7 @@ export const mediaSchema = z.strictObject({
 
 const titleText = z.strictObject({ title: text, text });
 const slot = z.strictObject({ title: text, hint: text, inMessage: text });
+const half = (n: number) => Number.isInteger(n * 2);
 
 export const contentSchema = z.strictObject({
   businessName: text,
@@ -131,7 +148,7 @@ export const contentSchema = z.strictObject({
     badges: z.array(text).max(4, 'at most 4 badges'),
   }),
   services: z
-    .array(z.strictObject({ id: slug, icon, title: text, text, whatsappMessage: text }))
+    .array(z.strictObject({ id: slug, icon, title: text, text, bookingName: text }))
     .min(1, 'at least one service is required')
     .refine((ss) => new Set(ss.map((s) => s.id)).size === ss.length, 'service ids must be unique'),
   pricing: z
@@ -140,18 +157,28 @@ export const contentSchema = z.strictObject({
       perHour: text,
       minimum: text,
       note: optionalText,
-      chooseTitle: text.optional(),
-      slots: z.strictObject({ day: slot, evening: slot.optional() }).optional(),
-      whatsappMessage: text,
     })
     .optional(),
+  booking: z.strictObject({
+    generalName: text,
+    slots: z.strictObject({ day: slot, evening: slot.optional() }),
+    hoursGuide: z.array(
+      z.strictObject({
+        label: text,
+        hours: positive.refine(half, 'expected whole or half hours, like 4 or 4.5'),
+      }),
+    ),
+    message: text,
+    price: z.strictObject({ single: text, split: text.optional() }),
+    availability: z.strictObject({ open: text, dated: text }),
+    when: z.strictObject({ date: text, time: text }),
+  }),
   why: z.array(z.strictObject({ icon, title: text, text })),
   about: titleText,
   area: z.strictObject({ title: text, text, places: z.array(text).min(1, 'at least one place is required') }),
   reviews: z.array(z.strictObject({ name: text, area: text, text, date: isoDate })),
   faq: z.array(z.strictObject({ q: text, a: text })),
   finalCta: titleText,
-  whatsapp: z.strictObject({ default: text, floating: text }),
   media: z.record(altKey, text),
 });
 
@@ -176,10 +203,12 @@ export const uiSchema = z.strictObject({
   skipToContent: text,
   call: text,
   callNow: text,
+  callsIn: text,
   whatsapp: text,
   sendWhatsapp: text,
   bookOnWhatsapp: text,
   languageSwitcher: text,
+  languageNames: z.record(langCode, text),
   opensInNewTab: text,
   sections: z.strictObject({
     services: text,
@@ -188,6 +217,28 @@ export const uiSchema = z.strictObject({
     reviews: text,
     faq: text,
   }),
+  booking: z.strictObject({
+    title: text,
+    service: text,
+    when: text,
+    hours: text,
+    hoursGuide: text,
+    minimum: text,
+    day: text,
+    time: text,
+    flexible: text,
+    total: text,
+    preview: text,
+    contactNote: text,
+    send: text,
+    close: text,
+    onlineBooking: text,
+  }),
+  payment: z.strictObject({
+    title: text,
+    ...(Object.fromEntries(PAYMENTS.map((p) => [p, text])) as Record<(typeof PAYMENTS)[number], typeof text>),
+  }),
+  saveContact: text,
   contact: text,
   workHours: text,
   days: z.strictObject(Object.fromEntries(DAYS.map((d) => [d, text])) as Record<(typeof DAYS)[number], typeof text>),

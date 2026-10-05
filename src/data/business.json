@@ -10,6 +10,7 @@
     "currency": "ILS",
     "hourlyRate": 100,
     "minimumHours": 4,
+    "step": 0.5,
     "evening": {
       "from": "19:00",
       "hourlyRate": 150
@@ -25,5 +26,8 @@
     "tiktok": "",
     "googleBusiness": ""
   },
+  "contactLanguages": ["he"],
+  "payment": ["bit", "paybox", "cash", "transfer"],
+  "bookingUrl": "",
   "accessibilityStatementDate": "TODO 2026-10-05"
 }

@@ -96,9 +96,14 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
   if (business && evening && !business.workHours.some((h) => h.from < evening.from && evening.from < h.to)) {
     issues.push(`${where('business.json', ['pricing', 'evening', 'from'])}: the evening rate starts at ${evening.from}, but no work hours run past that time`);
   }
+  for (const [i, code] of (business?.contactLanguages ?? []).entries()) {
+    if (!codes.includes(code)) {
+      issues.push(`${where('business.json', ['contactLanguages', i])}: "${code}" is not in config.json → languages`);
+    }
+  }
 
   const altKeys = [media.logo.alt, media.hero.alt, media.about.alt, ...media.gallery.map((g) => g.alt)];
-  for (const [code, { content, seo }] of Object.entries(locales)) {
+  for (const [code, { content, seo, ui }] of Object.entries(locales)) {
     for (const key of altKeys) {
       if (!(key in content.media)) {
         issues.push(`${where(`locales/${code}/content.json`, ['media'])}: missing the alt text "${key}" used in media.json`);
@@ -107,11 +112,24 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
     if (config.sections.pricing && !content.pricing) {
       issues.push(`${where(`locales/${code}/content.json`, ['pricing'])}: missing, but config.json → sections.pricing is true`);
     }
-    if (business?.pricing?.evening && content.pricing) {
-      const file = `locales/${code}/content.json`;
-      if (!content.pricing.chooseTitle) issues.push(`${where(file, ['pricing', 'chooseTitle'])}: missing, but business.json has an evening rate`);
-      if (!content.pricing.slots) issues.push(`${where(file, ['pricing', 'slots'])}: missing, but business.json has an evening rate`);
-      else if (!content.pricing.slots.evening) issues.push(`${where(file, ['pricing', 'slots', 'evening'])}: missing, but business.json has an evening rate`);
+    const file = `locales/${code}/content.json`;
+    if (business?.pricing?.evening) {
+      if (!content.booking.slots.evening) issues.push(`${where(file, ['booking', 'slots', 'evening'])}: missing, but business.json has an evening rate`);
+      if (!content.booking.price.split) issues.push(`${where(file, ['booking', 'price', 'split'])}: missing, but business.json has an evening rate`);
+    }
+    const pricing = business?.pricing;
+    if (pricing) {
+      for (const [i, { hours }] of content.booking.hoursGuide.entries()) {
+        const steps = (hours - pricing.minimumHours) / pricing.step;
+        if (hours < pricing.minimumHours || Math.abs(steps - Math.round(steps)) > 1e-9) {
+          issues.push(`${where(file, ['booking', 'hoursGuide', i, 'hours'])}: ${hours} isn't a bookable length (minimum ${pricing.minimumHours}, then steps of ${pricing.step})`);
+        }
+      }
+    }
+    for (const contactCode of business?.contactLanguages ?? []) {
+      if (!(contactCode in ui.languageNames)) {
+        issues.push(`${where(`locales/${code}/ui.json`, ['languageNames'])}: missing the name of "${contactCode}", a language in business.json → contactLanguages`);
+      }
     }
     const og = media.og[code];
     if (og && seo.ogImage !== og.replace(/\.[^.]+$/, '')) {

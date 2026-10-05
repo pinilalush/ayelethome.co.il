@@ -269,7 +269,8 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   "faq": [
     { "q": "TODO", "a": "TODO" }
   ],
-  "finalCta": { "title": "TODO", "text": "TODO" }
+  "finalCta": { "title": "TODO", "text": "TODO" },
+  "media": { "logo": "TODO", "hero": "TODO", "about": "TODO" }
 }
 ```
 
