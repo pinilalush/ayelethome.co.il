@@ -1,0 +1,35 @@
+{
+  "languages": [
+    { "code": "he", "name": "עברית", "dir": "rtl", "default": true },
+    { "code": "en", "name": "English", "dir": "ltr" },
+    { "code": "ru", "name": "Русский", "dir": "ltr" }
+  ],
+  "theme": {
+    "colors": {
+      "ink": "#0B1426",
+      "surface": "#FFFFFF",
+      "surfaceAlt": "#F3F7F9",
+      "text": "#14202E",
+      "textMuted": "#4A5868",
+      "primary": "#12B5A6",
+      "primaryText": "#04201D",
+      "accent": "#7FE3D6"
+    },
+    "font": "rubik",
+    "radius": "1.25rem"
+  },
+  "sections": {
+    "services": true,
+    "pricing": true,
+    "why": true,
+    "area": true,
+    "gallery": false,
+    "reviews": false,
+    "faq": true,
+    "finalCta": true
+  },
+  "heroVideo": true,
+  "analytics": {
+    "umamiWebsiteId": ""
+  }
+}

@@ -1,0 +1,53 @@
+---
+import About from '../../components/About.astro';
+import Area from '../../components/Area.astro';
+import Faq from '../../components/Faq.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import Gallery from '../../components/Gallery.astro';
+import HeroGlow from '../../components/HeroGlow.astro';
+import Pricing from '../../components/Pricing.astro';
+import Reviews from '../../components/Reviews.astro';
+import Services from '../../components/Services.astro';
+import Base from '../../layouts/Base.astro';
+import { getLocale, site } from '../../lib/data.ts';
+import { fillPricing } from '../../lib/pricing-text.ts';
+import { alternate } from '../../lib/sections.ts';
+
+export function getStaticPaths() {
+	return site.languages.map((l) => ({
+		params: { lang: l.default ? undefined : l.code },
+		props: { code: l.code },
+	}));
+}
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { seo } = getLocale(code);
+const { sections } = site.config;
+
+const shown = {
+	services: sections.services,
+	pricing: sections.pricing && Boolean(site.business.pricing),
+	why: sections.why,
+	area: sections.area,
+	gallery: sections.gallery,
+	reviews: sections.reviews,
+	faq: sections.faq,
+};
+const tones = alternate((Object.keys(shown) as (keyof typeof shown)[]).filter((key) => shown[key]));
+---
+
+<Base code={code} title={fillPricing(seo.title, code)} headerTone="dark">
+	<HeroGlow code={code} />
+	{shown.services && <Services code={code} tone={tones.services} />}
+	{shown.pricing && <Pricing code={code} tone={tones.pricing} />}
+	{shown.why && <About code={code} tone={tones.why} />}
+	{shown.area && <Area code={code} tone={tones.area} />}
+	{shown.gallery && <Gallery code={code} tone={tones.gallery} />}
+	{shown.reviews && <Reviews code={code} tone={tones.reviews} />}
+	{shown.faq && <Faq code={code} tone={tones.faq} />}
+	{sections.finalCta && <FinalCta code={code} />}
+</Base>

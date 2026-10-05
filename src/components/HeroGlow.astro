@@ -1,0 +1,465 @@
+---
+import { getImage } from 'astro:assets';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { trackAttrs } from '../lib/analytics.ts';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { telHref } from '../lib/contact.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { callsInNote } from '../lib/i18n.ts';
+import { findImage } from '../lib/media.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+const { business } = site;
+const callNote = callsInNote(code);
+
+const WIDTHS = [480, 640, 800, 960, 1280, 1600, 1920, 2400];
+async function sources(file: string | undefined) {
+	const image = findImage(file);
+	if (!image) return undefined;
+	const widths = WIDTHS.filter((w) => w < image.width).concat(image.width);
+	const [avif, webp, jpg] = await Promise.all(
+		(['avif', 'webp', 'jpg'] as const).map((format) => getImage({ src: image, widths, format, quality: 70 })),
+	);
+	return { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, jpg, width: image.width, height: image.height };
+}
+const photo = await sources(site.media.hero.file);
+const photoMobile = await sources(site.media.hero.fileMobile);
+const video = site.config.heroVideo && site.media.heroVideo ? `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}media/${site.media.heroVideo.file}` : undefined;
+
+const sparkles = [
+	{ top: '0.5rem', start: '7%', size: '1.5rem', delay: '0s' },
+	{ top: '1.5rem', start: '86%', size: '1.1rem', delay: '-2s' },
+	{ top: '91%', start: '6%', size: '1.1rem', delay: '-4s' },
+	{ top: '88%', start: '90%', size: '1.75rem', delay: '-1s' },
+	{ top: '56%', start: '97%', size: '0.8rem', delay: '-3s' },
+	{ top: '38%', start: '1%', size: '0.7rem', delay: '-5s' },
+];
+---
+
+<section class="hero" aria-labelledby="hero-title">
+	<div class="hero__decor" aria-hidden="true">
+		{
+			photo && (
+				<picture class="hero__photo">
+					{photoMobile && <source media="(max-aspect-ratio: 4/5)" type="image/avif" srcset={photoMobile.avif} sizes="100vw" />}
+					{photoMobile && <source media="(max-aspect-ratio: 4/5)" type="image/webp" srcset={photoMobile.webp} sizes="100vw" />}
+					<source type="image/avif" srcset={photo.avif} sizes="100vw" />
+					<source type="image/webp" srcset={photo.webp} sizes="100vw" />
+					<img src={photo.jpg.src} srcset={photo.jpg.srcSet.attribute} sizes="100vw" width={photo.width} height={photo.height} alt="" fetchpriority="high" decoding="async" />
+				</picture>
+			)
+		}
+		{video && <video class="hero__video" data-hero-video data-src={video} muted loop playsinline preload="none" tabindex="-1" />}
+		<div class="hero__glow hero__glow--a"></div>
+		<div class="hero__glow hero__glow--b"></div>
+		<div class="hero__dots"></div>
+		{
+			sparkles.map((s) => (
+				<span class="hero__sparkle" style={`--top:${s.top};--start:${s.start};--size:${s.size};--delay:${s.delay}`}>
+					<Icon name="sparkle" size="100%" />
+				</span>
+			))
+		}
+	</div>
+
+	{
+		video && (
+			<button type="button" class="hero__video-toggle" data-hero-video-toggle data-pause={ui.heroVideo.pause} data-play={ui.heroVideo.play} aria-label={ui.heroVideo.pause} hidden>
+				<Icon name="pause" size="1.1em" class="hero__video-pause" />
+				<Icon name="play" size="1.1em" class="hero__video-play" />
+			</button>
+		)
+	}
+
+	<div class="container hero__inner">
+		<p class="hero__eyebrow">
+			<Icon name="sparkle" size="1.1em" />
+			<span>{content.tagline}</span>
+		</p>
+		<h1 id="hero-title" class="hero__title" data-shine>{content.hero.title}<span class="hero__shine" aria-hidden="true" data-text={content.hero.title} /></h1>
+		<p class="hero__subtitle">{content.hero.subtitle}</p>
+		<div class="hero__actions" data-hero-actions>
+			<Button href={defaultWhatsappHref(code)} icon="whatsapp" data-booking-open data-booking-source="hero" data-shine>{ui.bookOnWhatsapp}</Button>
+			<Button
+				href={telHref(business.phone)}
+				variant="on-dark"
+				icon="phone"
+				describedBy={callNote ? 'call-note-hero' : undefined}
+				{...trackAttrs('call', { source: 'hero' })}
+			>
+				{ui.call}
+			</Button>
+		</div>
+		{
+			callNote && (
+				<p id="call-note-hero" class="hero__note">
+					<Icon name="phone" size="1em" />
+					<span>{callNote}</span>
+				</p>
+			)
+		}
+		<ul class="hero__badges">
+			{
+				content.hero.badges.map((badge) => (
+					<li>
+						<Icon name="check" size="1.1em" />
+						<span>{badge}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+		padding-block: var(--space-xl) var(--space-3xl);
+		background: var(--color-ink);
+		color: var(--color-surface);
+		text-align: center;
+		border-end-start-radius: clamp(1.5rem, 4vw, 3rem);
+		border-end-end-radius: clamp(1.5rem, 4vw, 3rem);
+	}
+
+	.hero__decor {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		mask-image: linear-gradient(to bottom, transparent, black 18%);
+	}
+
+	.hero__photo img {
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		opacity: 0.22;
+		filter: saturate(0.85);
+	}
+
+	.hero__video {
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		opacity: 0;
+		filter: saturate(0.85);
+		transition: opacity 1.2s ease;
+	}
+
+	.hero__video[data-playing] {
+		opacity: 0.22;
+	}
+
+	.hero__photo img {
+		transition: opacity 1.2s ease;
+	}
+
+	.hero__decor:has(.hero__video[data-playing]) .hero__photo img {
+		opacity: 0;
+	}
+
+	.hero__video-toggle {
+		position: absolute;
+		inset-block-end: var(--space-m);
+		inset-inline-end: var(--space-m);
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		border: 1px solid color-mix(in oklab, var(--color-surface) 22%, transparent);
+		border-radius: 50%;
+		background: color-mix(in oklab, var(--color-ink) 55%, transparent);
+		color: var(--color-surface);
+		cursor: pointer;
+	}
+
+	.hero__video-toggle[hidden] {
+		display: none;
+	}
+
+	.hero__video-toggle:not([data-paused='true']) :global(.hero__video-play),
+	.hero__video-toggle[data-paused='true'] :global(.hero__video-pause) {
+		display: none;
+	}
+
+	.hero__glow {
+		position: absolute;
+		border-radius: 50%;
+		filter: blur(40px);
+	}
+
+	.hero__glow--a {
+		inline-size: 70vmax;
+		block-size: 70vmax;
+		inset-block-start: -38vmax;
+		inset-inline-end: -28vmax;
+		background: radial-gradient(circle, color-mix(in oklab, var(--color-accent) 60%, transparent), transparent 65%);
+	}
+
+	.hero__glow--b {
+		inline-size: 60vmax;
+		block-size: 60vmax;
+		inset-block-end: -36vmax;
+		inset-inline-start: -26vmax;
+		background: radial-gradient(circle, color-mix(in oklab, var(--color-primary) 55%, transparent), transparent 65%);
+	}
+
+	.hero__dots {
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(color-mix(in oklab, var(--color-surface) 22%, transparent) 1px, transparent 1.5px);
+		background-size: 26px 26px;
+		mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+		opacity: 0.6;
+	}
+
+	.hero__sparkle {
+		position: absolute;
+		inset-block-start: var(--top);
+		inset-inline-start: var(--start);
+		inline-size: var(--size);
+		color: var(--color-accent);
+		opacity: 0.75;
+		animation: hero-float 7s ease-in-out infinite;
+		animation-delay: var(--delay);
+	}
+
+	@keyframes hero-float {
+		0%,
+		100% {
+			transform: translateY(0) scale(1) rotate(0deg);
+			opacity: 0.75;
+		}
+		50% {
+			transform: translateY(-12px) scale(1.12) rotate(10deg);
+			opacity: 1;
+		}
+	}
+
+	.hero__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-m);
+	}
+
+	@media (min-width: 56rem) {
+		.hero {
+			display: grid;
+			align-items: center;
+			min-block-size: min(46rem, 80svh);
+		}
+	}
+
+	.hero__eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		padding: 0.45em 1.1em;
+		border: 1px solid color-mix(in oklab, var(--color-surface) 18%, transparent);
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--color-surface) 8%, transparent);
+		backdrop-filter: blur(8px);
+		color: var(--color-accent);
+		font-size: var(--step--1);
+		font-weight: 600;
+	}
+
+	.hero__title {
+		position: relative;
+		max-inline-size: 18ch;
+		font-size: clamp(2.25rem, 1.55rem + 3.5vw, 4.75rem);
+		line-height: 1.06;
+		letter-spacing: -0.015em;
+		background: linear-gradient(180deg, var(--color-surface) 45%, color-mix(in oklab, var(--color-accent) 75%, var(--color-surface)));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	.hero__shine {
+		display: none;
+	}
+
+	@media screen and (prefers-reduced-motion: no-preference) {
+		.hero__title[data-shine='on'] .hero__shine {
+			display: block;
+			position: absolute;
+			inset: -0.3em;
+			overflow: clip;
+			pointer-events: none;
+			-webkit-mask-image: linear-gradient(100deg, transparent 32%, #000 50%, transparent 68%);
+			mask-image: linear-gradient(100deg, transparent 32%, #000 50%, transparent 68%);
+			animation: hero-shine 1.6s ease-in-out 0.2s both;
+		}
+
+		.hero__title[data-shine='on'] .hero__shine::before {
+			content: attr(data-text);
+			display: block;
+			padding: 0.3em;
+			color: var(--color-surface);
+			text-shadow: 0 0 0.35em color-mix(in oklab, var(--color-accent) 85%, transparent);
+			animation: hero-shine-text 1.6s ease-in-out 0.2s both;
+		}
+	}
+
+	@keyframes hero-shine {
+		from {
+			transform: translateX(var(--shine-from));
+		}
+		to {
+			transform: translateX(var(--shine-to));
+		}
+	}
+
+	@keyframes hero-shine-text {
+		from {
+			transform: translateX(calc(var(--shine-from) * -1));
+		}
+		to {
+			transform: translateX(calc(var(--shine-to) * -1));
+		}
+	}
+
+	@media (forced-colors: active) {
+		.hero__title {
+			background: none;
+			color: CanvasText;
+		}
+
+		.hero__title[data-shine] .hero__shine {
+			display: none;
+		}
+	}
+
+	.hero__subtitle {
+		max-inline-size: 42ch;
+		font-size: var(--step-1);
+		color: color-mix(in oklab, var(--color-surface) 80%, transparent);
+	}
+
+	.hero__actions {
+		--shine-delay: 1.4s;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-xs);
+		inline-size: 100%;
+		margin-block-start: var(--space-2xs);
+	}
+
+	.hero__actions > :global(*) {
+		flex: 1 1 14rem;
+	}
+
+	@media (min-width: 40rem) {
+		.hero__actions > :global(*) {
+			max-inline-size: 20rem;
+		}
+	}
+
+	.hero__note {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		margin-block-start: calc(var(--space-xs) * -1);
+		color: color-mix(in oklab, var(--color-surface) 70%, transparent);
+		font-size: var(--step--1);
+	}
+
+	.hero__badges {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-2xs) var(--space-m);
+		padding: 0;
+		list-style: none;
+		color: color-mix(in oklab, var(--color-surface) 85%, transparent);
+		font-size: var(--step--1);
+		font-weight: 500;
+	}
+
+	@media (orientation: landscape) and (max-height: 32rem) {
+		.hero {
+			padding-block: var(--space-s) var(--space-l);
+		}
+
+		.hero__inner {
+			gap: var(--space-xs);
+		}
+
+		.hero__eyebrow,
+		.hero__sparkle {
+			display: none;
+		}
+
+		.hero__title {
+			max-inline-size: 26ch;
+			font-size: clamp(1.75rem, 1rem + 2.5vw, 2.5rem);
+		}
+
+		.hero__subtitle {
+			font-size: var(--step-0);
+		}
+
+		.hero__actions {
+			margin-block-start: 0;
+		}
+
+		.hero__actions > :global(*) {
+			flex-basis: 12rem;
+			max-inline-size: 18rem;
+		}
+	}
+
+	.hero__badges li {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+	}
+
+	.hero__badges :global(svg) {
+		color: var(--color-accent);
+	}
+</style>
+
+<script>
+	const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+	const toggle = document.querySelector<HTMLButtonElement>('[data-hero-video-toggle]');
+	const wide = matchMedia('(min-aspect-ratio: 4/5)');
+	const calm = matchMedia('(prefers-reduced-motion: reduce)');
+	const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+	if (video && toggle && wide.matches && !calm.matches && !saveData) {
+		video.src = video.dataset.src ?? '';
+		video.addEventListener('playing', () => video.toggleAttribute('data-playing', true), { once: true });
+		video.play().then(() => (toggle.hidden = false)).catch(() => {});
+		toggle.addEventListener('click', () => {
+			const paused = toggle.getAttribute('data-paused') !== 'true';
+			if (paused) video.pause();
+			else video.play();
+			toggle.setAttribute('data-paused', String(paused));
+			toggle.setAttribute('aria-label', (paused ? toggle.dataset.play : toggle.dataset.pause) ?? '');
+		});
+		calm.addEventListener('change', () => {
+			if (!calm.matches) return;
+			video.pause();
+			toggle.setAttribute('data-paused', 'true');
+			toggle.setAttribute('aria-label', toggle.dataset.play ?? '');
+		});
+	}
+</script>

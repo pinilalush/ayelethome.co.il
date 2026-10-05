@@ -1,0 +1,137 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import type { IconName } from '../lib/icons.ts';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'href' | 'class'> {
+	href: string;
+	variant?: 'primary' | 'secondary' | 'on-dark';
+	size?: 'md' | 'sm';
+	icon?: IconName;
+	newTab?: boolean;
+	newTabLabel?: string;
+	describedBy?: string;
+	class?: string;
+}
+
+const { href, variant = 'primary', size = 'md', icon, newTab = false, newTabLabel, describedBy, class: className, ...rest } = Astro.props;
+---
+
+<a
+	href={href}
+	class:list={['button', `button--${variant}`, `button--${size}`, className]}
+	target={newTab ? '_blank' : undefined}
+	rel={newTab ? 'noopener' : undefined}
+	aria-describedby={describedBy}
+	{...rest}
+>
+	{icon && <Icon name={icon} size="1.25em" />}
+	<span><slot /></span>
+	{newTab && newTabLabel && <span class="visually-hidden">({newTabLabel})</span>}
+</a>
+
+<style>
+	.button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-2xs);
+		min-block-size: 3.25rem;
+		padding-inline: var(--space-m);
+		border: 1.5px solid transparent;
+		border-radius: 999px;
+		font-size: var(--step-0);
+		font-weight: 700;
+		line-height: 1.2;
+		text-align: center;
+		text-decoration: none;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease,
+			background-color 0.2s ease;
+	}
+
+	.button--sm {
+		min-block-size: 2.75rem;
+		padding-inline: var(--space-s);
+		font-size: var(--step--1);
+	}
+
+	.button--primary {
+		background: var(--color-primary);
+		color: var(--color-primary-text);
+		box-shadow: 0 0.5rem 1.5rem -0.75rem color-mix(in oklab, var(--color-primary) 80%, transparent);
+	}
+
+	.button--secondary {
+		border-color: color-mix(in oklab, var(--color-text) 25%, transparent);
+		color: var(--color-text);
+	}
+
+	.button--on-dark {
+		border-color: color-mix(in oklab, var(--color-surface) 35%, transparent);
+		background: color-mix(in oklab, var(--color-surface) 8%, transparent);
+		color: var(--color-surface);
+		backdrop-filter: blur(8px);
+	}
+
+	@media (hover: hover) {
+		.button--primary:hover {
+			box-shadow: 0 0.75rem 2rem -0.75rem color-mix(in oklab, var(--color-primary) 90%, transparent);
+		}
+
+		.button--secondary:hover {
+			background: var(--color-surface-alt);
+		}
+
+		.button--on-dark:hover {
+			background: color-mix(in oklab, var(--color-surface) 16%, transparent);
+		}
+	}
+
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		.button:hover {
+			transform: translateY(-2px);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.button:active {
+			transform: scale(0.98);
+		}
+	}
+
+	.button[data-shine] {
+		position: relative;
+		isolation: isolate;
+		overflow: clip;
+	}
+
+	@media screen and (prefers-reduced-motion: no-preference) {
+		@supports (overflow: clip) {
+			.button[data-shine='on']::after {
+				content: '';
+				position: absolute;
+				inset: 0;
+				z-index: -1;
+				background: linear-gradient(
+					105deg,
+					transparent 30%,
+					color-mix(in oklab, var(--color-surface) 55%, transparent) 50%,
+					transparent 70%
+				);
+				pointer-events: none;
+				animation: button-shine 1.1s ease-in-out var(--shine-delay, 0.5s) both;
+			}
+		}
+	}
+
+	@keyframes button-shine {
+		from {
+			transform: translateX(var(--shine-from));
+		}
+		to {
+			transform: translateX(var(--shine-to));
+		}
+	}
+</style>

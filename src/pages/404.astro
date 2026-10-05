@@ -1,0 +1,205 @@
+---
+import '@fontsource-variable/rubik';
+import '../styles/global.css';
+import Button from '../components/Button.astro';
+import Head from '../components/Head.astro';
+import Logo from '../components/Logo.astro';
+import TestDataBanner from '../components/TestDataBanner.astro';
+import { getLocale, pending, site } from '../lib/data.ts';
+import { LANGUAGE_STORAGE_KEY, homeUrl } from '../lib/i18n.ts';
+
+const pages = site.languages.map((language) => {
+	const { content, ui } = getLocale(language.code);
+	return { language, ui, title: `${ui.notFound.title} | ${content.businessName}` };
+});
+const first = pages.find((p) => p.language.default) ?? pages[0];
+const detect = { storageKey: LANGUAGE_STORAGE_KEY, base: import.meta.env.BASE_URL, defaultCode: first.language.code };
+---
+
+<html lang={first.language.code} dir={first.language.dir}>
+	<head>
+		<Head title={first.title} noindex />
+	</head>
+	<body>
+		{
+			pending.length > 0 &&
+				pages.map(({ language, ui }) => (
+					<div lang={language.code} dir={language.dir} data-not-found-banner={language.code} hidden={!language.default}>
+						<TestDataBanner label={ui.testDataBanner} />
+					</div>
+				))
+		}
+		<main class="not-found">
+			<div class="not-found__decor" aria-hidden="true">
+				<span class="not-found__glow"></span>
+				<span class="not-found__dots"></span>
+			</div>
+			{
+				pages.map(({ language, ui, title }) => (
+					<div
+						class="not-found__page"
+						lang={language.code}
+						dir={language.dir}
+						data-not-found={language.code}
+						data-title={title}
+						hidden={!language.default}
+					>
+						<Logo code={language.code} />
+						<p class="not-found__code" aria-hidden="true">
+							404
+						</p>
+						<h1 class="not-found__title">{ui.notFound.title}</h1>
+						<p class="not-found__text">{ui.notFound.text}</p>
+						<Button href={homeUrl(language.code)}>{ui.notFound.back}</Button>
+						<nav class="not-found__languages" aria-label={ui.languageSwitcher}>
+							<ul>
+								{site.languages.map((other) => (
+									<li>
+										<a href={homeUrl(other.code)} lang={other.code} hreflang={other.code}>
+											{other.name}
+										</a>
+									</li>
+								))}
+							</ul>
+						</nav>
+					</div>
+				))
+			}
+		</main>
+		<script is:inline define:vars={detect}>
+			const pages = [...document.querySelectorAll('[data-not-found]')];
+			const codes = pages.map((p) => p.dataset.notFound);
+			const path = location.pathname.startsWith(base) ? location.pathname.slice(base.length) : location.pathname.replace(/^\//, '');
+			const first = path.split('/')[0];
+			let code = codes.includes(first) ? first : null;
+			if (!code) {
+				try {
+					const saved = localStorage.getItem(storageKey);
+					if (codes.includes(saved)) code = saved;
+				} catch (e) {}
+			}
+			if (!code) {
+				const aliases = { iw: 'he' };
+				for (const tag of navigator.languages || [navigator.language]) {
+					const lang = String(tag).toLowerCase().split('-')[0];
+					if (codes.includes(aliases[lang] || lang)) {
+						code = aliases[lang] || lang;
+						break;
+					}
+				}
+			}
+			const page = pages.find((p) => p.dataset.notFound === (code || defaultCode));
+			if (page) {
+				for (const p of pages) p.hidden = p !== page;
+				for (const b of document.querySelectorAll('[data-not-found-banner]')) b.hidden = b.dataset.notFoundBanner !== page.dataset.notFound;
+				document.documentElement.lang = page.lang;
+				document.documentElement.dir = page.dir;
+				document.title = page.dataset.title;
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	.not-found {
+		position: relative;
+		isolation: isolate;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		min-block-size: 100dvh;
+		padding: max(var(--space-xl), var(--safe-top)) var(--gutter) max(var(--space-xl), var(--safe-bottom));
+		background: var(--color-ink);
+		color: var(--color-surface);
+		text-align: center;
+	}
+
+	.not-found__decor {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+	}
+
+	.not-found__glow {
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		inline-size: min(56rem, 160vw);
+		aspect-ratio: 1.6;
+		border-radius: 50%;
+		background: radial-gradient(closest-side, color-mix(in oklab, var(--color-primary) 40%, transparent), transparent);
+		filter: blur(30px);
+		translate: -50% -50%;
+	}
+
+	.not-found__dots {
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(color-mix(in oklab, var(--color-surface) 20%, transparent) 1px, transparent 1.5px);
+		background-size: 26px 26px;
+		mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 15%, transparent 75%);
+		opacity: 0.5;
+	}
+
+	.not-found__page {
+		--color-text: var(--color-surface);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-s);
+		max-inline-size: 36rem;
+	}
+
+	.not-found__page[hidden] {
+		display: none;
+	}
+
+	.not-found__code {
+		font-size: clamp(5rem, 3rem + 12vw, 9rem);
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: -0.03em;
+		background: linear-gradient(180deg, var(--color-surface) 35%, color-mix(in oklab, var(--color-accent) 80%, var(--color-surface)));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	@media (forced-colors: active) {
+		.not-found__code {
+			background: none;
+			color: CanvasText;
+		}
+	}
+
+	.not-found__title {
+		font-size: var(--step-4);
+	}
+
+	.not-found__text {
+		max-inline-size: 36ch;
+		margin-block-end: var(--space-xs);
+		color: color-mix(in oklab, var(--color-surface) 78%, transparent);
+		font-size: var(--step-1);
+	}
+
+	.not-found__languages ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-2xs) var(--space-s);
+		margin: var(--space-s) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.not-found__languages a {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: 2.75rem;
+		padding-inline: var(--space-2xs);
+		color: color-mix(in oklab, var(--color-surface) 78%, transparent);
+		font-weight: 600;
+	}
+</style>

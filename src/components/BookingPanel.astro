@@ -1,0 +1,793 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { trackAttrs } from '../lib/analytics.ts';
+import { formatDuration, formatMoney, maxHours, type BookingConfig, type DayCode, type LocaleTexts } from '../lib/booking.ts';
+import { contactLanguage, defaultWhatsappHref } from '../lib/booking-server.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { getLanguage } from '../lib/i18n.ts';
+import { fillPricing } from '../lib/pricing-text.ts';
+import { fill } from '../lib/text.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { business } = site;
+const pricing = business.pricing;
+const { content, ui } = getLocale(code);
+const contact = contactLanguage(code);
+const evening = pricing?.evening;
+const eveningSlot = content.booking.slots.evening;
+
+const textsFor = (lang: string): LocaleTexts => {
+	const locale = getLocale(lang);
+	return {
+		booking: locale.content.booking,
+		durations: locale.ui.duration,
+		days: locale.ui.days as Record<DayCode, string>,
+		services: Object.fromEntries(locale.content.services.map((s) => [s.id, s.bookingName])),
+	};
+};
+
+const config: BookingConfig | undefined = pricing && {
+	visitor: code,
+	contact,
+	whatsapp: business.whatsapp,
+	pricing,
+	workHours: business.workHours,
+	maxHours: maxHours(business.workHours, pricing),
+	defaultService: business.defaultService,
+	texts: { [code]: textsFor(code), [contact]: textsFor(contact) },
+};
+
+const money = (amount: number) => formatMoney(code, amount, pricing?.currency ?? 'ILS');
+const contactNote =
+	contact === code ? undefined : fill(ui.booking.contactNote, { name: content.ownerName, language: ui.languageNames[contact] ?? contact });
+const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
+---
+
+{
+	pricing && config && (
+		<dialog class="booking" aria-labelledby="booking-title" data-booking>
+			<div class="booking__sheet">
+				<header class="booking__head">
+					<h2 id="booking-title" class="booking__title">
+						{ui.booking.title}
+					</h2>
+					<button type="button" class="booking__close" aria-label={ui.booking.close} data-booking-close>
+						<Icon name="close" size="1.35rem" />
+					</button>
+				</header>
+
+				<div class="booking__body">
+					<div class="field">
+						<label for="booking-service" class="field__label">
+							{ui.booking.service}
+						</label>
+						<select id="booking-service" class="field__select" data-booking-service>
+							{content.services.map((s) => (
+								<option value={s.id} selected={s.id === business.defaultService}>
+									{s.title}
+								</option>
+							))}
+						</select>
+					</div>
+
+					{evening && eveningSlot && (
+						<fieldset class="field">
+							<legend class="field__label">{ui.booking.when}</legend>
+							<div class="slots">
+								<label class="choice slot">
+									<input type="radio" name="booking-slot" value="day" checked data-booking-slot />
+									<span class="slot__title">{content.booking.slots.day.title}</span>
+									<span class="slot__hint">{fillPricing(content.booking.slots.day.hint, code)}</span>
+									<span class="slot__rate">
+										{money(pricing.hourlyRate)} {content.pricing?.perHour}
+									</span>
+								</label>
+								<label class="choice slot">
+									<input type="radio" name="booking-slot" value="evening" data-booking-slot />
+									<span class="slot__title">{eveningSlot.title}</span>
+									<span class="slot__hint">{fillPricing(eveningSlot.hint, code)}</span>
+									<span class="slot__rate">
+										{money(evening.hourlyRate)} {content.pricing?.perHour}
+									</span>
+								</label>
+							</div>
+						</fieldset>
+					)}
+
+					<fieldset class="field">
+						<legend class="field__label">{ui.booking.hours}</legend>
+						<div class="hours">
+							<button type="button" class="hours__step" aria-label={ui.booking.fewerHours} data-booking-less>
+								<Icon name="minus" size="1.25rem" />
+							</button>
+							<output class="hours__value" data-booking-hours>
+								{formatDuration(code, pricing.minimumHours, ui.duration)}
+							</output>
+							<button type="button" class="hours__step" aria-label={ui.booking.moreHours} data-booking-more>
+								<Icon name="plus" size="1.25rem" />
+							</button>
+							<p class="hours__total">
+								<span class="hours__total-label">{ui.booking.total}</span>
+								<strong class="hours__total-value" aria-live="polite" data-booking-total>
+									{money(pricing.minimumHours * pricing.hourlyRate)}
+								</strong>
+								<span class="hours__detail" data-booking-detail />
+							</p>
+						</div>
+						<p class="field__hint">{fillPricing(ui.booking.minimum, code)}</p>
+						{content.booking.hoursGuide.length > 0 && (
+							<div class="guide">
+								<p class="guide__title">{ui.booking.hoursGuide}</p>
+								<ul class="guide__list">
+									{content.booking.hoursGuide.map((g) => (
+										<li>
+											<button type="button" class="guide__item" aria-pressed="false" data-booking-guide={g.hours}>
+												<span>{g.label}</span>
+												<span class="guide__hours">{formatDuration(code, g.hours, ui.duration)}</span>
+											</button>
+										</li>
+									))}
+								</ul>
+							</div>
+						)}
+					</fieldset>
+
+					<fieldset class="field">
+						<legend class="field__label">{ui.booking.day}</legend>
+						<div class="days" data-booking-days>
+							<label class="choice day">
+								<input type="radio" name="booking-day" value="-1" checked />
+								<span class="day__weekday">{ui.booking.flexible}</span>
+							</label>
+						</div>
+					</fieldset>
+
+					<div class="field" hidden data-booking-time-field>
+						<label for="booking-time" class="field__label">
+							{ui.booking.time}
+						</label>
+						<select id="booking-time" class="field__select" data-booking-time>
+							<option value="">{ui.booking.flexible}</option>
+						</select>
+					</div>
+
+					<section class="preview" aria-labelledby="booking-preview-title">
+						<h3 id="booking-preview-title" class="preview__title">
+							{ui.booking.preview}
+						</h3>
+						<p class="preview__text" lang={code} data-booking-preview />
+						{contactNote && (
+							<>
+								<p class="preview__note">{contactNote}</p>
+								<p class="preview__text preview__text--sent" lang={contact} dir={getLanguage(contact).dir} data-booking-sent />
+							</>
+						)}
+					</section>
+				</div>
+
+				<footer class="booking__foot">
+					<Button
+						href={defaultWhatsappHref(code)}
+						icon="whatsapp"
+						newTab
+						newTabLabel={ui.opensInNewTab}
+						class="booking__send"
+						data-booking-send
+						{...trackAttrs('whatsapp-send', { lang: code })}
+					>
+						{ui.booking.send}
+					</Button>
+					{business.bookingUrl && (
+						<a class="booking__online" href={business.bookingUrl} target="_blank" rel="noopener" {...trackAttrs('online-booking', { source: 'panel' })}>
+							{ui.booking.onlineBooking}
+							<span class="visually-hidden"> ({ui.opensInNewTab})</span>
+						</a>
+					)}
+				</footer>
+			</div>
+			<script type="application/json" data-booking-config set:html={configJson} />
+		</dialog>
+	)
+}
+
+<style>
+	.booking {
+		inline-size: 100%;
+		max-inline-size: 100%;
+		max-block-size: 100dvh;
+		margin: auto 0 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-text);
+	}
+
+	.booking::backdrop {
+		background: color-mix(in oklab, var(--color-ink) 60%, transparent);
+	}
+
+	.booking[open] .booking__sheet {
+		animation: booking-in 0.28s ease;
+	}
+
+	.booking[open]::backdrop {
+		animation: booking-fade 0.2s ease;
+	}
+
+	@keyframes booking-in {
+		from {
+			transform: translateY(1.5rem);
+			opacity: 0;
+		}
+	}
+
+	@keyframes booking-fade {
+		from {
+			opacity: 0;
+		}
+	}
+
+	:global(html:has(.booking[open])) {
+		overflow: hidden;
+	}
+
+	.booking__sheet {
+		display: flex;
+		flex-direction: column;
+		max-block-size: min(92dvh, 56rem);
+		overflow: hidden;
+		padding-block-end: var(--safe-bottom);
+		border-start-start-radius: calc(var(--radius) * 1.4);
+		border-start-end-radius: calc(var(--radius) * 1.4);
+		background: var(--color-surface);
+		box-shadow: 0 -1rem 3rem -1rem color-mix(in oklab, var(--color-ink) 45%, transparent);
+	}
+
+	@media (min-width: 40rem) {
+		.booking {
+			inline-size: min(34rem, 100% - 2rem);
+			margin: auto;
+		}
+
+		.booking__sheet {
+			max-block-size: min(90dvh, 56rem);
+			padding-block-end: 0;
+			border-radius: calc(var(--radius) * 1.4);
+		}
+	}
+
+	.booking__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-s);
+		padding: var(--space-xs) var(--space-m);
+		border-block-end: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+	}
+
+	.booking__title {
+		font-size: var(--step-1);
+	}
+
+	.booking__close {
+		display: grid;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		border: 0;
+		border-radius: 50%;
+		background: var(--color-surface-alt);
+		color: var(--color-text);
+		cursor: pointer;
+	}
+
+	.booking__body {
+		display: grid;
+		gap: var(--space-m);
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-width: thin;
+		padding: var(--space-s) var(--space-m) var(--space-m);
+	}
+
+	.booking__foot {
+		display: grid;
+		justify-items: center;
+		gap: var(--space-2xs);
+		padding: var(--space-s) var(--space-m);
+		border-block-start: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+	}
+
+	.booking__foot :global(.booking__send) {
+		inline-size: 100%;
+	}
+
+	.booking__online {
+		font-size: var(--step--1);
+		color: var(--color-text-muted);
+	}
+
+	.field {
+		min-inline-size: 0;
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+
+	.field__label {
+		display: block;
+		margin-block-end: var(--space-2xs);
+		padding: 0;
+		font-size: var(--step--1);
+		font-weight: 700;
+	}
+
+	.field__hint {
+		margin-block-start: var(--space-2xs);
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.field__select {
+		inline-size: 100%;
+		min-block-size: 3rem;
+		padding-inline: var(--space-s);
+		border: 1.5px solid color-mix(in oklab, var(--color-text) 20%, transparent);
+		border-radius: calc(var(--radius) * 0.7);
+		background: var(--color-surface);
+	}
+
+	.choice {
+		position: relative;
+		cursor: pointer;
+		border: 1.5px solid color-mix(in oklab, var(--color-text) 16%, transparent);
+		border-radius: calc(var(--radius) * 0.8);
+		background: var(--color-surface);
+		transition:
+			border-color 0.15s ease,
+			background-color 0.15s ease;
+	}
+
+	.choice input {
+		position: absolute;
+		inset: 0;
+		margin: 0;
+		opacity: 0;
+		cursor: inherit;
+	}
+
+	.choice:has(input:checked) {
+		border-color: var(--color-primary);
+		background: color-mix(in oklab, var(--color-primary) 12%, var(--color-surface));
+		box-shadow: inset 0 0 0 1px var(--color-primary);
+	}
+
+	.choice:has(input:focus-visible) {
+		outline: 3px solid var(--color-text);
+		outline-offset: 2px;
+	}
+
+	.choice:has(input:disabled) {
+		cursor: not-allowed;
+		opacity: 0.4;
+	}
+
+	.slots {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-2xs);
+	}
+
+	.slot {
+		display: grid;
+		gap: 0.15em;
+		padding: var(--space-xs) var(--space-s);
+	}
+
+	.slot__title {
+		font-weight: 700;
+	}
+
+	.slot__hint {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.slot__rate {
+		font-weight: 600;
+	}
+
+	.hours {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.hours__step {
+		display: grid;
+		place-items: center;
+		inline-size: 3rem;
+		block-size: 3rem;
+		border: 1.5px solid color-mix(in oklab, var(--color-text) 20%, transparent);
+		border-radius: 50%;
+		background: var(--color-surface);
+		color: var(--color-text);
+		cursor: pointer;
+	}
+
+	.hours__step:disabled {
+		cursor: not-allowed;
+		opacity: 0.35;
+	}
+
+	.hours__value {
+		min-inline-size: 6.5em;
+		font-size: var(--step-1);
+		font-weight: 800;
+		text-align: center;
+	}
+
+	.hours__total {
+		display: grid;
+		margin-inline-start: auto;
+		text-align: end;
+	}
+
+	.hours__total-label {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.hours__total-value {
+		font-size: var(--step-2);
+		line-height: 1.1;
+	}
+
+	.hours__detail {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.guide {
+		margin-block-start: var(--space-s);
+	}
+
+	.guide__title {
+		margin-block-end: var(--space-2xs);
+		font-size: var(--step--1);
+		font-weight: 600;
+	}
+
+	.guide__list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.guide__item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6em;
+		min-block-size: 2.75rem;
+		padding-inline: var(--space-s);
+		border: 1.5px solid color-mix(in oklab, var(--color-text) 16%, transparent);
+		border-radius: 999px;
+		background: var(--color-surface);
+		color: var(--color-text);
+		font-size: var(--step--1);
+		cursor: pointer;
+	}
+
+	.guide__item[aria-pressed='true'] {
+		border-color: var(--color-primary);
+		background: color-mix(in oklab, var(--color-primary) 12%, var(--color-surface));
+	}
+
+	.guide__hours {
+		font-weight: 700;
+	}
+
+	.days {
+		display: flex;
+		gap: var(--space-2xs);
+		overflow-x: auto;
+		padding: 3px;
+		margin: -3px;
+		scrollbar-width: thin;
+		scroll-snap-type: x proximity;
+	}
+
+	.day {
+		display: grid;
+		flex: none;
+		place-items: center;
+		align-content: center;
+		min-inline-size: 4.25rem;
+		min-block-size: 3.5rem;
+		padding: var(--space-3xs) var(--space-xs);
+		scroll-snap-align: start;
+		text-align: center;
+	}
+
+	.day__weekday {
+		font-size: var(--step--1);
+		font-weight: 700;
+	}
+
+	.day__date {
+		color: var(--color-text-muted);
+		font-size: var(--step--2);
+	}
+
+	.preview {
+		padding: var(--space-s);
+		border-radius: calc(var(--radius) * 0.8);
+		background: var(--color-surface-alt);
+	}
+
+	.preview__title {
+		margin-block-end: var(--space-2xs);
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.preview__text {
+		white-space: pre-wrap;
+	}
+
+	.preview__note {
+		margin-block-start: var(--space-s);
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.preview__text--sent {
+		margin-block-start: var(--space-2xs);
+		padding: var(--space-xs) var(--space-s);
+		border-inline-start: 3px solid var(--color-primary);
+		border-radius: calc(var(--radius) * 0.5);
+		background: var(--color-surface);
+	}
+</style>
+
+<script>
+	import {
+		DAY_CODES,
+		breakdown,
+		buildMessage,
+		formatDuration,
+		formatMoney,
+		formatNumber,
+		formatTime,
+		startTimes,
+		type BookingConfig,
+		type DayCode,
+		type LocaleTexts,
+		type Slot,
+	} from '../lib/booking.ts';
+	import { whatsappHref } from '../lib/contact.ts';
+
+	const dialog = document.querySelector<HTMLDialogElement>('[data-booking]');
+	if (dialog) init(dialog);
+
+	function init(dialog: HTMLDialogElement) {
+		const config = JSON.parse(dialog.querySelector('[data-booking-config]')?.textContent ?? '{}') as BookingConfig;
+		const { pricing } = config;
+		const visitor = config.texts[config.visitor];
+		const contact = config.texts[config.contact];
+
+		const get = <T extends Element>(selector: string) => dialog.querySelector<T>(selector);
+		const service = get<HTMLSelectElement>('[data-booking-service]')!;
+		const slotInputs = [...dialog.querySelectorAll<HTMLInputElement>('[data-booking-slot]')];
+		const less = get<HTMLButtonElement>('[data-booking-less]')!;
+		const more = get<HTMLButtonElement>('[data-booking-more]')!;
+		const hoursOut = get<HTMLOutputElement>('[data-booking-hours]')!;
+		const total = get<HTMLElement>('[data-booking-total]')!;
+		const detail = get<HTMLElement>('[data-booking-detail]')!;
+		const guideButtons = [...dialog.querySelectorAll<HTMLButtonElement>('[data-booking-guide]')];
+		const daysBox = get<HTMLElement>('[data-booking-days]')!;
+		const timeField = get<HTMLElement>('[data-booking-time-field]')!;
+		const timeSelect = get<HTMLSelectElement>('[data-booking-time]')!;
+		const preview = get<HTMLElement>('[data-booking-preview]')!;
+		const sent = get<HTMLElement>('[data-booking-sent]');
+		const send = get<HTMLAnchorElement>('[data-booking-send]')!;
+		const flexibleTime = timeSelect.options[0].text;
+
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const days = Array.from({ length: 14 }, (_, i) => {
+			const date = new Date(today);
+			date.setDate(today.getDate() + i);
+			return { date, weekday: DAY_CODES[date.getDay()] as DayCode, label: `${date.getDate()}.${date.getMonth() + 1}` };
+		}).filter((d) => config.workHours.some((r) => r.days.includes(d.weekday)));
+
+		const scope = daysBox.firstElementChild?.getAttributeNames().find((name) => name.startsWith('data-astro-cid'));
+		for (const [i, d] of days.entries()) {
+			const label = document.createElement('label');
+			label.className = 'choice day';
+			const input = document.createElement('input');
+			input.type = 'radio';
+			input.name = 'booking-day';
+			input.value = String(i);
+			const weekday = document.createElement('span');
+			weekday.className = 'day__weekday';
+			weekday.textContent = visitor.days[d.weekday];
+			const date = document.createElement('span');
+			date.className = 'day__date';
+			date.textContent = d.label;
+			label.append(input, weekday, date);
+			if (scope) for (const el of [label, input, weekday, date]) el.setAttribute(scope, '');
+			daysBox.append(label);
+		}
+		const dayInputs = [...daysBox.querySelectorAll<HTMLInputElement>('input[name="booking-day"]')];
+
+		type State = { service: string; slot: Slot; hours: number; day: number; start: number };
+		const defaults = (): State => ({ service: config.defaultService, slot: 'day', hours: pricing.minimumHours, day: -1, start: -1 });
+		let state = defaults();
+
+		const earliest = (i: number) => {
+			if (i < 0 || days[i].date.getTime() !== today.getTime()) return 0;
+			const now = new Date();
+			return Math.ceil((now.getHours() * 60 + now.getMinutes() + 60) / 30) * 30;
+		};
+		const startsFor = (i: number, slot: Slot, hours: number) =>
+			i < 0
+				? []
+				: startTimes({ workHours: config.workHours, weekday: days[i].weekday, slot, hours, eveningFrom: pricing.evening?.from, earliest: earliest(i) });
+		const fits = (i: number, slot: Slot, hours: number) => startsFor(i, slot, hours).length > 0;
+
+		const messageFor = (lang: string, texts: LocaleTexts) =>
+			buildMessage({
+				lang,
+				texts: texts.booking,
+				durations: texts.durations,
+				days: texts.days,
+				pricing,
+				choice: {
+					serviceName: texts.services[state.service],
+					slot: state.slot,
+					hours: state.hours,
+					day: state.day >= 0 ? { weekday: days[state.day].weekday, date: days[state.day].label } : undefined,
+					start: state.start >= 0 ? state.start : undefined,
+				},
+			});
+
+		function render() {
+			if (state.day >= 0 && !fits(state.day, state.slot, state.hours)) state.day = -1;
+			const starts = startsFor(state.day, state.slot, state.hours);
+			if (!starts.includes(state.start)) state.start = -1;
+
+			service.value = state.service;
+			for (const input of slotInputs) {
+				input.checked = input.value === state.slot;
+				input.disabled = state.day >= 0 && !fits(state.day, input.value as Slot, state.hours);
+			}
+
+			hoursOut.textContent = formatDuration(config.visitor, state.hours, visitor.durations);
+			less.disabled = state.hours <= pricing.minimumHours;
+			more.disabled = state.hours >= config.maxHours;
+			for (const button of guideButtons) button.setAttribute('aria-pressed', String(Number(button.dataset.bookingGuide) === state.hours));
+
+			const money = (amount: number) => formatMoney(config.visitor, amount, pricing.currency);
+			const num = (value: number) => formatNumber(config.visitor, value);
+			const b = breakdown(pricing, state.slot, state.hours, state.start >= 0 ? state.start : undefined);
+			total.textContent = money(b.total);
+			detail.textContent =
+				pricing.evening && b.dayHours > 0 && b.eveningHours > 0
+					? `${num(b.dayHours)} × ${money(pricing.hourlyRate)} + ${num(b.eveningHours)} × ${money(pricing.evening.hourlyRate)}`
+					: `${num(state.hours)} × ${money(b.eveningHours > 0 && pricing.evening ? pricing.evening.hourlyRate : pricing.hourlyRate)}`;
+
+			for (const input of dayInputs) {
+				const i = Number(input.value);
+				input.checked = i === state.day;
+				input.disabled = i >= 0 && !fits(i, state.slot, state.hours);
+			}
+
+			timeField.hidden = state.day < 0;
+			timeSelect.replaceChildren(new Option(flexibleTime, ''), ...starts.map((s) => new Option(formatTime(s), String(s))));
+			timeSelect.value = state.start >= 0 ? String(state.start) : '';
+
+			const visitorMessage = messageFor(config.visitor, visitor);
+			const contactMessage = config.visitor === config.contact ? visitorMessage : messageFor(config.contact, contact);
+			preview.textContent = visitorMessage;
+			if (sent) sent.textContent = contactMessage;
+			send.href = whatsappHref(config.whatsapp, contactMessage);
+			if (send.hasAttribute('data-umami-event')) {
+				send.dataset.umamiEventService = state.service;
+				send.dataset.umamiEventSlot = state.slot;
+				send.dataset.umamiEventHours = String(state.hours);
+				send.dataset.umamiEventDay = state.day >= 0 ? 'chosen' : 'flexible';
+			}
+		}
+
+		const clampHours = (hours: number) => Math.min(config.maxHours, Math.max(pricing.minimumHours, hours));
+
+		service.addEventListener('change', () => {
+			state.service = service.value;
+			render();
+		});
+		for (const input of slotInputs) {
+			input.addEventListener('change', () => {
+				state.slot = input.value as Slot;
+				render();
+			});
+		}
+		less.addEventListener('click', () => {
+			state.hours = clampHours(state.hours - pricing.step);
+			render();
+		});
+		more.addEventListener('click', () => {
+			state.hours = clampHours(state.hours + pricing.step);
+			render();
+		});
+		for (const button of guideButtons) {
+			button.addEventListener('click', () => {
+				state.hours = clampHours(Number(button.dataset.bookingGuide));
+				render();
+			});
+		}
+		daysBox.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement;
+			if (input.name !== 'booking-day') return;
+			state.day = Number(input.value);
+			render();
+		});
+		timeSelect.addEventListener('change', () => {
+			state.start = timeSelect.value ? Number(timeSelect.value) : -1;
+			render();
+		});
+
+		let opener: HTMLElement | null = null;
+		let historyEntry = false;
+		if ((history.state as { booking?: boolean } | null)?.booking) history.replaceState(null, '');
+
+		function open(trigger: HTMLElement) {
+			state = defaults();
+			if (trigger.dataset.bookingService) state.service = trigger.dataset.bookingService;
+			if (trigger.dataset.bookingSlot === 'evening' && slotInputs.length) state.slot = 'evening';
+			render();
+			opener = trigger;
+			trigger.focus({ preventScroll: true });
+			dialog.showModal();
+			(window as Window & { umami?: { track: (event: string, data?: Record<string, string>) => void } }).umami?.track('booking-open', {
+				source: trigger.dataset.bookingSource ?? 'other',
+			});
+			history.pushState({ booking: true }, '');
+			historyEntry = true;
+		}
+
+		dialog.addEventListener('close', () => {
+			if (historyEntry) {
+				historyEntry = false;
+				history.back();
+			}
+			opener?.focus();
+		});
+		window.addEventListener('popstate', () => {
+			if (!dialog.open) return;
+			historyEntry = false;
+			dialog.close();
+		});
+		dialog.addEventListener('click', (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+		get<HTMLButtonElement>('[data-booking-close]')?.addEventListener('click', () => dialog.close());
+		send.addEventListener('click', () => setTimeout(() => dialog.close(), 0));
+
+		document.addEventListener('click', (event) => {
+			const trigger = (event.target as Element).closest<HTMLElement>('[data-booking-open]');
+			if (!trigger || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+			event.preventDefault();
+			open(trigger);
+		});
+	}
+</script>

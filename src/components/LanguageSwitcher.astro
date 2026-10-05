@@ -1,0 +1,186 @@
+---
+import Icon from './Icon.astro';
+import { getLocale, site } from '../lib/data.ts';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { LANGUAGE_STORAGE_KEY, getLanguage } from '../lib/i18n.ts';
+
+interface Props {
+	current: string;
+	path: string;
+}
+
+const { current, path } = Astro.props;
+const { ui } = getLocale(current);
+const currentLanguage = getLanguage(current);
+---
+
+<nav aria-label={ui.languageSwitcher} class="lang" data-language-switcher data-storage-key={LANGUAGE_STORAGE_KEY}>
+	<ul class="lang__inline">
+		{
+			site.languages.map((l) => (
+				<li>
+					<a
+						href={getRelativeLocaleUrl(l.code, path)}
+						lang={l.code}
+						hreflang={l.code}
+						data-lang={l.code}
+						aria-current={l.code === current ? 'page' : undefined}
+						class="lang__pill"
+					>
+						{l.name}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+
+	<details class="lang__menu" data-language-menu>
+		<summary class="lang__toggle">
+			<Icon name="globe" size="1.15em" />
+			<span>{currentLanguage.name}</span>
+			<Icon name="chevron" size="1em" class="lang__chevron" />
+		</summary>
+		<ul class="lang__list">
+			{
+				site.languages.map((l) => (
+					<li>
+						<a
+							href={getRelativeLocaleUrl(l.code, path)}
+							lang={l.code}
+							hreflang={l.code}
+							data-lang={l.code}
+							aria-current={l.code === current ? 'page' : undefined}
+							class="lang__item"
+						>
+							{l.name}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</details>
+</nav>
+
+<style>
+	.lang {
+		position: relative;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.lang__inline {
+		display: none;
+		flex-wrap: wrap;
+		gap: var(--space-3xs);
+	}
+
+	.lang__pill,
+	.lang__toggle,
+	.lang__item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		min-block-size: 2.75rem;
+		padding-inline: var(--space-xs);
+		border-radius: 999px;
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+		font-weight: 500;
+		text-decoration: none;
+	}
+
+	.lang__pill[aria-current='page'],
+	.lang__item[aria-current='page'] {
+		color: var(--color-text);
+		font-weight: 700;
+		background: var(--color-surface-alt);
+	}
+
+	@media (hover: hover) {
+		.lang__pill:hover,
+		.lang__toggle:hover,
+		.lang__item:hover {
+			color: var(--color-text);
+			background: var(--color-surface-alt);
+		}
+	}
+
+	.lang__toggle {
+		cursor: pointer;
+		color: var(--color-text);
+		list-style: none;
+		user-select: none;
+	}
+
+	.lang__toggle::-webkit-details-marker {
+		display: none;
+	}
+
+	.lang__toggle :global(.lang__chevron) {
+		transition: transform 0.2s ease;
+	}
+
+	.lang__menu[open] .lang__toggle :global(.lang__chevron) {
+		transform: rotate(180deg);
+	}
+
+	.lang__list {
+		position: absolute;
+		inset-block-start: calc(100% + var(--space-3xs));
+		inset-inline-end: 0;
+		z-index: 10;
+		display: grid;
+		gap: var(--space-3xs);
+		min-inline-size: 11rem;
+		padding: var(--space-3xs);
+		border: 1px solid color-mix(in oklab, var(--color-text) 14%, transparent);
+		border-radius: calc(var(--radius) * 0.8);
+		background: var(--header-solid, var(--color-surface));
+		box-shadow: 0 1.25rem 2.5rem -1rem color-mix(in oklab, var(--color-ink) 55%, transparent);
+	}
+
+	.lang__item {
+		display: flex;
+		inline-size: 100%;
+		border-radius: calc(var(--radius) * 0.6);
+		font-size: var(--step-0);
+	}
+
+	@media (min-width: 48rem) {
+		.lang__inline {
+			display: flex;
+		}
+
+		.lang__menu {
+			display: none;
+		}
+	}
+</style>
+
+<script>
+	for (const nav of document.querySelectorAll<HTMLElement>('[data-language-switcher]')) {
+		nav.addEventListener('click', (event) => {
+			const link = (event.target as Element).closest<HTMLAnchorElement>('a[data-lang]');
+			const key = nav.dataset.storageKey;
+			if (!link?.dataset.lang || !key) return;
+			try {
+				localStorage.setItem(key, link.dataset.lang);
+			} catch {}
+		});
+	}
+
+	for (const menu of document.querySelectorAll<HTMLDetailsElement>('[data-language-menu]')) {
+		document.addEventListener('click', (event) => {
+			if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+		});
+		menu.addEventListener('keydown', (event) => {
+			if (event.key !== 'Escape' || !menu.open) return;
+			menu.open = false;
+			menu.querySelector<HTMLElement>('summary')?.focus();
+		});
+	}
+</script>

@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { getLocale } from '../lib/data.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { ui } = getLocale(code);
+---
+
+<a
+	href={defaultWhatsappHref(code)}
+	class="fab"
+	aria-label={ui.sendWhatsapp}
+	title={ui.sendWhatsapp}
+	data-booking-open
+	data-booking-source="floating"
+>
+	<Icon name="whatsapp" size="1.75rem" />
+</a>
+
+<style>
+	.fab {
+		position: fixed;
+		inset-block-end: calc(var(--space-m) + var(--safe-bottom));
+		inset-inline-end: var(--space-m);
+		z-index: 90;
+		display: none;
+		place-items: center;
+		inline-size: 3.75rem;
+		block-size: 3.75rem;
+		border-radius: 50%;
+		background: var(--color-primary);
+		color: var(--color-primary-text);
+		box-shadow:
+			0 0.75rem 1.75rem -0.75rem color-mix(in oklab, var(--color-primary) 85%, transparent),
+			0 0.25rem 0.75rem -0.25rem color-mix(in oklab, var(--color-ink) 35%, transparent);
+		transition: transform 0.2s ease;
+	}
+
+	@media (hover: hover) {
+		.fab:hover {
+			transform: translateY(-2px) scale(1.04);
+		}
+	}
+
+	.fab:active {
+		transform: scale(0.96);
+	}
+
+	@media (min-width: 60rem) {
+		.fab {
+			display: grid;
+		}
+	}
+</style>

@@ -1,0 +1,210 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import '@fontsource-variable/rubik';
+import '../styles/global.css';
+import BookingPanel from '../components/BookingPanel.astro';
+import Button from '../components/Button.astro';
+import ContactBar from '../components/ContactBar.astro';
+import Footer from '../components/Footer.astro';
+import Head from '../components/Head.astro';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import Logo from '../components/Logo.astro';
+import Motion from '../components/Motion.astro';
+import TestDataBanner from '../components/TestDataBanner.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
+import { trackAttrs } from '../lib/analytics.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { LANGUAGE_STORAGE_KEY, callsInNote, getLanguage } from '../lib/i18n.ts';
+import { telHref } from '../lib/contact.ts';
+import { pagePath } from '../lib/seo.ts';
+import { formatPhone } from '../lib/text.ts';
+
+interface Props {
+	code: string;
+	title: string;
+	description?: string;
+	headerTone?: 'light' | 'alt' | 'dark';
+}
+
+const { code, title, description, headerTone = 'light' } = Astro.props;
+const language = getLanguage(code);
+const { ui } = getLocale(code);
+const callNote = callsInNote(code);
+const path = pagePath(Astro.url.pathname, code);
+
+const detect = {
+	storageKey: LANGUAGE_STORAGE_KEY,
+	defaultCode: site.defaultLanguage.code,
+	urls: Object.fromEntries(site.languages.map((l) => [l.code, getRelativeLocaleUrl(l.code, path)])),
+};
+---
+
+<html lang={code} dir={language.dir}>
+	<head>
+		<Head code={code} title={title} description={description} />
+		{
+			language.default && (
+				<script is:inline define:vars={detect}>
+					try {
+						const aliases = { iw: 'he' };
+						const isCrawler = /bot|crawl|spider|slurp|lighthouse/i.test(navigator.userAgent);
+						const saved = localStorage.getItem(storageKey);
+						let target = saved && urls[saved] ? saved : null;
+						if (!target && !isCrawler) {
+							for (const tag of navigator.languages || [navigator.language]) {
+								const base = String(tag).toLowerCase().split('-')[0];
+								const code = aliases[base] || base;
+								if (urls[code]) {
+									target = code;
+									break;
+								}
+							}
+						}
+						if (target && target !== defaultCode) location.replace(urls[target] + location.search + location.hash);
+					} catch (e) {}
+				</script>
+			)
+		}
+	</head>
+	<body>
+		<div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
+		<a href="#main" class="skip-link">{ui.skipToContent}</a>
+		<TestDataBanner label={ui.testDataBanner} />
+		<header class="site-header" data-tone={headerTone} data-site-header>
+			<div class="container site-header__inner">
+				<Logo code={code} />
+				<div class="site-header__end">
+					<LanguageSwitcher current={code} path={path} />
+					{callNote && <span id="call-note-header" class="site-header__note">{callNote}</span>}
+					<Button
+						href={telHref(site.business.phone)}
+						variant={headerTone === 'dark' ? 'on-dark' : 'secondary'}
+						size="sm"
+						icon="phone"
+						describedBy={callNote ? 'call-note-header' : undefined}
+						class="site-header__call"
+						{...trackAttrs('call', { source: 'header' })}
+					>
+						<span class="visually-hidden">{ui.call} </span>
+						<span dir="ltr">{formatPhone(site.business.phone)}</span>
+					</Button>
+				</div>
+			</div>
+		</header>
+		<main id="main">
+			<slot />
+		</main>
+		<Footer code={code} />
+		<ContactBar code={code} />
+		<WhatsAppFab code={code} />
+		<BookingPanel code={code} />
+		<Motion />
+	</body>
+</html>
+
+<script>
+	const header = document.querySelector<HTMLElement>('[data-site-header]');
+	const sentinel = document.querySelector('[data-header-sentinel]');
+	if (header && sentinel && 'IntersectionObserver' in window) {
+		new IntersectionObserver(([entry]) => header.toggleAttribute('data-scrolled', !entry.isIntersecting)).observe(sentinel);
+	}
+</script>
+
+<style>
+	.header-sentinel {
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		inline-size: 1px;
+		block-size: 8px;
+		pointer-events: none;
+	}
+
+	.site-header {
+		--header-solid: var(--color-surface);
+		position: sticky;
+		inset-block-start: 0;
+		z-index: 100;
+		isolation: isolate;
+		padding-block-start: max(var(--space-xs), var(--safe-top));
+		padding-block-end: var(--space-xs);
+		color: var(--color-text);
+		pointer-events: none;
+	}
+
+	.site-header::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 -1px;
+		z-index: -1;
+		background: var(--header-solid);
+		transform-origin: top;
+		transition:
+			transform 0.3s ease,
+			background-color 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	.site-header[data-tone='alt'] {
+		--header-solid: var(--color-surface-alt);
+	}
+
+	.site-header[data-tone='dark'] {
+		--header-solid: var(--color-ink);
+		--color-text: var(--color-surface);
+		--color-text-muted: color-mix(in oklab, var(--color-surface) 72%, transparent);
+		--color-surface-alt: color-mix(in oklab, var(--color-surface) 12%, transparent);
+	}
+
+	.site-header[data-scrolled]::before {
+		transform: scaleY(0.86);
+		background: color-mix(in oklab, var(--header-solid) 80%, transparent);
+		-webkit-backdrop-filter: blur(14px) saturate(1.4);
+		backdrop-filter: blur(14px) saturate(1.4);
+		box-shadow: 0 0.75rem 2rem -1.25rem color-mix(in oklab, var(--color-ink) 60%, transparent);
+	}
+
+	.site-header__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-s);
+		pointer-events: auto;
+		transition: transform 0.3s ease;
+	}
+
+	.site-header[data-scrolled] .site-header__inner {
+		transform: translateY(-0.3rem);
+	}
+
+	.site-header__inner > :global(.logo) {
+		min-inline-size: 0;
+	}
+
+	.site-header__end {
+		display: flex;
+		flex: none;
+		align-items: center;
+		gap: var(--space-xs);
+	}
+
+	.site-header :global(.site-header__call),
+	.site-header__note {
+		display: none;
+	}
+
+	.site-header__note {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	@media (min-width: 60rem) {
+		.site-header :global(.site-header__call) {
+			display: inline-flex;
+		}
+
+		.site-header__note {
+			display: inline;
+		}
+	}
+</style>

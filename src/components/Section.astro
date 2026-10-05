@@ -1,0 +1,43 @@
+---
+interface Props {
+	id: string;
+	title: string;
+	tone?: 'surface' | 'alt';
+}
+
+const { id, title, tone = 'surface' } = Astro.props;
+---
+
+<section id={id} class="section" data-tone={tone} aria-labelledby={`${id}-title`}>
+	<div class="container">
+		<h2 id={`${id}-title`} class="section__title" data-reveal>{title}</h2>
+		<slot />
+	</div>
+</section>
+
+<style>
+	.section {
+		padding-block: var(--space-2xl);
+		background: var(--color-surface);
+	}
+
+	.section[data-tone='alt'] {
+		background: var(--color-surface-alt);
+	}
+
+	.section__title {
+		margin-block-end: var(--space-l);
+		font-size: var(--step-4);
+		text-align: center;
+	}
+
+	.section__title::after {
+		content: '';
+		display: block;
+		inline-size: 3rem;
+		block-size: 0.3rem;
+		margin: var(--space-xs) auto 0;
+		border-radius: 999px;
+		background: var(--color-primary);
+	}
+</style>

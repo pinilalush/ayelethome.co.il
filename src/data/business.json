@@ -1,0 +1,35 @@
+{
+  "siteUrl": "https://pinilalush.github.io",
+  "basePath": "/landing-template/",
+  "phone": "+972500000000",
+  "whatsapp": "+972500000000",
+  "email": "TODO name@example.com",
+  "city": "TODO Beer Sheva",
+  "geo": { "lat": 31.252, "lng": 34.7915 },
+  "pricing": {
+    "currency": "ILS",
+    "hourlyRate": 100,
+    "minimumHours": 4,
+    "step": 0.5,
+    "cancellationFee": 100,
+    "evening": {
+      "from": "19:00",
+      "hourlyRate": 150
+    }
+  },
+  "workHours": [
+    { "days": ["Su", "Mo", "Tu", "We", "Th"], "from": "TODO 08:00", "to": "TODO 23:00" },
+    { "days": ["Fr"], "from": "TODO 08:00", "to": "TODO 13:00" }
+  ],
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "tiktok": "",
+    "googleBusiness": ""
+  },
+  "contactLanguages": ["he"],
+  "payment": ["bit", "paybox", "cash", "transfer"],
+  "defaultService": "household",
+  "bookingUrl": "",
+  "accessibilityStatementDate": "TODO 2026-10-05"
+}
