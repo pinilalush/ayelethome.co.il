@@ -211,7 +211,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
       "icon": "sparkle",
       "title": "ניקיון שוטף",
       "text": "TODO",
-      "whatsappMessage": "היי, אשמח לקבל הצעת מחיר לניקיון שוטף"
+      "whatsappMessage": "היי, אשמח להזמין אותך לניקיון שוטף, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
     }
   ],
   "pricing": {
@@ -219,7 +219,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     "perHour": "לשעה",
     "minimum": "מינימום {hours} שעות לביקור ({total})",
     "note": "TODO: מה כלול במחיר",
-    "whatsappMessage": "היי, אשמח לתאם ביקור"
+    "whatsappMessage": "היי, אשמח להזמין אותך, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
   },
   "why": [
     { "icon": "shield", "title": "TODO", "text": "TODO" }
@@ -236,13 +236,15 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   ],
   "finalCta": { "title": "TODO", "text": "TODO" },
   "whatsapp": {
-    "default": "היי, הגעתי מהאתר ואשמח לפרטים",
-    "floating": "היי, יש לי שאלה"
+    "default": "היי, אשמח להזמין אותך, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה.",
+    "floating": "היי, אשמח להזמין אותך, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
   }
 }
 ```
 
-- Every service has its own prefilled WhatsApp message.
+- Every service has its own prefilled WhatsApp message, in the same style: it asks to book, asks when she's free, and confirms the customer saw the minimum and the hourly rate. Example for regular cleaning: "היי, אשמח להזמין אותך לניקיון שוטף, מתי את פנויה? הבנתי שמינימום ההזמנה הוא {hours} שעות, {rate} לשעה."
+- `{hours}` and `{rate}` are filled in from `business.json` → `pricing` when the page is built (e.g. "4" and "100 ₪", formatted for the language), so changing the price in one place updates every message. The check script fails if a message uses `{rate}` or `{hours}` and `pricing` is missing.
+- English messages follow the same pattern: "Hi, I'd like to book you. When are you available? I understand the minimum is {hours} hours at {rate} per hour."
 - `reviews` stays empty (section hidden) until there are real reviews from real customers. Each review will hold the customer's first name, area, text, and the date.
 
 ### 5.4 `locales/<lang>/seo.json` — search and sharing
@@ -401,7 +403,7 @@ I'll check these in the browser and send you screenshots of each; you check on r
 ## 10. Contact links
 
 - **Call:** `tel:+972…` from `business.json`.
-- **WhatsApp:** `https://wa.me/972…?text=<message>`, the message from `content.json` for the current language, URL-encoded. Each service button sends its own message.
+- **WhatsApp:** `https://wa.me/972…?text=<message>`, the message from `content.json` for the current language, with `{hours}` and `{rate}` filled in from the pricing, URL-encoded. Each service button sends its own message.
 - Phone numbers display in local format and are readable by screen readers.
 
 ## 11. SEO
@@ -433,7 +435,7 @@ Built in, not added on:
 
 **No third-party "accessibility overlay" widget.** They don't make a site compliant and often break screen readers.
 
-**Open decision:** many Israeli sites show an accessibility menu. If you want one, I'll build a small native one (larger text, high contrast, stop animations, highlight links) with no third-party script.
+**No accessibility menu.** Regulation 35 requires the site itself to meet IS 5568 and to publish an accessibility statement; it doesn't require a menu. Many Israeli sites show one, but it isn't an obligation, so we don't build it.
 
 **Note:** I'll build the site to the standard, but if she needs formal legal confirmation that her obligations are met, that's for an accessibility consultant.
 
@@ -503,7 +505,6 @@ The work is split into small steps in **[`docs/STEPS.md`](STEPS.md)**: each step
 
 ## 19. Open decisions
 
-- Native accessibility menu: yes / no (section 12).
 - Hero background video: yes / no (can decide after seeing the hero).
 - The exact list of services she offers, her hours, and the places she serves.
 - Who writes the English text: I draft it from the Hebrew, you or she approves.

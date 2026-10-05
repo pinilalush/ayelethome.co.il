@@ -9,19 +9,19 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 0.1
+**Current step:** 1.2
 
 ---
 
 ## Phase 0 — Before code
 
-- [ ] **0.1 👤 Review the plan.** Read `PLAN.md`, answer or note the open decisions (section 19).
+- [x] **0.1 👤 Review the plan.** Read `PLAN.md`, answer or note the open decisions (section 19).
 - [x] **0.2 👤 First push.** Push the two docs to `github.com/pinilalush/landing-template` (I'll give the commands).
 - [ ] **0.3 👤👩 Ask Ayelet the open questions** (services, hours, places, price details). Not needed to build the template, needed for her site in Phase 9 — can run in parallel.
 
 ## Phase 1 — Base
 
-- [ ] **1.1 🤖 Create the Astro project.** `package.json`, `astro.config.mjs`, TypeScript config, `.gitignore`, Node version file, the folder structure from PLAN section 4.
+- [x] **1.1 🤖 Create the Astro project.** `package.json`, `astro.config.mjs`, TypeScript config, `.gitignore`, Node version file, the folder structure from PLAN section 4.
   *You see:* `npm run dev` opens an empty page. *Check:* `npm run build` creates `dist/`.
 - [ ] **1.2 🤖 Data files with test data.** `config.json`, `business.json` (with the ₪100 / 4-hour pricing), `media.json`, and `locales/he` + `locales/en` (`content.json`, `seo.json`, `ui.json`). Every unknown value marked `TODO`.
   *Check:* every field from PLAN section 5 exists.
@@ -71,8 +71,7 @@ Each section is checked at every width in the responsive matrix, in Hebrew and E
 
 - [ ] **5.1 🤖 Accessibility pass** — keyboard only, screen reader (Hebrew and English), contrast, 200% zoom, focus order, reduced motion.
 - [ ] **5.2 🤖 Accessibility statement page** in both languages, details from `business.json`.
-- [ ] **5.3 🤖 Accessibility menu** — only if you decided yes in 0.1.
-- [ ] **5.4 🤖 Lighthouse on the local preview** — 95+ in all four categories on mobile.
+- [ ] **5.3 🤖 Lighthouse on the local preview** — 95+ in all four categories on mobile.
 
 ## Phase 6 — Media
 
