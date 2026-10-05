@@ -16,7 +16,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 ## Phase 0 — Before code
 
 - [ ] **0.1 👤 Review the plan.** Read `PLAN.md`, answer or note the open decisions (section 19).
-- [ ] **0.2 👤 First push.** Push the two docs to `github.com/pinilalush/landing-template` (I'll give the commands).
+- [x] **0.2 👤 First push.** Push the two docs to `github.com/pinilalush/landing-template` (I'll give the commands).
 - [ ] **0.3 👤👩 Ask Ayelet the open questions** (services, hours, places, price details). Not needed to build the template, needed for her site in Phase 9 — can run in parallel.
 
 ## Phase 1 — Base
