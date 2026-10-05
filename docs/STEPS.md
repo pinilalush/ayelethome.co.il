@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 1.5
+**Current step:** 1.6
 
 ---
 
@@ -31,7 +31,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
   *Check:* all three languages load; the rules catch a contact language that isn't a site language and an unknown payment method.
 - [x] **1.4 🤖 Placeholder and data check.** `scripts/check-data.mjs`: `TODO` values, test phone, missing fields, missing language keys, color contrast, missing media files, unknown or unfillable placeholders (`{rte}`, or `{eveningRate}` with no evening rate). Wired to run before every build; `ALLOW_PLACEHOLDERS` override; "test data" banner + `noindex` when placeholders are allowed.
   *Check:* `npm run build` **fails** with the list; `ALLOW_PLACEHOLDERS=1 npm run build` passes and shows the banner.
-- [ ] **1.5 🤖 Languages and RTL.** Routing (`/` Hebrew, `/en/` English), base layout with `lang`/`dir` from `config.json`, language switcher, device-language detection on first visit, remembered manual choice.
+- [x] **1.5 🤖 Languages and RTL.** Routing (`/` Hebrew, `/en/` English), base layout with `lang`/`dir` from `config.json`, language switcher, device-language detection on first visit, remembered manual choice.
   *You see:* Hebrew right-to-left at `/`, English left-to-right at `/en/`. *Check:* browser set to English → goes to `/en/`; picking Hebrew in the switcher sticks after reload.
 - [ ] **1.6 🤖 Theme and responsive base.** Colors and radius from `config.json` as CSS variables, self-hosted Heebo, fluid type and spacing scale, safe-area handling, layout container.
   *Check:* changing a color in `config.json` changes the site; nothing overflows at 320px.

@@ -550,7 +550,7 @@ Built in, not added on:
   - color contrast below WCAG AA
   - a file in `media.json` that doesn't exist in `src/assets/media/`
 - `npm run dev` shows the same list as warnings, and a small banner on the page saying how many placeholders are left, so you can work with test data.
-- To test a build locally while data is still fake: `ALLOW_PLACEHOLDERS=1 npm run build`.
+- To test a build locally while data is still fake: `ALLOW_PLACEHOLDERS=1 npm run build`. The override also allows missing image and video files (they arrive in phase 6), so demos can be built before then; a real build without it still stops on any missing file.
 - **The template repo itself** has only test data, but we still want to see it live. The workflow reads `ALLOW_PLACEHOLDERS` from a **repository variable** (Settings → Secrets and variables → Actions → Variables), which is set **only in `landing-template`**. Repos created with "Use this template" copy files, not settings, so a business repo never has it unless someone adds it deliberately.
 - Any build with placeholders allowed shows a clear **"Test data — not a real business"** banner and a `noindex` tag, so Google never indexes the demo.
 

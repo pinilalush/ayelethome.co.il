@@ -1,0 +1,44 @@
+---
+import { getLocale, site } from '../lib/data.ts';
+import { LANGUAGE_STORAGE_KEY, homeUrl } from '../lib/i18n.ts';
+
+interface Props {
+	current: string;
+}
+
+const { current } = Astro.props;
+const { ui } = getLocale(current);
+---
+
+<nav aria-label={ui.languageSwitcher} data-language-switcher data-storage-key={LANGUAGE_STORAGE_KEY}>
+	<ul>
+		{
+			site.languages.map((l) => (
+				<li>
+					<a
+						href={homeUrl(l.code)}
+						lang={l.code}
+						hreflang={l.code}
+						data-lang={l.code}
+						aria-current={l.code === current ? 'page' : undefined}
+					>
+						{l.name}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<script>
+	for (const nav of document.querySelectorAll<HTMLElement>('[data-language-switcher]')) {
+		nav.addEventListener('click', (event) => {
+			const link = (event.target as Element).closest<HTMLAnchorElement>('a[data-lang]');
+			const key = nav.dataset.storageKey;
+			if (!link?.dataset.lang || !key) return;
+			try {
+				localStorage.setItem(key, link.dataset.lang);
+			} catch {}
+		});
+	}
+</script>
