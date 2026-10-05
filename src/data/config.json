@@ -2,7 +2,7 @@
   "languages": [
     { "code": "he", "name": "עברית", "dir": "rtl", "default": true },
     { "code": "en", "name": "English", "dir": "ltr" },
-    { "code": "ru", "name": "Русский", "dir": "ltr" }
+    { "code": "ru", "name": "Русский", "dir": "ltr", "deviceRedirect": true }
   ],
   "theme": {
     "colors": {

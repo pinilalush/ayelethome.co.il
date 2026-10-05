@@ -13,7 +13,12 @@ const pages = site.languages.map((language) => {
 	return { language, ui, title: `${ui.notFound.title} | ${content.businessName}` };
 });
 const first = pages.find((p) => p.language.default) ?? pages[0];
-const detect = { storageKey: LANGUAGE_STORAGE_KEY, base: import.meta.env.BASE_URL, defaultCode: first.language.code };
+const detect = {
+	storageKey: LANGUAGE_STORAGE_KEY,
+	base: import.meta.env.BASE_URL,
+	defaultCode: first.language.code,
+	device: site.languages.filter((l) => l.deviceRedirect && !l.default).map((l) => l.code),
+};
 ---
 
 <html lang={first.language.code} dir={first.language.dir}>
@@ -82,8 +87,10 @@ const detect = { storageKey: LANGUAGE_STORAGE_KEY, base: import.meta.env.BASE_UR
 				const aliases = { iw: 'he' };
 				for (const tag of navigator.languages || [navigator.language]) {
 					const lang = String(tag).toLowerCase().split('-')[0];
-					if (codes.includes(aliases[lang] || lang)) {
-						code = aliases[lang] || lang;
+					const match = aliases[lang] || lang;
+					if (match === defaultCode) break;
+					if (device.includes(match) && codes.includes(match)) {
+						code = match;
 						break;
 					}
 				}
