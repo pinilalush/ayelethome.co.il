@@ -6,6 +6,7 @@ import { formatDuration, formatMoney, maxHours, type BookingConfig, type DayCode
 import { contactLanguage, defaultWhatsappHref } from '../lib/booking-server.ts';
 import { getLocale, site } from '../lib/data.ts';
 import { getLanguage } from '../lib/i18n.ts';
+import { fillPricing } from '../lib/pricing-text.ts';
 import { fill } from '../lib/text.ts';
 
 interface Props {
@@ -37,6 +38,7 @@ const config: BookingConfig | undefined = pricing && {
 	pricing,
 	workHours: business.workHours,
 	maxHours: maxHours(business.workHours, pricing),
+	defaultService: business.defaultService,
 	texts: { [code]: textsFor(code), [contact]: textsFor(contact) },
 };
 
@@ -65,9 +67,10 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 							{ui.booking.service}
 						</label>
 						<select id="booking-service" class="field__select" data-booking-service>
-							<option value="">{ui.booking.anyService}</option>
 							{content.services.map((s) => (
-								<option value={s.id}>{s.title}</option>
+								<option value={s.id} selected={s.id === business.defaultService}>
+									{s.title}
+								</option>
 							))}
 						</select>
 					</div>
@@ -79,7 +82,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 								<label class="choice slot">
 									<input type="radio" name="booking-slot" value="day" checked data-booking-slot />
 									<span class="slot__title">{content.booking.slots.day.title}</span>
-									<span class="slot__hint">{fill(content.booking.slots.day.hint, { eveningFrom: evening.from })}</span>
+									<span class="slot__hint">{fillPricing(content.booking.slots.day.hint, code)}</span>
 									<span class="slot__rate">
 										{money(pricing.hourlyRate)} {content.pricing?.perHour}
 									</span>
@@ -87,7 +90,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 								<label class="choice slot">
 									<input type="radio" name="booking-slot" value="evening" data-booking-slot />
 									<span class="slot__title">{eveningSlot.title}</span>
-									<span class="slot__hint">{fill(eveningSlot.hint, { eveningFrom: evening.from })}</span>
+									<span class="slot__hint">{fillPricing(eveningSlot.hint, code)}</span>
 									<span class="slot__rate">
 										{money(evening.hourlyRate)} {content.pricing?.perHour}
 									</span>
@@ -116,7 +119,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 								<span class="hours__detail" data-booking-detail />
 							</p>
 						</div>
-						<p class="field__hint">{fill(ui.booking.minimum, { hours: pricing.minimumHours })}</p>
+						<p class="field__hint">{fillPricing(ui.booking.minimum, code)}</p>
 						{content.booking.hoursGuide.length > 0 && (
 							<div class="guide">
 								<p class="guide__title">{ui.booking.hoursGuide}</p>
@@ -628,7 +631,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 		const dayInputs = [...daysBox.querySelectorAll<HTMLInputElement>('input[name="booking-day"]')];
 
 		type State = { service: string; slot: Slot; hours: number; day: number; start: number };
-		const defaults = (): State => ({ service: '', slot: 'day', hours: pricing.minimumHours, day: -1, start: -1 });
+		const defaults = (): State => ({ service: config.defaultService, slot: 'day', hours: pricing.minimumHours, day: -1, start: -1 });
 		let state = defaults();
 
 		const earliest = (i: number) => {
@@ -650,7 +653,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 				days: texts.days,
 				pricing,
 				choice: {
-					serviceName: state.service ? texts.services[state.service] : texts.booking.generalName,
+					serviceName: texts.services[state.service],
 					slot: state.slot,
 					hours: state.hours,
 					day: state.day >= 0 ? { weekday: days[state.day].weekday, date: days[state.day].label } : undefined,
@@ -699,7 +702,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 			if (sent) sent.textContent = contactMessage;
 			send.href = whatsappHref(config.whatsapp, contactMessage);
 			if (send.hasAttribute('data-umami-event')) {
-				send.dataset.umamiEventService = state.service || 'general';
+				send.dataset.umamiEventService = state.service;
 				send.dataset.umamiEventSlot = state.slot;
 				send.dataset.umamiEventHours = String(state.hours);
 				send.dataset.umamiEventDay = state.day >= 0 ? 'chosen' : 'flexible';

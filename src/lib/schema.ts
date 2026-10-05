@@ -120,6 +120,7 @@ export const businessSchema = z.strictObject({
     .min(1, 'at least one contact language is required')
     .refine((ls) => new Set(ls).size === ls.length, 'languages must not repeat'),
   payment: z.array(payment).refine((ps) => new Set(ps).size === ps.length, 'payment methods must not repeat'),
+  defaultService: slug,
   bookingUrl: optionalUrl,
   accessibilityStatementDate: isoDate,
 });
@@ -161,7 +162,6 @@ export const contentSchema = z.strictObject({
     })
     .optional(),
   booking: z.strictObject({
-    generalName: text,
     slots: z.strictObject({ day: slot, evening: slot.optional() }),
     hoursGuide: z.array(
       z.strictObject({
@@ -234,7 +234,6 @@ export const uiSchema = z.strictObject({
     send: text,
     close: text,
     onlineBooking: text,
-    anyService: text,
     fewerHours: text,
     moreHours: text,
   }),

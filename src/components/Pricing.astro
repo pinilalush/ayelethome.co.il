@@ -6,7 +6,7 @@ import { formatMoney, formatMoneyParts } from '../lib/booking.ts';
 import { defaultWhatsappHref } from '../lib/booking-server.ts';
 import { getLocale, site } from '../lib/data.ts';
 import type { IconName } from '../lib/icons.ts';
-import { fill } from '../lib/text.ts';
+import { fillPricing } from '../lib/pricing-text.ts';
 
 interface Props {
 	code: string;
@@ -19,7 +19,7 @@ const pricing = business.pricing!;
 const texts = content.pricing!;
 const money = (amount: number) => formatMoney(code, amount, pricing.currency);
 const moneyParts = (amount: number) => formatMoneyParts(code, amount, pricing.currency);
-const minimum = fill(texts.minimum, { hours: pricing.minimumHours });
+const minimum = fillPricing(texts.minimum, code);
 
 const evening = pricing.evening && content.booking.slots.evening;
 const plans = [
@@ -27,7 +27,7 @@ const plans = [
 		slot: 'day' as const,
 		icon: 'sun' as IconName,
 		title: evening ? content.booking.slots.day.title : undefined,
-		hint: evening ? fill(content.booking.slots.day.hint, { eveningFrom: pricing.evening!.from }) : undefined,
+		hint: evening ? fillPricing(content.booking.slots.day.hint, code) : undefined,
 		rate: pricing.hourlyRate,
 	},
 	...(pricing.evening && content.booking.slots.evening
@@ -36,7 +36,7 @@ const plans = [
 					slot: 'evening' as const,
 					icon: 'moon' as IconName,
 					title: content.booking.slots.evening.title,
-					hint: fill(content.booking.slots.evening.hint, { eveningFrom: pricing.evening.from }),
+					hint: fillPricing(content.booking.slots.evening.hint, code),
 					rate: pricing.evening.hourlyRate,
 				},
 			]

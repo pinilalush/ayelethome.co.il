@@ -65,7 +65,6 @@
     "note": "TODO What the price includes"
   },
   "booking": {
-    "generalName": "TODO home cleaning and household management",
     "slots": {
       "day": { "title": "Daytime", "hint": "until {eveningFrom}", "inMessage": "during the day" },
       "evening": { "title": "Evening", "hint": "from {eveningFrom}", "inMessage": "in the evening" }

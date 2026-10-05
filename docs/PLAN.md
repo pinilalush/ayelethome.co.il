@@ -192,6 +192,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   },
   "contactLanguages": ["he"],
   "payment": ["bit", "paybox", "cash", "transfer"],
+  "defaultService": "household",
   "bookingUrl": "",
   "accessibilityStatementDate": "2026-10-05"
 }
@@ -206,6 +207,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 - `workHours` are the times she works (not shop opening hours). They're shown in the footer and used in the structured data for Google.
 - Empty social links are simply not shown.
 - `contactLanguages` — the languages she speaks with customers, first one is the main one (section 6). Each must be one of the site's languages.
+- `defaultService` — the `id` of the service a booking starts with when the customer didn't come from a service card (Ayelet: `household`, ניהול משק הבית). It's also the service in the default WhatsApp message. The check fails if it isn't one of the services in `content.json`.
 - `bookingUrl` — optional online booking page (e.g. her free Cal.com page). Empty means hidden; filled in, a small "or choose a time online" link appears in the booking panel and the footer. WhatsApp stays the main way to book.
 - `payment` — how customers can pay, from a fixed list: `bit`, `paybox`, `cash`, `transfer`, `credit`. Shown as small labeled icons near the price; an empty list hides them. Generic icons with the name, not the companies' logos.
 - `basePath` is `/landing-template/` only while testing on `pinilalush.github.io/landing-template`; it's `/` once a domain is connected.
@@ -238,7 +240,6 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
     "note": "TODO: מה כלול במחיר"
   },
   "booking": {
-    "generalName": "TODO: לניקיון וסידור הבית",
     "slots": {
       "day": { "title": "שעות היום", "hint": "עד {eveningFrom}", "inMessage": "בשעות היום" },
       "evening": { "title": "שעות הערב", "hint": "מ־{eveningFrom}", "inMessage": "בשעות הערב" }
@@ -276,10 +277,10 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 }
 ```
 
-- **One WhatsApp message pattern for the whole site** (`booking.message`), built from the customer's choices in the booking panel (section 7). Each service only gives its short name for the message (`bookingName`, e.g. "לניקיון שוטף"); buttons that aren't for a specific service use `booking.generalName`.
+- **One WhatsApp message pattern for the whole site** (`booking.message`), built from the customer's choices in the booking panel (section 7). Each service only gives its short name for the message (`bookingName`, e.g. "לניקיון שוטף"); buttons that aren't for a specific service start with `defaultService` from `business.json`.
 - **The message asks, it doesn't assume.** With no day chosen: "…מתי את פנויה?". With a day and/or time: "רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך?" — so the customer suggests a time and she confirms or offers another.
 - Full examples:
-  - defaults (one tap): "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. מתי את פנויה? הבנתי שהמחיר 100 ₪ לשעה, כלומר 400 ₪."
+  - defaults (one tap): "היי, אשמח להזמין אותך לניהול משק הבית ל־4 שעות בשעות היום. מתי את פנויה? הבנתי שהמחיר 100 ₪ לשעה, כלומר 400 ₪."
   - with choices: "היי, אשמח להזמין אותך לניקיון שוטף ל־4.5 שעות בשעות הערב. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־19:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר 150 ₪ לשעה, כלומר 675 ₪."
   - crossing 19:00: "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־17:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר שעתיים × 100 ₪ + שעתיים × 150 ₪, כלומר 500 ₪."
 - **The message is always written in a language she speaks** (`business.json` → `contactLanguages`, section 6), so it's built from that language's `booking` texts even when the visitor reads the site in English or Russian.
@@ -390,20 +391,20 @@ One page per language, short, built for phones first. No forms, no steps.
 **Other pages:** `/accessibility` (statement, per language) and a styled 404.
 
 **The booking panel.** Every WhatsApp button opens one small panel that builds the message from a few taps, so the customer sees the price before sending anything:
-1. **Service** — already selected when they came from a service card; otherwise optional.
+1. **Service** — already selected when they came from a service card; otherwise it starts on the default service (`defaultService`, Ayelet: household management). There's no "not decided yet" option.
 2. **Day or evening** — two big buttons with their rates (day ₪100/hour, evening ₪150/hour from 19:00). Already selected when they came from a price card.
 3. **How many hours** — a − 4 + stepper that starts at the minimum and moves by `pricing.step` (half hours: 4, 4.5, 5…). The total updates live: "4.5 שעות × 150 ₪ = 675 ₪". Next to it, the "how many hours do I need?" guide (`booking.hoursGuide`); tapping a line sets the hours.
 4. **Day (optional)** — the next 14 days as buttons, only days she works; evening is disabled on days whose work hours end before 19:00 (e.g. Friday).
 5. **Start time (optional)** — every half hour inside her work hours for that day, so the whole visit fits before her work day ends. Daytime lists start times before 19:00, evening from 19:00. A daytime visit may run past 19:00: the price then splits automatically and shows it, e.g. "2 שעות × 100 ₪ + 2 שעות × 150 ₪ = 500 ₪".
 6. **Message preview** — in the visitor's language first, plus the Hebrew that will be sent when the visitor's language isn't hers (section 6) — then one big **Send on WhatsApp** button.
 
-- **Everything starts filled in** (general cleaning, daytime, 4 hours, no day), so a customer can still send with **one tap**. The extra choices never become required steps.
+- **Everything starts filled in** (the default service, daytime, 4 hours, no day), so a customer can still send with **one tap**. The extra choices never become required steps.
 - **The message asks whether she's free** at the chosen day/time and, if not, when she is (section 5.3) — the customer suggests, she confirms.
 - **Always in her language** (section 6): the message is built in a language she speaks, with a note and a translation for visitors in other languages.
 - **Built in the browser** with a small script (no server), from texts and prices placed in the page at build time.
 - **Looks and feels light:** a bottom sheet on phones, a small dialog on desktop; closes with Esc, a tap outside, or the phone's back button.
 - **Accessible:** a real dialog, focus moves into it and back, every control labeled, works with keyboard and screen readers.
-- **Without JavaScript**, the buttons still work as plain links with the default message (daytime, 4 hours).
+- **Without JavaScript**, the buttons still work as plain links with the default message (the button's service or the default one, daytime, 4 hours).
 - If a business has no evening rate, the day/evening choice isn't shown.
 - If `bookingUrl` is filled in, the panel ends with a small "or choose a time online" link to it.
 
@@ -619,5 +620,5 @@ The work is split into small steps in **[`docs/STEPS.md`](STEPS.md)**: each step
 - Before Ayelet uses online booking: check with a free Cal.com test account that approving each booking ("Requires confirmation") and a Hebrew booking page are in the free plan.
 - "How many hours do I need?" — her real estimates by home size and service (the guide in the booking panel).
 - More price questions for her (text only, filled in with her data): a lower rate for a regular weekly/bi-weekly cleaning; whether the ₪100 cancellation fee applies to any cancellation or only close to the visit (e.g. less than 24 hours before).
-- Decided: visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days; cancelling costs a one-time ₪100.
+- Decided: visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days; cancelling costs a one-time ₪100; the booking panel starts on household management, with no "not decided yet" option.
 - Price details to confirm with her: does ₪100 include VAT (or is she VAT-exempt, עוסק פטור), are cleaning materials included, is there a travel charge for towns outside Beer Sheva, does the 4-hour minimum apply to every service.

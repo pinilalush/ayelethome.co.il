@@ -122,6 +122,12 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
     if (config.sections.pricing && !content.pricing) {
       issues.push(`${where(file, ['pricing'])}: missing, but config.json → sections.pricing is true`);
     }
+    if (business && !content.services.some((s) => s.id === business.defaultService)) {
+      issues.push(`${where('business.json', ['defaultService'])}: "${business.defaultService}" is not one of the service ids in ${file} → services`);
+    }
+    if (config.sections.faq && content.faq.length === 0) {
+      issues.push(`${where(file, ['faq'])}: empty, but config.json → sections.faq is true`);
+    }
     if (business?.pricing?.evening) {
       if (!content.booking.slots.evening) issues.push(`${where(file, ['booking', 'slots', 'evening'])}: missing, but business.json has an evening rate`);
       if (!content.booking.price.split) issues.push(`${where(file, ['booking', 'price', 'split'])}: missing, but business.json has an evening rate`);

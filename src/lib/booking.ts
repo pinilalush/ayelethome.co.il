@@ -6,7 +6,6 @@ export type DayCode = 'Su' | 'Mo' | 'Tu' | 'We' | 'Th' | 'Fr' | 'Sa';
 export const DAY_CODES: DayCode[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 export type BookingTexts = {
-  generalName: string;
   slots: { day: { inMessage: string }; evening?: { inMessage: string } };
   message: string;
   price: { single: string; split?: string };
@@ -192,5 +191,6 @@ export type BookingConfig = {
   pricing: PricingInfo;
   workHours: WorkRange[];
   maxHours: number;
+  defaultService: string;
   texts: Record<string, LocaleTexts>;
 };

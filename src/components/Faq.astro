@@ -1,0 +1,145 @@
+---
+import Section from './Section.astro';
+import { getLocale } from '../lib/data.ts';
+import { fillPricing } from '../lib/pricing-text.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+---
+
+<Section id="faq" title={ui.sections.faq}>
+	<ul class="faq">
+		{
+			content.faq.map((item) => (
+				<li>
+					<details class="faq__item">
+						<summary class="faq__question">
+							<span>{fillPricing(item.q, code)}</span>
+							<span class="faq__icon" aria-hidden="true"></span>
+						</summary>
+						<p class="faq__answer">{fillPricing(item.a, code)}</p>
+					</details>
+				</li>
+			))
+		}
+	</ul>
+</Section>
+
+<style>
+	.faq {
+		display: grid;
+		gap: var(--space-xs);
+		max-inline-size: 50rem;
+		margin: 0 auto;
+		padding: 0;
+		list-style: none;
+	}
+
+	.faq__item {
+		border: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+		border-radius: var(--radius);
+		background: var(--color-surface);
+		transition:
+			border-color 0.25s ease,
+			box-shadow 0.25s ease;
+	}
+
+	.faq__item[open] {
+		border-color: color-mix(in oklab, var(--color-primary) 55%, transparent);
+		box-shadow: 0 1rem 2rem -1.75rem color-mix(in oklab, var(--color-ink) 50%, transparent);
+	}
+
+	.faq__question {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-s);
+		min-block-size: 3.5rem;
+		padding: var(--space-s) var(--space-m);
+		border-radius: calc(var(--radius) - 1px);
+		font-weight: 700;
+		line-height: 1.35;
+		cursor: pointer;
+		transition: color 0.2s ease;
+	}
+
+	.faq__question::-webkit-details-marker {
+		display: none;
+	}
+
+	@media (hover: hover) {
+		.faq__question:hover {
+			color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+		}
+	}
+
+	.faq__icon {
+		position: relative;
+		flex: none;
+		inline-size: 2rem;
+		block-size: 2rem;
+		border-radius: 50%;
+		background: color-mix(in oklab, var(--color-primary) 14%, var(--color-surface));
+		color: color-mix(in oklab, var(--color-primary) 65%, var(--color-ink));
+		transition:
+			background-color 0.25s ease,
+			color 0.25s ease;
+	}
+
+	.faq__icon::before,
+	.faq__icon::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		inline-size: 0.8rem;
+		block-size: 0;
+		margin: auto;
+		border-block-start: 2px solid;
+		border-radius: 1px;
+	}
+
+	.faq__icon::after {
+		rotate: 90deg;
+		transition: rotate 0.3s ease;
+	}
+
+	.faq__item[open] .faq__icon {
+		background: var(--color-primary);
+		color: var(--color-primary-text);
+	}
+
+	.faq__item[open] .faq__icon::after {
+		rotate: 0deg;
+	}
+
+	.faq__answer {
+		max-inline-size: 70ch;
+		padding: 0 var(--space-m) var(--space-m);
+		color: var(--color-text-muted);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.faq__item {
+			interpolate-size: allow-keywords;
+		}
+
+		.faq__item::details-content {
+			block-size: 0;
+			overflow-y: clip;
+			opacity: 0;
+			transition:
+				block-size 0.35s ease,
+				opacity 0.35s ease,
+				content-visibility 0.35s allow-discrete;
+		}
+
+		.faq__item[open]::details-content {
+			block-size: auto;
+			opacity: 1;
+		}
+	}
+</style>

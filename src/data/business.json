@@ -29,6 +29,7 @@
   },
   "contactLanguages": ["he"],
   "payment": ["bit", "paybox", "cash", "transfer"],
+  "defaultService": "household",
   "bookingUrl": "",
   "accessibilityStatementDate": "TODO 2026-10-05"
 }

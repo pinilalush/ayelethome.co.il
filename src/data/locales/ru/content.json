@@ -65,7 +65,6 @@
     "note": "TODO Что входит в цену"
   },
   "booking": {
-    "generalName": "TODO уборку и ведение домашнего хозяйства",
     "slots": {
       "day": { "title": "Днём", "hint": "до {eveningFrom}", "inMessage": "днём" },
       "evening": { "title": "Вечером", "hint": "с {eveningFrom}", "inMessage": "вечером" }

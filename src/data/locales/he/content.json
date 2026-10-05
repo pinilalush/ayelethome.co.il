@@ -65,7 +65,6 @@
     "note": "TODO מה כלול במחיר"
   },
   "booking": {
-    "generalName": "TODO לניקיון וניהול משק הבית",
     "slots": {
       "day": { "title": "שעות היום", "hint": "עד {eveningFrom}", "inMessage": "בשעות היום" },
       "evening": { "title": "שעות הערב", "hint": "מ־{eveningFrom}", "inMessage": "בשעות הערב" }
