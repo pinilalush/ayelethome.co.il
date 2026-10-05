@@ -203,6 +203,7 @@ export const seoSchema = z.strictObject({
 
 export const uiSchema = z.strictObject({
   skipToContent: text,
+  heroVideo: z.strictObject({ pause: text, play: text }),
   call: text,
   callNow: text,
   callsIn: text,

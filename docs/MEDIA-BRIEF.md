@@ -149,11 +149,11 @@ In Flow: choose **aspect ratio 9:16**, add `hero.jpg` to the prompt as a referen
 
 ---
 
-## 4. `hero.mp4` — optional background video (**wait for step 6.4**)
+## 4. `hero.mp4` — optional background video
 
-**Status, plainly:** **the site can't show a hero video today.** The hero has no video player, and `config.json` → `heroVideo` is `false`. Turning it on only makes the data check look for `public/media/hero.mp4` and its poster. Step 6.4 decides whether a video is wanted at all, after seeing the hero with the real photo. **Don't make it before that.** If the answer is yes, the video player has to be built too, not just the file added.
+**Status:** the hero plays it softly behind the glow on wider screens when `config.json` → `heroVideo` is `true`. It loads only on landscape screens, never on phones in portrait, with reduced motion, or with data saver on, and it has a pause button. Without it, the hero shows the photo. Before adding the file, remove the sound and compress it: `ffmpeg -i clip.mp4 -an -c:v libx264 -crf 27 -pix_fmt yuv420p -movflags +faststart public/media/hero.mp4` (about 1–2 MB for 8 seconds of 720p).
 
-**If it's a yes:**
+**Making it:**
 - **Purpose:** a short, silent, looping atmosphere shot: the same tidy room, a slow camera move, sunlight. The video is muted and can be paused, and it's off for visitors who turn off animations (PLAN §8, §12).
 - **Size:** 16:9 landscape, about 8 seconds. Free Flow gives **720p**; 1080p needs a Google AI plan. Under the dark glow, 720p is likely enough.
 - **File name:** `hero.mp4`. **Goes in `public/media/`**, because Astro doesn't process video. Its poster is `hero.jpg` in `src/assets/media/`.

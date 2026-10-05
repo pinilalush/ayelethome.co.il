@@ -1,5 +1,6 @@
 {
   "skipToContent": "דילוג לתוכן הראשי",
+  "heroVideo": { "pause": "השהיית הסרטון", "play": "הפעלת הסרטון" },
   "call": "התקשרו",
   "callNow": "התקשרו עכשיו",
   "callsIn": "שיחות ב{language}",

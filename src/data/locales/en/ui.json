@@ -1,5 +1,6 @@
 {
   "skipToContent": "Skip to main content",
+  "heroVideo": { "pause": "Pause the video", "play": "Play the video" },
   "call": "Call",
   "callNow": "Call now",
   "callsIn": "Calls in {language}",

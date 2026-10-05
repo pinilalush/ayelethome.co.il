@@ -30,6 +30,7 @@ async function sources(file: string | undefined) {
 }
 const photo = await sources(site.media.hero.file);
 const photoMobile = await sources(site.media.hero.fileMobile);
+const video = site.config.heroVideo && site.media.heroVideo ? `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}media/${site.media.heroVideo.file}` : undefined;
 
 const sparkles = [
 	{ top: '0.5rem', start: '7%', size: '1.5rem', delay: '0s' },
@@ -54,6 +55,7 @@ const sparkles = [
 				</picture>
 			)
 		}
+		{video && <video class="hero__video" data-hero-video data-src={video} muted loop playsinline preload="none" tabindex="-1" />}
 		<div class="hero__glow hero__glow--a"></div>
 		<div class="hero__glow hero__glow--b"></div>
 		<div class="hero__dots"></div>
@@ -65,6 +67,15 @@ const sparkles = [
 			))
 		}
 	</div>
+
+	{
+		video && (
+			<button type="button" class="hero__video-toggle" data-hero-video-toggle data-pause={ui.heroVideo.pause} data-play={ui.heroVideo.play} aria-label={ui.heroVideo.pause} hidden>
+				<Icon name="pause" size="1.1em" class="hero__video-pause" />
+				<Icon name="play" size="1.1em" class="hero__video-play" />
+			</button>
+		)
+	}
 
 	<div class="container hero__inner">
 		<p class="hero__eyebrow">
@@ -135,6 +146,46 @@ const sparkles = [
 		object-fit: cover;
 		opacity: 0.22;
 		filter: saturate(0.85);
+	}
+
+	.hero__video {
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		opacity: 0;
+		filter: saturate(0.85);
+		transition: opacity 1.2s ease;
+	}
+
+	.hero__video[data-playing] {
+		opacity: 0.22;
+	}
+
+	.hero__video-toggle {
+		position: absolute;
+		inset-block-end: var(--space-m);
+		inset-inline-end: var(--space-m);
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		border: 1px solid color-mix(in oklab, var(--color-surface) 22%, transparent);
+		border-radius: 50%;
+		background: color-mix(in oklab, var(--color-ink) 55%, transparent);
+		color: var(--color-surface);
+		cursor: pointer;
+	}
+
+	.hero__video-toggle[hidden] {
+		display: none;
+	}
+
+	.hero__video-toggle:not([data-paused='true']) :global(.hero__video-play),
+	.hero__video-toggle[data-paused='true'] :global(.hero__video-pause) {
+		display: none;
 	}
 
 	.hero__glow {
@@ -378,3 +429,29 @@ const sparkles = [
 		color: var(--color-accent);
 	}
 </style>
+
+<script>
+	const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+	const toggle = document.querySelector<HTMLButtonElement>('[data-hero-video-toggle]');
+	const wide = matchMedia('(min-aspect-ratio: 4/5)');
+	const calm = matchMedia('(prefers-reduced-motion: reduce)');
+	const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+	if (video && toggle && wide.matches && !calm.matches && !saveData) {
+		video.src = video.dataset.src ?? '';
+		video.addEventListener('playing', () => video.toggleAttribute('data-playing', true), { once: true });
+		video.play().then(() => (toggle.hidden = false)).catch(() => {});
+		toggle.addEventListener('click', () => {
+			const paused = toggle.getAttribute('data-paused') !== 'true';
+			if (paused) video.pause();
+			else video.play();
+			toggle.setAttribute('data-paused', String(paused));
+			toggle.setAttribute('aria-label', (paused ? toggle.dataset.play : toggle.dataset.pause) ?? '');
+		});
+		calm.addEventListener('change', () => {
+			if (!calm.matches) return;
+			video.pause();
+			toggle.setAttribute('data-paused', 'true');
+			toggle.setAttribute('aria-label', toggle.dataset.play ?? '');
+		});
+	}
+</script>

@@ -28,7 +28,7 @@
     "faq": true,
     "finalCta": true
   },
-  "heroVideo": false,
+  "heroVideo": true,
   "analytics": {
     "umamiWebsiteId": ""
   }

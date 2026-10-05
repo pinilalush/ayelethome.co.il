@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 6.4. Steps 3.10, 5.1 and 5.3 run later as one combined test session, after 8.1 and before Phase 9 (Pini, 2026-10-06).
+**Current step:** 7.3. Steps 3.10, 5.1 and 5.3 run later as one combined test session, after 8.1 and before Phase 9 (Pini, 2026-10-06).
 
 ---
 
@@ -84,7 +84,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 - [x] **6.1 🤖 Media brief** (`docs/MEDIA-BRIEF.md`) — each image/video: purpose, size, file name, the exact prompt, and step-by-step how to create it with Google's tools.
 - [x] **6.2 👤 Create the media** with Google and put the files in a folder for me. *(Done: the hero photo, wide and tall. The video waits for 6.4.)*
 - [x] **6.3 🤖 Add the media** — desktop and phone crops of the hero, optimization, and the share images in every language generated from the data (under 300 KB, readable as a centered square).
-- [ ] **6.4 👤 Decide on the hero video** after seeing the hero with the real image.
+- [x] **6.4 👤 Decide on the hero video** after seeing the hero with the real image.
 
 ## Phase 7 — Deploy the template demo
 
