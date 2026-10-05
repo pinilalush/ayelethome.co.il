@@ -1,8 +1,9 @@
 ---
-import { getLocale, placeholders, site } from '../lib/data.ts';
+import TestDataBanner from '../components/TestDataBanner.astro';
+import { getLocale, isTestData, pending, site } from '../lib/data.ts';
 
 const { code, dir } = site.defaultLanguage;
-const { content, seo } = getLocale(code);
+const { content, seo, ui } = getLocale(code);
 ---
 
 <html lang={code} dir={dir}>
@@ -10,14 +11,16 @@ const { content, seo } = getLocale(code);
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
+		{isTestData && <meta name="robots" content="noindex, nofollow" />}
 		<title>{seo.title}</title>
 	</head>
 	<body>
+		<TestDataBanner label={ui.testDataBanner} />
 		<h1>{content.businessName}</h1>
 		<p>{content.tagline}</p>
 		<ul>
 			{site.languages.map((l) => <li>{l.name} ({l.code}, {l.dir})</li>)}
 		</ul>
-		<p>Placeholders left: {placeholders.length}</p>
+		<p>Placeholders left: {pending.length}</p>
 	</body>
 </html>

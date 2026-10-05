@@ -8,8 +8,10 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/check-data.mjs",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "node scripts/check-data.mjs && astro check",
     "astro": "astro"
   },
   "dependencies": {

@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 1.4
+**Current step:** 1.5
 
 ---
 
@@ -29,7 +29,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
   *Check:* a wrong type or missing field gives a clear error naming the file and field.
 - [x] **1.3b 🤖 Data for the new decisions.** Russian files, contact language, payment methods, half-hour step, booking link and Umami settings (empty), and the booking panel texts (service names for the message, one message pattern with single and split price, hours guide) in the data files and rules, replacing the per-button messages.
   *Check:* all three languages load; the rules catch a contact language that isn't a site language and an unknown payment method.
-- [ ] **1.4 🤖 Placeholder and data check.** `scripts/check-data.mjs`: `TODO` values, test phone, missing fields, missing language keys, color contrast, missing media files, unknown or unfillable placeholders (`{rte}`, or `{eveningRate}` with no evening rate). Wired to run before every build; `ALLOW_PLACEHOLDERS` override; "test data" banner + `noindex` when placeholders are allowed.
+- [x] **1.4 🤖 Placeholder and data check.** `scripts/check-data.mjs`: `TODO` values, test phone, missing fields, missing language keys, color contrast, missing media files, unknown or unfillable placeholders (`{rte}`, or `{eveningRate}` with no evening rate). Wired to run before every build; `ALLOW_PLACEHOLDERS` override; "test data" banner + `noindex` when placeholders are allowed.
   *Check:* `npm run build` **fails** with the list; `ALLOW_PLACEHOLDERS=1 npm run build` passes and shows the banner.
 - [ ] **1.5 🤖 Languages and RTL.** Routing (`/` Hebrew, `/en/` English), base layout with `lang`/`dir` from `config.json`, language switcher, device-language detection on first visit, remembered manual choice.
   *You see:* Hebrew right-to-left at `/`, English left-to-right at `/en/`. *Check:* browser set to English → goes to `/en/`; picking Hebrew in the switcher sticks after reload.
