@@ -48,7 +48,7 @@ html {
   color-scheme: light;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  background: var(--color-surface);
+  background: var(--color-ink);
   color: var(--color-text);
   font-family: var(--font-sans);
   line-height: 1.6;
@@ -73,6 +73,10 @@ body {
   body {
     padding-block-end: calc(var(--bar-h) + var(--safe-bottom));
   }
+}
+
+main {
+  background: var(--color-surface);
 }
 
 img,

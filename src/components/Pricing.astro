@@ -6,6 +6,7 @@ import { formatMoney, formatMoneyParts } from '../lib/booking.ts';
 import { defaultWhatsappHref } from '../lib/booking-server.ts';
 import { getLocale, site } from '../lib/data.ts';
 import type { IconName } from '../lib/icons.ts';
+import { PAYMENT_ICONS } from '../lib/payment.ts';
 import { fillPricing } from '../lib/pricing-text.ts';
 
 interface Props {
@@ -42,14 +43,6 @@ const plans = [
 			]
 		: []),
 ];
-
-const PAYMENT_ICONS: Record<string, IconName> = {
-	bit: 'mobilepay',
-	paybox: 'mobilepay',
-	cash: 'cash',
-	transfer: 'bank',
-	credit: 'card',
-};
 ---
 
 <Section id="pricing" title={texts.title} tone="alt">

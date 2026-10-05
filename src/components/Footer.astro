@@ -1,0 +1,311 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { trackAttrs } from '../lib/analytics.ts';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { telHref } from '../lib/contact.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { hoursLines } from '../lib/hours.ts';
+import { callsInNote, homeUrl } from '../lib/i18n.ts';
+import type { IconName } from '../lib/icons.ts';
+import { PAYMENT_ICONS } from '../lib/payment.ts';
+import type { Business } from '../lib/schema.ts';
+import { formatPhone } from '../lib/text.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+const { business } = site;
+const callNote = callsInNote(code);
+const hours = hoursLines(business.workHours, ui.days);
+
+const SOCIAL_ICONS: Record<keyof Business['social'], IconName> = {
+	facebook: 'facebook',
+	instagram: 'instagram',
+	tiktok: 'tiktok',
+	googleBusiness: 'google',
+};
+const social = (Object.keys(SOCIAL_ICONS) as (keyof Business['social'])[])
+	.filter((network) => business.social[network])
+	.map((network) => ({ url: business.social[network], icon: SOCIAL_ICONS[network], label: ui.social[network] }));
+---
+
+<footer class="site-footer">
+	<div class="container site-footer__grid">
+		<div class="site-footer__brand">
+			<Logo code={code} />
+			<p class="site-footer__tagline">{content.tagline}</p>
+			<Button
+				href={`${homeUrl(code)}contact.vcf`}
+				variant="on-dark"
+				size="sm"
+				icon="userPlus"
+				class="site-footer__save"
+				{...trackAttrs('save-contact', { source: 'footer' })}
+			>
+				{ui.saveContact}
+			</Button>
+			{
+				social.length > 0 && (
+					<ul class="site-footer__social">
+						{social.map((s) => (
+							<li>
+								<a href={s.url} target="_blank" rel="noopener" class="site-footer__social-link">
+									<Icon name={s.icon} size="1.35rem" label={`${s.label} (${ui.opensInNewTab})`} />
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+
+		<div>
+			<h2 class="site-footer__heading">{ui.contact}</h2>
+			<ul class="site-footer__list">
+				<li>
+					<a
+						href={telHref(business.phone)}
+						class="site-footer__link"
+						aria-describedby={callNote ? 'call-note-footer' : undefined}
+						{...trackAttrs('call', { source: 'footer' })}
+					>
+						<Icon name="phone" size="1.2rem" />
+						<span class="visually-hidden">{ui.call} </span>
+						<span dir="ltr">{formatPhone(business.phone)}</span>
+					</a>
+					{callNote && <span id="call-note-footer" class="site-footer__note">{callNote}</span>}
+				</li>
+				<li>
+					<a href={defaultWhatsappHref(code)} class="site-footer__link" data-booking-open data-booking-source="footer">
+						<Icon name="whatsapp" size="1.2rem" />
+						<span>{ui.sendWhatsapp}</span>
+					</a>
+				</li>
+				{
+					business.bookingUrl && (
+						<li>
+							<a
+								href={business.bookingUrl}
+								target="_blank"
+								rel="noopener"
+								class="site-footer__link"
+								{...trackAttrs('online-booking', { source: 'footer' })}
+							>
+								<Icon name="calendar" size="1.2rem" />
+								<span>{ui.booking.onlineBooking}</span>
+								<span class="visually-hidden"> ({ui.opensInNewTab})</span>
+							</a>
+						</li>
+					)
+				}
+				<li>
+					<a href={`mailto:${business.email}`} class="site-footer__link">
+						<Icon name="mail" size="1.2rem" />
+						<span dir="ltr">{business.email}</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<div>
+			<h2 class="site-footer__heading">{ui.workHours}</h2>
+			<ul class="site-footer__hours">
+				{
+					hours.map((line) => (
+						<li>
+							<span>{line.days}</span>
+							<span dir="ltr">
+								{line.from}–{line.to}
+							</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		{
+			business.payment.length > 0 && (
+				<div>
+					<h2 class="site-footer__heading">{ui.payment.title}</h2>
+					<ul class="site-footer__payment">
+						{business.payment.map((method) => (
+							<li class="site-footer__item">
+								<Icon name={PAYMENT_ICONS[method]} size="1.2rem" />
+								<span>{ui.payment[method]}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			)
+		}
+	</div>
+
+	<div class="container">
+		<p class="site-footer__bottom">© {content.businessName}</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		--color-text: var(--color-surface);
+		--color-text-muted: color-mix(in oklab, var(--color-surface) 72%, transparent);
+		padding-block: var(--space-2xl) var(--space-m);
+		border-block-start: 1px solid color-mix(in oklab, var(--color-surface) 10%, transparent);
+		background: color-mix(in oklab, var(--color-ink) 88%, black);
+		color: var(--color-text);
+	}
+
+	.site-footer__grid {
+		display: grid;
+		gap: var(--space-l) var(--space-xl);
+	}
+
+	@media (min-width: 36rem) {
+		.site-footer__grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.site-footer__grid {
+			grid-template-columns: 1.4fr;
+			grid-auto-columns: 1fr;
+			grid-auto-flow: column;
+		}
+	}
+
+	.site-footer__brand {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-s);
+	}
+
+	.site-footer__tagline {
+		max-inline-size: 32ch;
+		color: var(--color-text-muted);
+	}
+
+	.site-footer__heading {
+		margin-block-end: var(--space-xs);
+		color: var(--color-accent);
+		font-size: var(--step--1);
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
+	.site-footer__list,
+	.site-footer__hours,
+	.site-footer__payment,
+	.site-footer__social {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.site-footer__link,
+	.site-footer__item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6em;
+		min-block-size: 2.75rem;
+		color: var(--color-text);
+	}
+
+	.site-footer__link {
+		text-decoration: none;
+	}
+
+	@media (hover: hover) {
+		.site-footer__link:hover {
+			color: var(--color-accent);
+		}
+	}
+
+	.site-footer__link :global(svg),
+	.site-footer__item :global(svg) {
+		flex: none;
+		color: var(--color-accent);
+	}
+
+	.site-footer__payment {
+		display: flex;
+		flex-wrap: wrap;
+		column-gap: var(--space-s);
+	}
+
+	@media (min-width: 36rem) {
+		.site-footer__payment {
+			flex-direction: column;
+		}
+	}
+
+	.site-footer__item {
+		color: var(--color-text-muted);
+	}
+
+	.site-footer__note {
+		display: block;
+		margin-block-start: -0.5rem;
+		padding-inline-start: calc(1.2rem + 0.6em);
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.site-footer__hours {
+		display: grid;
+		gap: var(--space-2xs);
+		max-inline-size: 17rem;
+	}
+
+	.site-footer__hours li {
+		display: flex;
+		justify-content: space-between;
+		gap: var(--space-s);
+		color: var(--color-text-muted);
+	}
+
+	.site-footer__hours li > :last-child {
+		color: var(--color-text);
+		font-weight: 600;
+	}
+
+	.site-footer__social {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs);
+	}
+
+	.site-footer__social-link {
+		display: grid;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		border: 1px solid color-mix(in oklab, var(--color-surface) 22%, transparent);
+		border-radius: 50%;
+		color: var(--color-text);
+		transition:
+			background-color 0.2s ease,
+			color 0.2s ease;
+	}
+
+	@media (hover: hover) {
+		.site-footer__social-link:hover {
+			background: color-mix(in oklab, var(--color-surface) 12%, transparent);
+			color: var(--color-accent);
+		}
+	}
+
+	.site-footer__bottom {
+		margin-block-start: var(--space-xl);
+		padding-block-start: var(--space-s);
+		border-block-start: 1px solid color-mix(in oklab, var(--color-surface) 10%, transparent);
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+</style>

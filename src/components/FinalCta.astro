@@ -1,0 +1,194 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { trackAttrs } from '../lib/analytics.ts';
+import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { telHref } from '../lib/contact.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { callsInNote } from '../lib/i18n.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { content, ui } = getLocale(code);
+const callNote = callsInNote(code);
+
+const sparkles = [
+	{ top: '1.75rem', start: '8%', size: '1.4rem', delay: '0s' },
+	{ top: '3.25rem', start: '86%', size: '0.85rem', delay: '-4s' },
+	{ top: 'calc(100% - 3.75rem)', start: '90%', size: '1.15rem', delay: '-2s' },
+];
+---
+
+<section id="contact" class="cta" aria-labelledby="contact-title">
+	<div class="cta__decor" aria-hidden="true">
+		<span class="cta__glow"></span>
+		<span class="cta__dots"></span>
+		{
+			sparkles.map((s) => (
+				<span class="cta__sparkle" style={`--top: ${s.top}; --start: ${s.start}; --size: ${s.size}; --delay: ${s.delay}`}>
+					<Icon name="sparkle" size="100%" />
+				</span>
+			))
+		}
+	</div>
+
+	<div class="container cta__inner">
+		<h2 id="contact-title" class="cta__title">{content.finalCta.title}</h2>
+		<p class="cta__text">{content.finalCta.text}</p>
+		<div class="cta__actions">
+			<Button href={defaultWhatsappHref(code)} icon="whatsapp" data-booking-open data-booking-source="final">{ui.bookOnWhatsapp}</Button>
+			<Button
+				href={telHref(site.business.phone)}
+				variant="on-dark"
+				icon="phone"
+				describedBy={callNote ? 'call-note-final' : undefined}
+				{...trackAttrs('call', { source: 'final' })}
+			>
+				{ui.call}
+			</Button>
+		</div>
+		{
+			callNote && (
+				<p id="call-note-final" class="cta__note">
+					<Icon name="phone" size="1em" />
+					<span>{callNote}</span>
+				</p>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.cta {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+		padding-block: var(--space-3xl);
+		border-start-start-radius: clamp(1.5rem, 4vw, 3rem);
+		border-start-end-radius: clamp(1.5rem, 4vw, 3rem);
+		background: var(--color-ink);
+		color: var(--color-surface);
+		text-align: center;
+	}
+
+	.cta__decor {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+	}
+
+	.cta__glow {
+		position: absolute;
+		top: 55%;
+		left: 50%;
+		inline-size: min(64rem, 150vw);
+		aspect-ratio: 2;
+		border-radius: 50%;
+		background: radial-gradient(closest-side, color-mix(in oklab, var(--color-primary) 42%, transparent), transparent);
+		filter: blur(30px);
+		translate: -50% -50%;
+	}
+
+	.cta__dots {
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(color-mix(in oklab, var(--color-surface) 20%, transparent) 1px, transparent 1.5px);
+		background-size: 26px 26px;
+		mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, black 15%, transparent 75%);
+		opacity: 0.5;
+	}
+
+	.cta__sparkle {
+		position: absolute;
+		inset-block-start: var(--top);
+		inset-inline-start: var(--start);
+		inline-size: var(--size);
+		color: var(--color-accent);
+		opacity: 0.7;
+		animation: cta-float 7s ease-in-out infinite;
+		animation-delay: var(--delay);
+	}
+
+	@keyframes cta-float {
+		0%,
+		100% {
+			transform: translateY(0) scale(1) rotate(0deg);
+			opacity: 0.7;
+		}
+		50% {
+			transform: translateY(-10px) scale(1.1) rotate(10deg);
+			opacity: 1;
+		}
+	}
+
+	.cta__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-s);
+	}
+
+	.cta__title {
+		max-inline-size: 18ch;
+		font-size: var(--step-5);
+		line-height: 1.1;
+		background: linear-gradient(180deg, var(--color-surface) 45%, color-mix(in oklab, var(--color-accent) 75%, var(--color-surface)));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	@media (forced-colors: active) {
+		.cta__title {
+			background: none;
+			color: CanvasText;
+		}
+	}
+
+	.cta__text {
+		max-inline-size: 40ch;
+		color: color-mix(in oklab, var(--color-surface) 80%, transparent);
+		font-size: var(--step-1);
+	}
+
+	.cta__actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-xs);
+		inline-size: 100%;
+		margin-block-start: var(--space-2xs);
+	}
+
+	.cta__actions > :global(*) {
+		flex: 1 1 14rem;
+	}
+
+	@media (min-width: 40rem) {
+		.cta__actions > :global(*) {
+			max-inline-size: 20rem;
+		}
+	}
+
+	.cta__note {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45em;
+		color: color-mix(in oklab, var(--color-surface) 75%, transparent);
+		font-size: var(--step--1);
+	}
+
+	@media (orientation: landscape) and (max-height: 32rem) {
+		.cta {
+			padding-block: var(--space-2xl);
+		}
+
+		.cta__sparkle {
+			display: none;
+		}
+	}
+</style>

@@ -2,6 +2,7 @@
 import About from '../../components/About.astro';
 import Area from '../../components/Area.astro';
 import Faq from '../../components/Faq.astro';
+import FinalCta from '../../components/FinalCta.astro';
 import HeroGlow from '../../components/HeroGlow.astro';
 import Pricing from '../../components/Pricing.astro';
 import Services from '../../components/Services.astro';
@@ -30,4 +31,5 @@ const { seo } = getLocale(code);
 	{site.config.sections.why && <About code={code} />}
 	{site.config.sections.area && <Area code={code} />}
 	{site.config.sections.faq && <Faq code={code} />}
+	{site.config.sections.finalCta && <FinalCta code={code} />}
 </Base>
