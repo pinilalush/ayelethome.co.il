@@ -133,6 +133,7 @@ export const mediaSchema = z.strictObject({
   hero: z.strictObject({ file: imageFile, fileMobile: imageFile.optional(), alt: altKey }),
   heroVideo: z.strictObject({ file: videoFile, poster: imageFile }).optional(),
   about: image,
+  areaMap: z.strictObject({ file: imageFile }).optional(),
   og: z.record(langCode, imageFile),
   gallery: z.array(image),
 });

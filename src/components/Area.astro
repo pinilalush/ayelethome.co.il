@@ -1,7 +1,9 @@
 ---
+import { Picture } from 'astro:assets';
 import Icon from './Icon.astro';
 import Section from './Section.astro';
-import { getLocale } from '../lib/data.ts';
+import { getLocale, site } from '../lib/data.ts';
+import { findImage } from '../lib/media.ts';
 import type { Tone } from '../lib/sections.ts';
 
 interface Props {
@@ -12,18 +14,35 @@ interface Props {
 const { code, tone = 'alt' } = Astro.props;
 const { content } = getLocale(code);
 const { title, text, places } = content.area;
+const map = findImage(site.media.areaMap?.file);
 ---
 
 <Section id="area" title={title} tone={tone}>
 	<div class="area">
-		<div class="area__map" aria-hidden="true" data-reveal>
-			<span class="area__ring"></span>
-			<span class="area__ring"></span>
-			<span class="area__ring"></span>
-			<span class="area__pin">
-				<Icon name="pin" size="2rem" />
-			</span>
-			<span class="area__label">{places[0]}</span>
+		<div class="area__visual" data-reveal>
+			<div class="area__map" aria-hidden="true">
+				{
+					map && (
+						<Picture
+							src={map}
+							alt=""
+							formats={['avif', 'webp']}
+							widths={[480, 720, 960, 1200]}
+							sizes="(min-width: 48rem) 34rem, 100vw"
+							class="area__image"
+							loading="lazy"
+						/>
+					)
+				}
+				<span class="area__ring"></span>
+				<span class="area__ring"></span>
+				<span class="area__ring"></span>
+				<span class="area__pin">
+					<Icon name="pin" size="2rem" />
+				</span>
+				<span class="area__label">{places[0]}</span>
+			</div>
+			{map && <p class="area__credit" lang="en" dir="ltr">© OpenStreetMap contributors</p>}
 		</div>
 
 		<div class="area__text" data-reveal>
@@ -75,6 +94,32 @@ const { title, text, places } = content.area;
 			radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%),
 			var(--color-surface);
 		box-shadow: 0 1.5rem 3rem -2.5rem color-mix(in oklab, var(--color-ink) 50%, transparent);
+	}
+
+	.area__visual {
+		position: relative;
+	}
+
+	.area__map > :global(picture) {
+		position: absolute;
+		inset: 0;
+	}
+
+	.area__image {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+	}
+
+	.area__credit {
+		position: absolute;
+		inset-block-end: 0.5rem;
+		inset-inline-end: 0.75rem;
+		padding: 0.1em 0.5em;
+		border-radius: 0.4rem;
+		background: color-mix(in oklab, var(--color-surface) 85%, transparent);
+		color: var(--color-text-muted);
+		font-size: 0.7rem;
 	}
 
 	.area__ring {

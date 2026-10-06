@@ -235,6 +235,7 @@ Points to the files in `src/assets/media/` (images) and `public/media/` (video).
 - **`hero.jpg`, `hero-mobile.jpg`:** these come with the template (a tidy room) and show softly behind the hero, on wider screens and on phones. **Keep them for a cleaning or household business; replace both for any other kind** (`MEDIA-BRIEF.md` §8).
 - **`about.jpg`:** a **real photo of the owner**, never AI. **Remove its location data first** (`MEDIA-BRIEF.md`, *Removing location data*), because the repo is public. A real build stops until it's here.
 - **Gallery and logo:** optional. Gallery photos must be **real photos of her work**, with location removed.
+- **Area map (`area-map.jpg`):** the map behind the service-area pin. **Run `npm run area-map` once** after setting `business.json` → `city` and `geo`: it downloads the city from OpenStreetMap, shades the whole city area in the theme color, and saves the image (commit it). The template's map is Beer Sheva. If the city has no boundary in OpenStreetMap, the script makes a plain map around `geo`. The page credits OpenStreetMap on the map, as its license requires; leave that line.
 - **Share images (`og-<lang>.jpg`):** made automatically before every build (`scripts/share-images.mjs`) from `hero.jpg`, the business name, the tagline and the hourly price, in the site's colors and the Rubik font. Nothing to do; to see them after changing the data, run `npm run share-images`. After launch, and whenever they change, run the link through Facebook's Sharing Debugger and click **Scrape Again**.
 - **`hero.mp4`:** the template's video of the same room, played softly behind the hero on wider screens (`config.json` → `heroVideo`). Keep it for a cleaning or household business; for any other kind, replace it (`MEDIA-BRIEF.md` §4) or set `heroVideo` to `false`.
 
@@ -247,6 +248,7 @@ Points to the files in `src/assets/media/` (images) and `public/media/` (video).
 | `npm run dev` | Local server with live reload at `http://localhost:4321` plus `basePath`. Test data is allowed here, with the banner. |
 | `npm run check` | Data check plus Astro's type check, without building. |
 | `npm run share-images` | Remakes the share images from the data (every build also does this). |
+| `npm run area-map` | Downloads and saves the service-area map for `city` and `geo` (run once per business, needs internet). |
 | `npm run build` | Runs the data check first, then builds into `dist/`. **It stops with an exact list (file + field)** while any test data, missing file, contrast problem or placeholder typo is left. In a business repo **it must pass as is**, without `ALLOW_PLACEHOLDERS`. |
 | `npm run preview` | Serves the built `dist/` to check before pushing. |
 | `ALLOW_PLACEHOLDERS=1 npm run build` | A demo build with test data: test-data banner and `noindex`. **Never for the live site.** |

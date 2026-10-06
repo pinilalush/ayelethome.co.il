@@ -47,7 +47,13 @@ const initial = [...content.ownerName.trim()][0] ?? '';
 		</div>
 
 		<div class="about__text">
-			<p class="about__body" data-reveal>{content.about.text}</p>
+			{
+				content.about.text.split(/\n+/).map((paragraph) => (
+					<p class="about__body" data-reveal>
+						{paragraph}
+					</p>
+				))
+			}
 			<p class="about__signature" data-reveal>{content.ownerName}</p>
 		</div>
 	</div>
