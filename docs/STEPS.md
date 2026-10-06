@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 9.9 (final checks on the real domain https://ayelethome.co.il).
+**Current step:** none, every step is done. Ayelet's site is live at https://ayelethome.co.il.
 
 ---
 
@@ -113,5 +113,5 @@ The domain steps (9.2–9.3) don't depend on the template and can be done any ti
 - [x] **9.6 🤖 Build passes with no placeholders.**
 - [x] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
 - [x] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Done 2026-10-06: DNS on Cloudflare, domain verified in GitHub, HTTPS enforced, `basePath` "/" in her repo; http, www and the github.io address all lead to https://ayelethome.co.il.)*
-- [ ] **9.9 🤖👤 Final checks on the real domain** — every button, every language, Lighthouse, real devices, and the share preview: Facebook Sharing Debugger ("Scrape Again"), then paste the link in WhatsApp and Facebook to see the card.
+- [x] **9.9 🤖👤 Final checks on the real domain** — every button, every language, Lighthouse, real devices, and the share preview: Facebook Sharing Debugger ("Scrape Again"), then paste the link in WhatsApp and Facebook to see the card. *(Done 2026-10-06: Lighthouse mobile 98–100 on every page, layout 108/108 and keyboard clean on the live site, the Facebook and WhatsApp cards right after the Hebrew name was split into even lines, and every button checked on Pini's phone.)*
 - [x] **9.10 👤 Google Search Console** (verify the domain, submit the sitemap) — I'll write the steps. *(Done 2026-10-06: domain verified by the DNS record, `sitemap-index.xml` submitted, indexing requested for the home page. No Google Business Profile for now: Pini, 2026-10-06.)*
