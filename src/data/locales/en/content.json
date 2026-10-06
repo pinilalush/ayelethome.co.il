@@ -4,7 +4,7 @@
   "tagline": "Home cleaning and household management in Beer Sheva",
   "hero": {
     "title": "Want a clean, tidy home in Beer Sheva?",
-    "subtitle": "Household management in Beer Sheva: cleaning, tidying and whatever else your home needs. Book on WhatsApp with the button below, and we'll find a time that works for you.",
+    "subtitle": "Household management in Beer Sheva: cleaning, tidying and whatever else your home needs.\nBook on WhatsApp with the button below, and we'll find a time that works for you.",
     "badges": ["Reliable and responsible", "Thorough work", "All of Beer Sheva"]
   },
   "services": [
@@ -62,7 +62,7 @@
     "title": "Price",
     "perHour": "per hour",
     "minimum": "Minimum {hours} hours per visit",
-    "note": "The price is final. I work with your own cleaning supplies."
+    "note": "The price is final, and I work with your own cleaning supplies."
   },
   "booking": {
     "slots": {
@@ -92,7 +92,7 @@
   ],
   "about": {
     "title": "Nice to meet you",
-    "text": "I'm Ayelet, and I've been managing households in Beer Sheva for many years. Most of my clients stay with me for years and book me regularly, and to me that's the greatest compliment. A clean, tidy home isn't just a shiny floor. It's folded laundry, fresh bedding, dishes put away, and free time for you. I work thoroughly, responsibly and with respect for your home, and every home gets the same care from me."
+    "text": "I'm Ayelet, and I've been managing households in Beer Sheva for many years. Most of my clients stay with me for years and book me regularly, which to me is the greatest compliment.\nA clean, tidy home isn't just a shiny floor. It's folded laundry, fresh bedding, dishes put away, and more free time for you.\nI work thoroughly, responsibly and with respect for your home, and every home gets the same care from me, just like my own."
   },
   "area": {
     "title": "Service area",
