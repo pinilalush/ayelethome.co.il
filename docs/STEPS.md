@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 9.5 (Ayelet's texts waiting for approval), then 9.8 when the domain is published.
+**Current step:** 9.9 (final checks on the real domain https://ayelethome.co.il).
 
 ---
 
@@ -107,11 +107,11 @@ The domain steps (9.2–9.3) don't depend on the template and can be done any ti
 - [x] **9.2 🤖 Domain name ideas** — a short list of names (`.co.il` and `.com`) that are easy to say on the phone and spell in English letters without mistakes, with the registrar options and approximate yearly cost. 👤👩 Pick one.
 - [x] **9.3 👤 Buy Ayelet's domain** at a registrar (an ISOC-IL accredited registrar for `.co.il`). Turn on auto-renew so the site doesn't go down when the year ends. *(Done 2026-10-05. Auto-renew is off by your choice, so renew it by hand before the year ends.)*
 - [x] **9.4 👤 Create Ayelet's repo** from the template ("Use this template"), named after the domain, public, cloned into `private-landings/`, and linked to the template right away, before any data changes (`docs/NEW-SITE.md` §2).
-- [ ] **9.5 🤖 Fill Ayelet's data** — Hebrew content from her answers, English and Russian drafts, her hours guide, her pricing (₪100 per hour, ₪150 from 19:00, 4-hour minimum unless she says otherwise). 👤👩 Approve the texts.
-- [ ] **9.5b 👤 A native Russian speaker checks the Russian text** (site and booking-panel translation notes).
+- [x] **9.5 🤖 Fill Ayelet's data** — Hebrew content from her answers, English and Russian drafts, her hours guide, her pricing (₪100 per hour, ₪150 from 19:00, 4-hour minimum unless she says otherwise). 👤👩 Approve the texts.
+- [x] **9.5b 👤 A native Russian speaker checks the Russian text** (site and booking-panel translation notes). *(Done by Claude as the reviewer at Pini's request, 2026-10-06: name "Айелет — порядок в доме" and wording fixes. A native read later is still welcome.)*
 - [x] **9.5c 👤 Open a free Umami Cloud account** for Ayelet's site and send me the site ID. *(Done — the ID goes into her repo's `config.json` in 9.5, not into the template.)* *(Optional, later:* a free Cal.com account if she wants online booking — test approval and Hebrew first.*)*
 - [x] **9.6 🤖 Build passes with no placeholders.**
 - [x] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
-- [ ] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Started: DNS is on Cloudflare with the GitHub records, and the GitHub verification record is in place; Verify waits until the registry publishes the domain.)*
+- [x] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Done 2026-10-06: DNS on Cloudflare, domain verified in GitHub, HTTPS enforced, `basePath` "/" in her repo; http, www and the github.io address all lead to https://ayelethome.co.il.)*
 - [ ] **9.9 🤖👤 Final checks on the real domain** — every button, every language, Lighthouse, real devices, and the share preview: Facebook Sharing Debugger ("Scrape Again"), then paste the link in WhatsApp and Facebook to see the card.
-- [ ] **9.10 👤 Google Search Console** (verify the domain, submit the sitemap) — I'll write the steps. *(No Google Business Profile for now: Pini, 2026-10-06.)*
+- [x] **9.10 👤 Google Search Console** (verify the domain, submit the sitemap) — I'll write the steps. *(Done 2026-10-06: domain verified by the DNS record, `sitemap-index.xml` submitted, indexing requested for the home page. No Google Business Profile for now: Pini, 2026-10-06.)*

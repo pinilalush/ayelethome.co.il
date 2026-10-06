@@ -40,6 +40,40 @@ function textImage(markup, size) {
     .toBuffer({ resolveWithObject: true });
 }
 
+const lineWidths = new Map();
+async function lineWidth(text, size, weight) {
+  const key = `${size}|${weight}|${text}`;
+  if (!lineWidths.has(key)) {
+    const { info } = await sharp({ text: { text: `<span weight="${weight}" size="${size}pt">${escape(text)}</span>`, font: `Rubik ${size}`, rgba: true, dpi: 72 } })
+      .png()
+      .toBuffer({ resolveWithObject: true });
+    lineWidths.set(key, info.width);
+  }
+  return lineWidths.get(key);
+}
+
+function splits(words, lines) {
+  if (lines === 1) return [[words.join(' ')]];
+  const result = [];
+  for (let i = 1; i <= words.length - lines + 1; i++) {
+    for (const rest of splits(words.slice(i), lines - 1)) result.push([words.slice(0, i).join(' '), ...rest]);
+  }
+  return result;
+}
+
+async function balance(text, size, weight) {
+  const words = text.trim().split(/\s+(?![–—-](?:\s|$))/);
+  for (let lines = 1; lines <= words.length; lines++) {
+    let best;
+    for (const candidate of splits(words, lines)) {
+      const widest = Math.max(...(await Promise.all(candidate.map((line) => lineWidth(line, size, weight)))));
+      if (widest <= COLUMN && (!best || widest < best.widest)) best = { candidate, widest };
+    }
+    if (best) return best.candidate.join('\n');
+  }
+  return text;
+}
+
 async function shareImage(site, code, heroFile) {
   const { ink, primary, primaryText, accent, surface } = site.config.theme.colors;
   const { content } = site.locales[code];
@@ -54,8 +88,10 @@ async function shareImage(site, code, heroFile) {
     </svg>`,
   );
 
+  const nameSize = content.businessName.length > 24 ? 50 : 64;
+  const name = await balance(content.businessName, nameSize, 800);
   const title = await textImage(
-    `<span foreground="${surface}" weight="800" size="${content.businessName.length > 24 ? 50 : 64}pt">${escape(content.businessName)}</span>\n<span foreground="${accent}" weight="400" size="30pt">${escape(content.tagline)}</span>`,
+    `<span foreground="${surface}" weight="800" size="${nameSize}pt">${escape(name)}</span>\n<span foreground="${accent}" weight="400" size="30pt">${escape(content.tagline)}</span>`,
     30,
   );
   const layers = [{ input: overlay, top: 0, left: 0 }];
