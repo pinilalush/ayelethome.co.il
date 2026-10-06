@@ -580,7 +580,7 @@ Built in, not added on:
 
 **Photos and video (Google image and video tools, by you with my prompts):**
 - `hero.jpg` (wide, desktop) and `hero-mobile.jpg` (portrait, phones) — bright, tidy, modern living room in an Israeli apartment, morning light, no people's faces.
-- `about.jpg` — **must be a real photo of her** (not AI), when she's ready. Until then the section uses an illustration.
+- `about.jpg` — **a real photo of her**, when she's ready, or, if she'd rather not show a photo, **a drawn illustration made from her own photo that she approves** (clearly a drawing, not a photo; Pini, 2026-10-06). **Never a realistic AI image.** Until then the section shows the placeholder with her initial.
 - `og-he.jpg`, `og-en.jpg`, `og-ru.jpg` — social share images (1200×630), generated from the hero image + business data (section 11, **Share preview**).
 - `hero.mp4` *(optional)* — short silent loop: a tidy room, slow camera move, sunlight.
 - Gallery — **real photos of her work only**, later.
