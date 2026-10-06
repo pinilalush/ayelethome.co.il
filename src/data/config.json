@@ -26,7 +26,7 @@
     "gallery": false,
     "reviews": false,
     "faq": true,
-    "finalCta": true
+    "finalCta": false
   },
   "heroVideo": true,
   "analytics": {

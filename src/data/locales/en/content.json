@@ -4,7 +4,7 @@
   "tagline": "Home cleaning and household management in Beer Sheva",
   "hero": {
     "title": "Want a clean, tidy home in Beer Sheva?",
-    "subtitle": "Send a message and we'll find a time that works for you.",
+    "subtitle": "Household management in Beer Sheva: cleaning, tidying and whatever else your home needs. Book on WhatsApp with the button below, and we'll find a time that works for you.",
     "badges": ["Reliable and responsible", "Thorough work", "All of Beer Sheva"]
   },
   "services": [
@@ -62,7 +62,7 @@
     "title": "Price",
     "perHour": "per hour",
     "minimum": "Minimum {hours} hours per visit",
-    "note": "The price is final, with no VAT added (I'm a VAT-exempt business). I work with your own cleaning supplies."
+    "note": "The price is final. I work with your own cleaning supplies."
   },
   "booking": {
     "slots": {
@@ -101,7 +101,7 @@
   },
   "reviews": [],
   "faq": [
-    { "q": "How much does house cleaning cost?", "a": "{rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit, then by the half hour. The price is final, with no VAT added." },
+    { "q": "How much does house and apartment cleaning in Beer Sheva cost?", "a": "{rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit, then by the half hour. The price is final." },
     { "q": "What if the visit runs past {eveningFrom}?", "a": "The hours until {eveningFrom} are {rate} per hour, and the hours after are {eveningRate} per hour." },
     { "q": "What else can I ask for besides cleaning?", "a": "Laundry and ironing, changing bedding, dishes, tidying — whatever the home needs, in the same visit. Just mention it in your WhatsApp message." },
     { "q": "How do I book?", "a": "Send a WhatsApp message or call, and we'll set a day and time." },
