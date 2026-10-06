@@ -9,18 +9,18 @@
   },
   "services": [
     {
+      "id": "deep",
+      "icon": "spray",
+      "title": "Deep cleaning and tidying",
+      "text": "A thorough clean of every corner of the home: behind furniture, inside cabinets, tiles, windows and window tracks. We'll estimate the time together by phone.",
+      "bookingName": "a deep cleaning and tidying"
+    },
+    {
       "id": "regular",
       "icon": "sparkle",
       "title": "Regular cleaning",
       "text": "Cleaning the whole home every week or two: dusting, floors, kitchen and bathrooms, so you always come back to a clean home.",
       "bookingName": "a regular cleaning"
-    },
-    {
-      "id": "deep",
-      "icon": "spray",
-      "title": "Deep cleaning",
-      "text": "A thorough clean of every corner of the home: behind furniture, inside cabinets, tiles, windows and window tracks. We'll estimate the time together by phone.",
-      "bookingName": "a deep cleaning"
     },
     {
       "id": "household",
@@ -112,7 +112,7 @@
     { "q": "Which neighborhoods in Beer Sheva do you cover?", "a": "Every neighborhood in Beer Sheva, from the Old City to Ramot and Neve Ze'ev." },
     { "q": "Can I book a regular cleaning?", "a": "Yes, weekly or every two weeks on a fixed day." },
     { "q": "Do I need to be home during the cleaning?", "a": "No. You can leave me a key, and we'll agree in advance how I return it." },
-    { "q": "How many hours will I need?", "a": "A 2–3-room apartment usually needs the minimum of 4 hours. A 4-room apartment usually takes 4 hours too, unless it needs a serious tidy-up, and 5 rooms or more about 5 hours. That's an estimate, not a commitment. For a deep or Passover cleaning, I give a personal estimate by phone after we go over what the home needs." },
+    { "q": "How many hours will I need?", "a": "A 2–3-room apartment usually needs the minimum of 4 hours. A 4-room apartment usually takes 4 hours too, unless it needs a serious tidy-up, and 5 rooms or more about 5 hours. That's an estimate, not a commitment. For deep cleaning and tidying or a Passover cleaning, I give a personal estimate by phone after we go over what the home needs." },
     { "q": "How can I pay?", "a": "By Bit, PayBox, cash or bank transfer." }
   ],
   "finalCta": {

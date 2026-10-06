@@ -28,7 +28,7 @@
   },
   "contactLanguages": ["he"],
   "payment": ["bit", "paybox", "cash", "transfer"],
-  "defaultService": "household",
+  "defaultService": "deep",
   "estimateByPhone": ["deep", "holidays"],
   "bookingUrl": "",
   "accessibilityStatementDate": "2026-10-06"
