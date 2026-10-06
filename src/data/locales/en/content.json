@@ -3,8 +3,8 @@
   "ownerName": "Ayelet",
   "tagline": "Home cleaning and household management in Beer Sheva",
   "hero": {
-    "title": "A clean, tidy home in Beer Sheva, and your time back for everything else",
-    "subtitle": "House and apartment cleaning in Beer Sheva, organizing and more. Book with one WhatsApp message.",
+    "title": "Want a clean, tidy home in Beer Sheva?",
+    "subtitle": "Send a message and we'll find a time that works for you.",
     "badges": ["Reliable and responsible", "Thorough work", "All of Beer Sheva"]
   },
   "services": [
@@ -114,8 +114,8 @@
     { "q": "How can I pay?", "a": "By Bit, PayBox, cash or bank transfer." }
   ],
   "finalCta": {
-    "title": "Want a clean, tidy home?",
-    "text": "Send a message and we'll find a time that works for you."
+    "title": "A clean, tidy home in Beer Sheva, and your time back for everything else",
+    "text": "House and apartment cleaning in Beer Sheva, organizing and more. Book with one WhatsApp message."
   },
   "accessibilityService": "The service takes place in the client's home, and the business has no premises open to the public. If you need any adjustment, for example arranging things by phone instead of in writing, a visit at a particular time, or a detailed explanation in advance, contact me by phone or WhatsApp and I'll gladly adapt the service.",
   "media": {
