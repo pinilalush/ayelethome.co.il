@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** 9.8 (connect the domain), waiting for the .il registry to publish ayelethome.co.il.
+**Current step:** 9.9 (final checks on the real domain https://ayelethome.co.il).
 
 ---
 
@@ -112,6 +112,6 @@ The domain steps (9.2–9.3) don't depend on the template and can be done any ti
 - [x] **9.5c 👤 Open a free Umami Cloud account** for Ayelet's site and send me the site ID. *(Done — the ID goes into her repo's `config.json` in 9.5, not into the template.)* *(Optional, later:* a free Cal.com account if she wants online booking — test approval and Hebrew first.*)*
 - [x] **9.6 🤖 Build passes with no placeholders.**
 - [x] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
-- [ ] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Started: DNS is on Cloudflare with the GitHub records, and the GitHub verification record is in place; Verify waits until the registry publishes the domain.)*
+- [x] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Done 2026-10-06: DNS on Cloudflare, domain verified in GitHub, HTTPS enforced, `basePath` "/" in her repo; http, www and the github.io address all lead to https://ayelethome.co.il.)*
 - [ ] **9.9 🤖👤 Final checks on the real domain** — every button, every language, Lighthouse, real devices, and the share preview: Facebook Sharing Debugger ("Scrape Again"), then paste the link in WhatsApp and Facebook to see the card.
-- [ ] **9.10 👤 Google Search Console** (verify the domain, submit the sitemap) — I'll write the steps. *(No Google Business Profile for now: Pini, 2026-10-06.)*
+- [x] **9.10 👤 Google Search Console** (verify the domain, submit the sitemap) — I'll write the steps. *(Done 2026-10-06: domain verified by the DNS record, `sitemap-index.xml` submitted, indexing requested for the home page. No Google Business Profile for now: Pini, 2026-10-06.)*
