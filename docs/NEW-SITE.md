@@ -192,7 +192,7 @@ The message texts in `booking` have their own placeholders (`{service}`, `{durat
 
 ### `locales/<lang>/ui.json` — fixed interface text
 
-Button labels, section names, booking panel labels, day names, payment method names, the accessibility statement template text. **A business normally doesn't edit this file;** a new language translates it. `languageNames` must include every language in `contactLanguages`.
+Button labels, section names, booking panel labels, day names, payment method names, the accessibility statement template text. **A business normally doesn't edit this file;** a new language translates it. The page speaks as one owner ("למה לבחור בי", "Why choose me"); a business with a team changes `sections.why` to the plural ("למה לבחור בנו"). `languageNames` must include every language in `contactLanguages`.
 
 ### `media.json` — which image files to use
 
