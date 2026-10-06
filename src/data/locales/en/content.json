@@ -26,14 +26,14 @@
       "id": "household",
       "icon": "washer",
       "title": "Household management",
-      "text": "Laundry and ironing, changing bedding, dishes and whatever else the home needs, in the same visit.",
+      "text": "Laundry and ironing, changing bedding, dishes and whatever else the home needs, together with the cleaning in the same visit.",
       "bookingName": "household management"
     },
     {
       "id": "organizing",
       "icon": "clothes",
       "title": "Home organizing",
-      "text": "Organizing closets, the kitchen and pantry, and kids' rooms. I organize homes in Beer Sheva with a system that's easy to keep up.",
+      "text": "Organizing closets, the kitchen and pantry, and kids' rooms. I organize homes in Beer Sheva so it's easy for you to keep things tidy after the visit.",
       "bookingName": "home organizing"
     },
     {
@@ -67,17 +67,19 @@
   "booking": {
     "slots": {
       "day": { "title": "Daytime", "hint": "until {eveningFrom}", "inMessage": "during the day" },
-      "evening": { "title": "Evening", "hint": "from {eveningFrom}", "inMessage": "in the evening" }
+      "evening": { "title": "Evening", "hint": "{eveningFrom}–23:00, Sun–Thu", "inMessage": "in the evening" }
     },
     "hoursGuide": [
-      { "label": "2–3 room apartment", "hours": 4 },
-      { "label": "4 room apartment", "hours": 4 },
+      { "label": "2–3 rooms", "hours": 4 },
+      { "label": "4 rooms", "hours": 4 },
       { "label": "5 rooms or more", "hours": 5 }
     ],
     "message": "Hi, I'd like to book {service} for {duration} {slot}. {availability} I understand the price is {price}.",
+    "messageEstimate": "Hi, I'd like to book {service} {slot}. {availability} I'd like to talk by phone to estimate how many hours it needs. I understand the price is {rate} per hour.",
+    "estimateNote": "For this service we'll estimate the time together by phone, after going over what the home needs.",
     "price": {
-      "single": "{rate} per hour, so {total}",
-      "split": "{dayDuration} at {rate} and {eveningDuration} at {eveningRate}, so {total}"
+      "single": "{rate} per hour, {total} in total",
+      "split": "{total}: {dayDuration} at {rate} per hour plus {eveningDuration} at {eveningRate} per hour"
     },
     "availability": {
       "open": "When are you available?",
@@ -87,7 +89,7 @@
   },
   "why": [
     { "icon": "shield", "title": "Reliable and responsible", "text": "I work in your home with respect, quietly and carefully, as if it were my own." },
-    { "icon": "sparkle", "title": "Thorough down to the details", "text": "No skipped corners. What we agreed on gets done, all the way." },
+    { "icon": "sparkle", "title": "Thorough down to the last detail", "text": "I don't cut corners. What we agree on gets done in full." },
     { "icon": "clock", "title": "On time", "text": "I arrive at the agreed time and finish what we planned." }
   ],
   "about": {
@@ -102,15 +104,15 @@
   "reviews": [],
   "faq": [
     { "q": "How much does house and apartment cleaning in Beer Sheva cost?", "a": "{rate} per hour, and {eveningRate} per hour in the evening (from {eveningFrom}). Minimum {hours} hours per visit, then by the half hour. The price is final." },
-    { "q": "What if the visit runs past {eveningFrom}?", "a": "The hours until {eveningFrom} are {rate} per hour, and the hours after are {eveningRate} per hour." },
+    { "q": "What if the visit runs past {eveningFrom}?", "a": "The hours until {eveningFrom} are charged at {rate} per hour, and the hours after {eveningFrom} at {eveningRate} per hour." },
     { "q": "What else can I ask for besides cleaning?", "a": "Laundry and ironing, changing bedding, dishes, tidying — whatever the home needs, in the same visit. Just mention it in your WhatsApp message." },
     { "q": "How do I book?", "a": "Send a WhatsApp message or call, and we'll set a day and time." },
-    { "q": "What if I need to cancel?", "a": "You can cancel free of charge up to two days before the visit. A later cancellation costs a one-time fee of {cancellationFee}." },
+    { "q": "What if I need to cancel?", "a": "You can cancel free of charge up to two days before the visit. Cancelling later than that costs {cancellationFee}." },
     { "q": "Do I need to provide cleaning supplies?", "a": "Yes. I work with the cleaning supplies you have at home, so please have them ready before the visit." },
     { "q": "Which neighborhoods in Beer Sheva do you cover?", "a": "Every neighborhood in Beer Sheva, from the Old City to Ramot and Neve Ze'ev." },
     { "q": "Can I book a regular cleaning?", "a": "Yes, weekly or every two weeks on a fixed day." },
-    { "q": "Do I need to be home during the cleaning?", "a": "No. You can leave me a key, and we agree in advance how to return it." },
-    { "q": "How many hours will I need?", "a": "A 4-room apartment usually takes 4 hours, unless it needs a serious tidy-up. That's an estimate, not a commitment. For a deep or Passover cleaning, I give a personal estimate by phone after we go over what the home needs." },
+    { "q": "Do I need to be home during the cleaning?", "a": "No. You can leave me a key, and we'll agree in advance how I return it." },
+    { "q": "How many hours will I need?", "a": "A 2–3-room apartment usually needs the minimum of 4 hours. A 4-room apartment usually takes 4 hours too, unless it needs a serious tidy-up, and 5 rooms or more about 5 hours. That's an estimate, not a commitment. For a deep or Passover cleaning, I give a personal estimate by phone after we go over what the home needs." },
     { "q": "How can I pay?", "a": "By Bit, PayBox, cash or bank transfer." }
   ],
   "finalCta": {

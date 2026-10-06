@@ -1,10 +1,10 @@
 {
   "title": "House Cleaning in Beer Sheva | Ayelet Household Management",
-  "description": "House and apartment cleaning, organizing, laundry and ironing, and household management in Beer Sheva. {rate} per hour, book on WhatsApp.",
+  "description": "House and apartment cleaning, organizing, laundry and ironing, and household management in Beer Sheva. From {rate} per hour, book on WhatsApp.",
   "ogImage": "og-en",
   "share": {
     "title": "A clean, tidy home in Beer Sheva",
-    "description": "Home cleaning and household management · {rate} per hour · Book on WhatsApp",
+    "description": "Home cleaning and household management · From {rate} per hour · Book on WhatsApp",
     "imageAlt": "Ayelet Household Management: home cleaning and household management in Beer Sheva, {rate} per hour"
   },
   "keywords": {
@@ -42,8 +42,7 @@
       "wardrobe organizing",
       "kitchen organizing",
       "pantry organizing",
-      "kids' room organizing",
-      "packing and unpacking for a move"
+      "kids' room organizing"
     ],
     "places": [
       "Beer Sheva",
