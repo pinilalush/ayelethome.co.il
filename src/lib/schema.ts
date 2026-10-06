@@ -209,6 +209,7 @@ export const seoSchema = z.strictObject({
 export const uiSchema = z.strictObject({
   skipToContent: text,
   heroVideo: z.strictObject({ pause: text, play: text }),
+  share: z.strictObject({ button: text, title: text, whatsapp: text, copy: text, copied: text, qr: text, qrAlt: text, close: text }),
   call: text,
   callNow: text,
   callsIn: text,

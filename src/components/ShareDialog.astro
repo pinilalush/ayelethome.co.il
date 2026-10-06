@@ -1,0 +1,191 @@
+---
+import Icon from './Icon.astro';
+import { trackAttrs } from '../lib/analytics.ts';
+import { getLocale } from '../lib/data.ts';
+import { shareInfo } from '../lib/share.ts';
+
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+const { ui } = getLocale(code);
+const share = shareInfo(code);
+const qr = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}qr.svg`;
+---
+
+<dialog class="share" aria-labelledby="share-title" data-share data-url={share.url} data-title={share.title} data-text={share.text}>
+	<div class="share__card">
+		<header class="share__head">
+			<h2 id="share-title" class="share__title">{ui.share.title}</h2>
+			<button type="button" class="share__close" aria-label={ui.share.close} data-share-close>
+				<Icon name="close" size="1.35rem" />
+			</button>
+		</header>
+		<div class="share__actions">
+			<a href={share.whatsappHref} class="share__action" target="_blank" rel="noopener" {...trackAttrs('share-method', { method: 'whatsapp' })}>
+				<Icon name="whatsapp" size="1.35rem" />
+				<span>{ui.share.whatsapp}</span>
+				<span class="visually-hidden">({ui.opensInNewTab})</span>
+			</a>
+			<button type="button" class="share__action" data-share-copy data-copied={ui.share.copied} {...trackAttrs('share-method', { method: 'copy' })}>
+				<Icon name="copy" size="1.35rem" />
+				<span>{ui.share.copy}</span>
+			</button>
+		</div>
+		<p class="share__status" role="status" data-share-status></p>
+		<p class="share__qr-label">{ui.share.qr}</p>
+		<img class="share__qr" src={qr} alt={ui.share.qrAlt} width="180" height="180" loading="lazy" decoding="async" />
+	</div>
+</dialog>
+
+<script>
+	const dialog = document.querySelector<HTMLDialogElement>('[data-share]');
+	if (dialog) {
+		const { url = '', title = '', text = '' } = dialog.dataset;
+		const copy = dialog.querySelector<HTMLButtonElement>('[data-share-copy]');
+		const status = dialog.querySelector<HTMLElement>('[data-share-status]');
+		let opener: HTMLElement | null = null;
+
+		document.addEventListener('click', async (event) => {
+			const trigger = (event.target as Element).closest<HTMLElement>('[data-share-open]');
+			if (!trigger) return;
+			event.preventDefault();
+			if (navigator.share && matchMedia('(pointer: coarse)').matches) {
+				try {
+					await navigator.share({ title, text, url });
+					return;
+				} catch (error) {
+					if ((error as DOMException).name === 'AbortError') return;
+				}
+			}
+			opener = trigger;
+			if (status) status.textContent = '';
+			dialog.showModal();
+		});
+
+		copy?.addEventListener('click', async () => {
+			if (!status) return;
+			try {
+				await navigator.clipboard.writeText(url);
+				status.textContent = copy.dataset.copied ?? '';
+			} catch {
+				status.textContent = url;
+			}
+		});
+
+		dialog.querySelector('[data-share-close]')?.addEventListener('click', () => dialog.close());
+		dialog.addEventListener('click', (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+		dialog.addEventListener('close', () => opener?.focus());
+	}
+</script>
+
+<style>
+	.share {
+		inline-size: min(24rem, 100% - 2rem);
+		margin: auto;
+		padding: 0;
+		border: 0;
+		border-radius: calc(var(--radius) * 1.4);
+		background: var(--color-surface);
+		color: var(--color-text);
+		box-shadow: 0 1.5rem 4rem -1rem color-mix(in oklab, var(--color-ink) 50%, transparent);
+	}
+
+	.share::backdrop {
+		background: color-mix(in oklab, var(--color-ink) 60%, transparent);
+	}
+
+	.share__card {
+		display: grid;
+		gap: var(--space-s);
+		padding: var(--space-m);
+		text-align: center;
+	}
+
+	.share__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-s);
+	}
+
+	.share__title {
+		font-size: var(--step-1);
+	}
+
+	.share__close {
+		display: grid;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		border: 0;
+		border-radius: 50%;
+		background: var(--color-surface-alt);
+		color: var(--color-text);
+		cursor: pointer;
+	}
+
+	.share__actions {
+		display: grid;
+		gap: var(--space-xs);
+	}
+
+	.share__action {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-2xs);
+		min-block-size: 3rem;
+		padding-inline: var(--space-s);
+		border: 1px solid color-mix(in oklab, var(--color-text) 14%, transparent);
+		border-radius: 999px;
+		background: var(--color-surface);
+		color: var(--color-text);
+		font: inherit;
+		font-weight: 700;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.share__action:first-child {
+		border-color: transparent;
+		background: var(--color-primary);
+		color: var(--color-primary-text);
+	}
+
+	@media (hover: hover) {
+		.share__action:hover {
+			background: var(--color-surface-alt);
+		}
+
+		.share__action:first-child:hover {
+			background: color-mix(in oklab, var(--color-primary) 88%, var(--color-ink));
+		}
+	}
+
+	.share__status {
+		min-block-size: 1.5em;
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+		overflow-wrap: anywhere;
+	}
+
+	.share__status:empty {
+		min-block-size: 0;
+	}
+
+	.share__qr-label {
+		color: var(--color-text-muted);
+		font-size: var(--step--1);
+	}
+
+	.share__qr {
+		inline-size: 11.25rem;
+		block-size: auto;
+		margin-inline: auto;
+		border-radius: calc(var(--radius) * 0.6);
+	}
+</style>

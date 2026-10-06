@@ -7,8 +7,10 @@ import Button from '../components/Button.astro';
 import ContactBar from '../components/ContactBar.astro';
 import Footer from '../components/Footer.astro';
 import Head from '../components/Head.astro';
+import Icon from '../components/Icon.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import Logo from '../components/Logo.astro';
+import ShareDialog from '../components/ShareDialog.astro';
 import Motion from '../components/Motion.astro';
 import TestDataBanner from '../components/TestDataBanner.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
@@ -17,6 +19,7 @@ import { getLocale, site } from '../lib/data.ts';
 import { LANGUAGE_STORAGE_KEY, callsInNote, getLanguage } from '../lib/i18n.ts';
 import { telHref } from '../lib/contact.ts';
 import { pagePath } from '../lib/seo.ts';
+import { shareInfo } from '../lib/share.ts';
 import { formatPhone } from '../lib/text.ts';
 
 interface Props {
@@ -31,6 +34,7 @@ const language = getLanguage(code);
 const { ui } = getLocale(code);
 const callNote = callsInNote(code);
 const path = pagePath(Astro.url.pathname, code);
+const share = shareInfo(code);
 
 const detect = {
 	storageKey: LANGUAGE_STORAGE_KEY,
@@ -77,6 +81,15 @@ const detect = {
 				<Logo code={code} />
 				<div class="site-header__end">
 					<LanguageSwitcher current={code} path={path} />
+					<a
+						href={share.whatsappHref}
+						class="site-header__share"
+						aria-label={ui.share.button}
+						data-share-open
+						{...trackAttrs('share', { source: 'header' })}
+					>
+						<Icon name="share" size="1.25rem" />
+					</a>
 					{callNote && <span id="call-note-header" class="site-header__note">{callNote}</span>}
 					<Button
 						href={telHref(site.business.phone)}
@@ -100,6 +113,7 @@ const detect = {
 		<ContactBar code={code} />
 		<WhatsAppFab code={code} />
 		<BookingPanel code={code} />
+		<ShareDialog code={code} />
 		<Motion />
 	</body>
 </html>
@@ -194,6 +208,22 @@ const detect = {
 		flex: none;
 		align-items: center;
 		gap: var(--space-xs);
+	}
+
+	.site-header__share {
+		display: grid;
+		flex: none;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		border-radius: 50%;
+		color: var(--color-text);
+	}
+
+	@media (hover: hover) {
+		.site-header__share:hover {
+			background: var(--color-surface-alt);
+		}
 	}
 
 	.site-header :global(.site-header__call),

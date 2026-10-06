@@ -150,6 +150,7 @@ export function buildMessage(input: {
         slot,
         availability,
         rate: money(evening && eveningHours > 0 ? evening.hourlyRate : pricing.hourlyRate),
+        hours: formatNumber(lang, pricing.minimumHours),
       }),
     );
   }
