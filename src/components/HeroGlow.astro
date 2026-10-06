@@ -30,7 +30,9 @@ async function sources(file: string | undefined) {
 }
 const photo = await sources(site.media.hero.file);
 const photoMobile = await sources(site.media.hero.fileMobile);
-const video = site.config.heroVideo && site.media.heroVideo ? `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}media/${site.media.heroVideo.file}` : undefined;
+const mediaBase = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}media/`;
+const video = site.config.heroVideo && site.media.heroVideo ? `${mediaBase}${site.media.heroVideo.file}` : undefined;
+const videoMobile = video && site.media.heroVideo?.fileMobile ? `${mediaBase}${site.media.heroVideo.fileMobile}` : undefined;
 
 const sparkles = [
 	{ top: '0.5rem', start: '7%', size: '1.5rem', delay: '0s' },
@@ -55,7 +57,7 @@ const sparkles = [
 				</picture>
 			)
 		}
-		{video && <video class="hero__video" data-hero-video data-src={video} muted loop playsinline preload="none" tabindex="-1" />}
+		{video && <video class="hero__video" data-hero-video data-src={video} data-src-mobile={videoMobile} muted loop playsinline preload="none" tabindex="-1" />}
 		<div class="hero__glow hero__glow--a"></div>
 		<div class="hero__glow hero__glow--b"></div>
 		<div class="hero__dots"></div>
@@ -133,6 +135,14 @@ const sparkles = [
 	@media (max-width: 47.99rem) {
 		.hero {
 			padding-block-end: var(--space-l);
+		}
+
+		.hero:has(.hero__video-toggle:not([hidden])) {
+			padding-block-end: calc(2.75rem + 2 * var(--space-s));
+		}
+
+		.hero:has(.hero__video-toggle:not([hidden])) .hero__video-toggle {
+			inset-block-end: var(--space-s);
 		}
 
 		:global(.hero ~ section.section:not(.section ~ section)) {
@@ -460,9 +470,11 @@ const sparkles = [
 	const toggle = document.querySelector<HTMLButtonElement>('[data-hero-video-toggle]');
 	const wide = matchMedia('(min-aspect-ratio: 4/5)');
 	const calm = matchMedia('(prefers-reduced-motion: reduce)');
-	const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-	if (video && toggle && wide.matches && !calm.matches && !saveData) {
-		video.src = video.dataset.src ?? '';
+	const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+	const fast = !connection?.saveData && (!connection?.effectiveType || connection.effectiveType === '4g');
+	const source = wide.matches ? video?.dataset.src : video?.dataset.srcMobile;
+	if (video && toggle && source && fast && !calm.matches) {
+		video.src = source;
 		video.addEventListener('playing', () => video.toggleAttribute('data-playing', true), { once: true });
 		video.play().then(() => (toggle.hidden = false)).catch(() => {});
 		toggle.addEventListener('click', () => {

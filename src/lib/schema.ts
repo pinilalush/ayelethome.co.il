@@ -132,7 +132,7 @@ const image = z.strictObject({ file: imageFile, alt: altKey });
 export const mediaSchema = z.strictObject({
   logo: image.optional(),
   hero: z.strictObject({ file: imageFile, fileMobile: imageFile.optional(), alt: altKey }),
-  heroVideo: z.strictObject({ file: videoFile, poster: imageFile }).optional(),
+  heroVideo: z.strictObject({ file: videoFile, fileMobile: videoFile.optional(), poster: imageFile }).optional(),
   about: image,
   areaMap: z.strictObject({ file: imageFile }).optional(),
   og: z.record(langCode, imageFile),

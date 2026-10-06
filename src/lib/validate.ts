@@ -334,6 +334,7 @@ function checkMediaFiles(config: Config, media: Media, options: ValidationOption
   ];
   if (config.heroVideo && media.heroVideo) {
     wanted.push({ path: ['heroVideo', 'file'], file: media.heroVideo.file, dir: 'public' });
+    if (media.heroVideo.fileMobile) wanted.push({ path: ['heroVideo', 'fileMobile'], file: media.heroVideo.fileMobile, dir: 'public' });
     wanted.push({ path: ['heroVideo', 'poster'], file: media.heroVideo.poster, dir: 'assets' });
   }
   for (const { path, file, dir } of wanted) {
