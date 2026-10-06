@@ -318,6 +318,7 @@ function checkMediaFiles(config: Config, media: Media, options: ValidationOption
     { path: ['hero', 'file'], file: media.hero.file, dir: 'assets' },
     ...(media.hero.fileMobile ? [{ path: ['hero', 'fileMobile'], file: media.hero.fileMobile, dir: 'assets' as const }] : []),
     { path: ['about', 'file'], file: media.about.file, dir: 'assets' },
+    ...(media.areaMap ? [{ path: ['areaMap', 'file'], file: media.areaMap.file, dir: 'assets' as const }] : []),
     ...Object.entries(media.og).map(([code, file]) => ({ path: ['og', code], file, dir: 'assets' as const })),
     ...media.gallery.map((g, i) => ({ path: ['gallery', i, 'file'], file: g.file, dir: 'assets' as const })),
   ];

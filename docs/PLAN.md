@@ -336,6 +336,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
   "hero": { "file": "hero.jpg", "fileMobile": "hero-mobile.jpg", "alt": "hero" },
   "heroVideo": { "file": "hero.mp4", "poster": "hero.jpg" },
   "about": { "file": "about.jpg", "alt": "about" },
+  "areaMap": { "file": "area-map.jpg" },
   "og": { "he": "og-he.jpg", "en": "og-en.jpg", "ru": "og-ru.jpg" },
   "gallery": []
 }
@@ -373,8 +374,8 @@ One page per language, short, built for phones first. No forms, no steps.
 2. **Hero** — headline, one supporting line, 3 short badges (e.g. "reliable and responsible", "thorough", "Beer Sheva and area"), **Call** and **WhatsApp** buttons. Optional background video.
 3. **Why her** — opens with her photo and the about text under the about title ("נעים להכיר"), then the "why choose us" heading right above three short points with icons Right after the hero, before the services (Pini, 2026-10-06).
 4. **Price** — two cards side by side (stacked on phones): **Daytime** (until 19:00) · ₪100 per hour · minimum 4 hours = **₪400**, and **Evening** (from 19:00) · ₪150 per hour · minimum 4 hours = **₪600**. Each card has its own WhatsApp button that opens the booking panel with that time already selected, plus a short line on what's included and the payment methods. A clear price up front saves her the "how much?" messages and filters out visitors who aren't a fit. The same prices appear in the FAQ ("How much does it cost?"). Right after the owner's section, before the services (Pini, 2026-10-06).
-5. **Services** — cards with icon, short text, and a WhatsApp button that opens the booking panel with that service already selected.
-6. **Service area** — the places she serves, as chips, with a stylized area graphic (no embedded Google Map: it's heavy and loads third-party cookies).
+5. **Service area** — the places she serves, as chips, next to a **static map of the city**: a one-time image made from OpenStreetMap by `npm run area-map` (`media.json` → `areaMap`), faded into the site's colors, with the whole municipal area shaded and outlined and the pulsing pin and city label on top. Credited "© OpenStreetMap contributors" on the map (Pini, 2026-10-06). Still no embedded Google Map: it's heavy and loads third-party cookies. Right after the price, before the services (Pini, 2026-10-06).
+6. **Services** — cards with icon, short text, and a WhatsApp button that opens the booking panel with that service already selected.
 7. **Gallery** *(off until real photos)*.
 8. **Reviews** *(off until real reviews)*.
 9. **FAQ** — 5–7 short questions (accordion), written around search keywords.

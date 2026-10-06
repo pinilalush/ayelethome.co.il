@@ -31,8 +31,8 @@ const { sections } = site.config;
 const shown = {
 	why: sections.why,
 	pricing: sections.pricing && Boolean(site.business.pricing),
-	services: sections.services,
 	area: sections.area,
+	services: sections.services,
 	gallery: sections.gallery,
 	reviews: sections.reviews,
 	faq: sections.faq,
@@ -44,8 +44,8 @@ const tones = alternate((Object.keys(shown) as (keyof typeof shown)[]).filter((k
 	<HeroGlow code={code} />
 	{shown.why && <About code={code} tone={tones.why} />}
 	{shown.pricing && <Pricing code={code} tone={tones.pricing} />}
-	{shown.services && <Services code={code} tone={tones.services} />}
 	{shown.area && <Area code={code} tone={tones.area} />}
+	{shown.services && <Services code={code} tone={tones.services} />}
 	{shown.gallery && <Gallery code={code} tone={tones.gallery} />}
 	{shown.reviews && <Reviews code={code} tone={tones.reviews} />}
 	{shown.faq && <Faq code={code} tone={tones.faq} />}

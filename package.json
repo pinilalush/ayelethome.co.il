@@ -13,6 +13,7 @@
     "preview": "astro preview",
     "check": "node scripts/check-data.mjs && astro check",
     "share-images": "node scripts/share-images.mjs",
+    "area-map": "node scripts/area-map.mjs",
     "astro": "astro"
   },
   "dependencies": {

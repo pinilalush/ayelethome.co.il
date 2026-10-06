@@ -42,6 +42,7 @@ npm ci
 | `npm run build` | Runs the data check first, then builds the site into `dist/`. Stops with a list of exact file + field for any test data, missing image or invalid value. |
 | `npm run preview` | Serves the built `dist/` locally. |
 | `npm run share-images` | Remakes the share images from the data (every build also does this). |
+| `npm run area-map` | Downloads the service-area map of the city from OpenStreetMap (run once per business). |
 | `ALLOW_PLACEHOLDERS=1 npm run build` | Demo build with test data: test-data banner and `noindex`. |
 
 ## Structure
@@ -51,6 +52,7 @@ npm ci
 astro.config.mjs               site address, base path and languages, read from src/data
 scripts/check-data.mjs         the data check (runs before every build)
 scripts/share-images.mjs       makes the share images from the data (runs before every build)
+scripts/area-map.mjs           makes the service-area map from OpenStreetMap (run by hand, once)
 scripts/fonts/                 Rubik as .ttf for the share images (SIL Open Font License)
 docs/                          plan, build steps, new-site guide, media brief
 public/media/                  the hero video
