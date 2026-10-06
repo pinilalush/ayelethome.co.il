@@ -4,6 +4,7 @@ import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 import { trackAttrs } from '../lib/analytics.ts';
 import { defaultWhatsappHref } from '../lib/booking-server.ts';
+import { shareInfo } from '../lib/share.ts';
 import { telHref } from '../lib/contact.ts';
 import { getLocale, site } from '../lib/data.ts';
 import { hoursLines } from '../lib/hours.ts';
@@ -40,16 +41,21 @@ const social = (Object.keys(SOCIAL_ICONS) as (keyof Business['social'])[])
 		<div class="site-footer__brand">
 			<Logo code={code} />
 			<p class="site-footer__tagline">{content.tagline}</p>
-			<Button
-				href={`${homeUrl(code)}contact.vcf`}
-				variant="on-dark"
-				size="sm"
-				icon="userPlus"
-				class="site-footer__save"
-				{...trackAttrs('save-contact', { source: 'footer' })}
-			>
-				{ui.saveContact}
-			</Button>
+			<div class="site-footer__actions">
+				<Button
+					href={`${homeUrl(code)}contact.vcf`}
+					variant="on-dark"
+					size="sm"
+					icon="userPlus"
+					class="site-footer__save"
+					{...trackAttrs('save-contact', { source: 'footer' })}
+				>
+					{ui.saveContact}
+				</Button>
+				<Button href={shareInfo(code).whatsappHref} variant="on-dark" size="sm" icon="share" data-share-open {...trackAttrs('share', { source: 'footer' })}>
+					{ui.share.button}
+				</Button>
+			</div>
 			{
 				social.length > 0 && (
 					<ul class="site-footer__social">
@@ -198,6 +204,12 @@ const social = (Object.keys(SOCIAL_ICONS) as (keyof Business['social'])[])
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--space-s);
+	}
+
+	.site-footer__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xs);
 	}
 
 	.site-footer__tagline {
