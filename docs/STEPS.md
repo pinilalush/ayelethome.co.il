@@ -114,4 +114,4 @@ The domain steps (9.2–9.3) don't depend on the template and can be done any ti
 - [x] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
 - [ ] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Started: DNS is on Cloudflare with the GitHub records, and the GitHub verification record is in place; Verify waits until the registry publishes the domain.)*
 - [ ] **9.9 🤖👤 Final checks on the real domain** — every button, every language, Lighthouse, real devices, and the share preview: Facebook Sharing Debugger ("Scrape Again"), then paste the link in WhatsApp and Facebook to see the card.
-- [ ] **9.10 👤👩 Google Search Console** (submit the sitemap) and **Google Business Profile** for Ayelet — I'll write the steps.
+- [ ] **9.10 👤 Google Search Console** (verify the domain, submit the sitemap) — I'll write the steps. *(No Google Business Profile for now: Pini, 2026-10-06.)*
