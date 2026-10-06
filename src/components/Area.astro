@@ -47,16 +47,18 @@ const map = findImage(site.media.areaMap?.file);
 
 		<div class="area__text" data-reveal>
 			<p class="area__lead">{text}</p>
-			<ul class="area__places">
-				{
-					places.map((place) => (
-						<li class="area__place">
-							<Icon name="pin" size="1.1em" />
-							<span>{place}</span>
-						</li>
-					))
-				}
-			</ul>
+			{
+				places.length > 1 && (
+					<ul class="area__places">
+						{places.map((place) => (
+							<li class="area__place">
+								<Icon name="pin" size="1.1em" />
+								<span>{place}</span>
+							</li>
+						))}
+					</ul>
+				)
+			}
 		</div>
 	</div>
 </Section>

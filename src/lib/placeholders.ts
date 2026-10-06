@@ -6,6 +6,7 @@ const PRICE_TOKENS = ['hours', 'rate', 'total', 'eveningFrom', 'eveningRate', 'c
 
 const RULES: Record<string, string[]> = {
   'content:booking.message': ['service', 'duration', 'slot', 'availability', 'price'],
+  'content:booking.messageEstimate': ['service', 'slot', 'availability', 'rate'],
   'content:booking.price.single': ['rate', 'total'],
   'content:booking.price.split': ['dayDuration', 'rate', 'eveningDuration', 'eveningRate', 'total'],
   'content:booking.availability.dated': ['when'],

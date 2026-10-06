@@ -1,7 +1,7 @@
 import type { DayCode } from './booking.ts';
 import { getLocale, site } from './data.ts';
 import { fillPricing } from './pricing-text.ts';
-import { localeUrl } from './seo.ts';
+import { localeUrl, shareImage } from './seo.ts';
 
 const DAY_NAMES: Record<DayCode, string> = {
   Su: 'Sunday',
@@ -42,6 +42,10 @@ export function localBusiness(code: string) {
   const { content, ui } = getLocale(code);
   const sameAs = Object.values(business.social).filter(Boolean);
   const pricing = offerPricing(code);
+  const image = shareImage(code)?.url;
+  const rates = business.pricing ? [business.pricing.hourlyRate, business.pricing.evening?.hourlyRate].filter((r): r is number => r !== undefined) : [];
+  const plainMoney = (amount: number) => new Intl.NumberFormat('en', { style: 'currency', currency: business.pricing?.currency ?? 'ILS', maximumFractionDigits: 0 }).format(amount);
+  const priceRange = rates.length ? [...new Set([Math.min(...rates), Math.max(...rates)])].map(plainMoney).join('–') : undefined;
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -49,7 +53,9 @@ export function localBusiness(code: string) {
     name: content.businessName,
     url: localeUrl(code),
     telephone: business.phone,
-    address: { '@type': 'PostalAddress', addressLocality: business.city },
+    ...(image ? { image } : {}),
+    ...(priceRange ? { priceRange } : {}),
+    address: { '@type': 'PostalAddress', addressLocality: business.city, ...(business.phone.startsWith('+972') ? { addressCountry: 'IL' } : {}) },
     geo: { '@type': 'GeoCoordinates', latitude: business.geo.lat, longitude: business.geo.lng },
     areaServed: content.area.places,
     openingHoursSpecification: business.workHours.map((hours) => ({

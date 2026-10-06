@@ -8,6 +8,7 @@ export const DAY_CODES: DayCode[] = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 export type BookingTexts = {
   slots: { day: { inMessage: string }; evening?: { inMessage: string } };
   message: string;
+  messageEstimate?: string;
   price: { single: string; split?: string };
   availability: { open: string; dated: string };
   when: { date: string; time: string };
@@ -38,6 +39,7 @@ export type Choice = {
   hours: number;
   day?: { weekday: DayCode; date: string };
   start?: number;
+  estimate?: boolean;
 };
 
 export type Breakdown = { dayHours: number; eveningHours: number; total: number };
@@ -74,16 +76,22 @@ export function formatDuration(lang: string, hours: number, forms: DurationForms
   return fill(forms.other, { n: formatNumber(lang, hours) });
 }
 
-export function breakdown(pricing: PricingInfo, slot: Slot, hours: number, start?: number): Breakdown {
+export function breakdown(pricing: PricingInfo, slot: Slot, hours: number, start?: number, workHours: WorkRange[] = []): Breakdown {
   const evening = pricing.evening;
   let eveningHours = 0;
   if (evening) {
-    if (start === undefined) {
+    const eveningStart = toMinutes(evening.from);
+    let from = start;
+    if (from === undefined && workHours.length) {
+      const open = Math.min(...workHours.map((r) => toMinutes(r.from)));
+      const close = Math.max(...workHours.map((r) => toMinutes(r.to)));
+      from = slot === 'evening' ? Math.min(eveningStart, close - hours * 60) : open;
+    }
+    if (from === undefined) {
       eveningHours = slot === 'evening' ? hours : 0;
     } else {
-      const eveningStart = toMinutes(evening.from);
-      const end = start + hours * 60;
-      eveningHours = Math.max(0, end - Math.max(start, eveningStart)) / 60;
+      const end = from + hours * 60;
+      eveningHours = Math.min(hours, Math.max(0, end - Math.max(from, eveningStart)) / 60);
     }
   }
   const dayHours = hours - eveningHours;
@@ -93,8 +101,9 @@ export function breakdown(pricing: PricingInfo, slot: Slot, hours: number, start
 
 function tidy(text: string): string {
   return text
-    .replace(/\s+/g, ' ')
-    .replace(/\s+([.,?!:;])/g, '$1')
+    .replace(/[^\S\u00a0\u202f]+/g, ' ')
+    .replace(/[^\S\u00a0\u202f]+([.,?!:;])/g, '$1')
+    .replace(/\.{2,}/g, '.')
     .trim();
 }
 
@@ -104,15 +113,17 @@ export function buildMessage(input: {
   durations: DurationForms;
   days: Record<DayCode, string>;
   pricing: PricingInfo;
+  workHours?: WorkRange[];
   choice: Choice;
 }): string {
   const { lang, texts, durations, days, pricing, choice } = input;
   const evening = pricing.evening;
-  const { dayHours, eveningHours, total } = breakdown(pricing, choice.slot, choice.hours, choice.start);
+  const { dayHours, eveningHours, total } = breakdown(pricing, choice.slot, choice.hours, choice.start, input.workHours);
   const money = (amount: number) => formatMoney(lang, amount, pricing.currency);
+  const split = Boolean(evening) && dayHours > 0 && eveningHours > 0;
 
   const price =
-    evening && texts.price.split && dayHours > 0 && eveningHours > 0
+    evening && texts.price.split && split
       ? fill(texts.price.split, {
           dayDuration: formatDuration(lang, dayHours, durations),
           eveningDuration: formatDuration(lang, eveningHours, durations),
@@ -130,7 +141,18 @@ export function buildMessage(input: {
   if (choice.start !== undefined) when.push(fill(texts.when.time, { time: formatTime(choice.start) }));
   const availability = when.length ? fill(texts.availability.dated, { when: when.join(' ') }) : texts.availability.open;
 
-  const slot = evening ? (texts.slots[choice.slot]?.inMessage ?? '') : '';
+  const slot = evening && !split ? (texts.slots[choice.slot]?.inMessage ?? '') : '';
+
+  if (choice.estimate && texts.messageEstimate) {
+    return tidy(
+      fill(texts.messageEstimate, {
+        service: choice.serviceName,
+        slot,
+        availability,
+        rate: money(evening && eveningHours > 0 ? evening.hourlyRate : pricing.hourlyRate),
+      }),
+    );
+  }
 
   return tidy(
     fill(texts.message, {
@@ -192,5 +214,6 @@ export type BookingConfig = {
   workHours: WorkRange[];
   maxHours: number;
   defaultService: string;
+  estimateByPhone: string[];
   texts: Record<string, LocaleTexts>;
 };

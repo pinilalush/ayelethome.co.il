@@ -122,6 +122,7 @@ export const businessSchema = z.strictObject({
     .refine((ls) => new Set(ls).size === ls.length, 'languages must not repeat'),
   payment: z.array(payment).refine((ps) => new Set(ps).size === ps.length, 'payment methods must not repeat'),
   defaultService: slug,
+  estimateByPhone: z.array(slug).optional(),
   bookingUrl: optionalUrl,
   accessibilityStatementDate: isoDate,
 });
@@ -171,7 +172,9 @@ export const contentSchema = z.strictObject({
         hours: positive.refine(half, 'expected whole or half hours, like 4 or 4.5'),
       }),
     ),
+    estimateNote: text.optional(),
     message: text,
+    messageEstimate: text.optional(),
     price: z.strictObject({ single: text, split: text.optional() }),
     availability: z.strictObject({ open: text, dated: text }),
     when: z.strictObject({ date: text, time: text }),

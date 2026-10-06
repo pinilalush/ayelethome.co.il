@@ -55,7 +55,7 @@ async function shareImage(site, code, heroFile) {
   );
 
   const title = await textImage(
-    `<span foreground="${surface}" weight="800" size="64pt">${escape(content.businessName)}</span>\n<span foreground="${accent}" weight="400" size="30pt">${escape(content.tagline)}</span>`,
+    `<span foreground="${surface}" weight="800" size="${content.businessName.length > 24 ? 50 : 64}pt">${escape(content.businessName)}</span>\n<span foreground="${accent}" weight="400" size="30pt">${escape(content.tagline)}</span>`,
     30,
   );
   const layers = [{ input: overlay, top: 0, left: 0 }];
