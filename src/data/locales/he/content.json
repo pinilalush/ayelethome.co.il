@@ -75,8 +75,8 @@
       { "label": "דירת 5 חדרים ומעלה", "hours": 5 }
     ],
     "message": "היי, אשמח להזמין אותך {service} ל־{duration} {slot}. {availability} הבנתי שהמחיר {price}.",
-    "messageEstimate": "היי, אשמח להזמין אותך {service} {slot}. {availability} אשמח שנדבר בטלפון כדי להעריך כמה שעות צריך. הבנתי שהמחיר {rate} לשעה.",
-    "estimateNote": "בשירות הזה את משך העבודה נעריך יחד בטלפון, אחרי שנעבור על מה שהבית צריך.",
+    "messageEstimate": "היי, אשמח להזמין אותך {service} {slot}. {availability} אשמח שנדבר בטלפון כדי להעריך כמה שעות צריך. הבנתי שהמחיר {rate} לשעה, ומינימום {hours} שעות.",
+    "estimateNote": "בשירות הזה את משך העבודה נעריך יחד בטלפון, אחרי שנעבור על מה שהבית צריך. מינימום {hours} שעות לביקור.",
     "price": {
       "single": "{rate} לשעה, כלומר {total}",
       "split": "{total}: {dayDuration} לפי {rate} לשעה ועוד {eveningDuration} לפי {eveningRate} לשעה"

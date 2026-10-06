@@ -75,8 +75,8 @@
       { "label": "5 rooms or more", "hours": 5 }
     ],
     "message": "Hi, I'd like to book {service} for {duration} {slot}. {availability} I understand the price is {price}.",
-    "messageEstimate": "Hi, I'd like to book {service} {slot}. {availability} I'd like to talk by phone to estimate how many hours it needs. I understand the price is {rate} per hour.",
-    "estimateNote": "For this service we'll estimate the time together by phone, after going over what the home needs.",
+    "messageEstimate": "Hi, I'd like to book {service} {slot}. {availability} I'd like to talk by phone to estimate how many hours it needs. I understand the price is {rate} per hour, with a minimum of {hours} hours.",
+    "estimateNote": "For this service we'll estimate the time together by phone, after going over what the home needs. Minimum {hours} hours per visit.",
     "price": {
       "single": "{rate} per hour, {total} in total",
       "split": "{total}: {dayDuration} at {rate} per hour plus {eveningDuration} at {eveningRate} per hour"
