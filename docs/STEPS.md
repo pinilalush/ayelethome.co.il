@@ -69,7 +69,7 @@ Each section is checked at every width in the responsive matrix, in every langua
 
 - [x] **4.1 🤖 Keyword lists** in `seo.json` (Hebrew, English and Russian), and the test content rewritten to use them naturally. Check script warns about primary keywords not used in the page.
 - [x] **4.2 🤖 Head tags** — title, description, canonical, `hreflang`, and the full share-preview tags (PLAN section 11, **Share preview**).
-- [ ] **4.3 🤖 Structured data** — `LocalBusiness` with area, hours, services and the hourly price.
+- [x] **4.3 🤖 Structured data** — `LocalBusiness` with area, hours, services and the hourly price.
   *Check:* passes Google's Rich Results Test and the schema.org validator.
 - [x] **4.4 🤖 Sitemap and robots.txt.**
 
