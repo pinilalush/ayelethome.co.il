@@ -149,7 +149,7 @@ A good order to fill them in: `business.json`, then `config.json`, then the defa
 | `theme.font` | `"rubik"`, the font installed in the template. It covers Hebrew, Latin and Cyrillic. |
 | `theme.radius` | Corner rounding, for example `"1.25rem"`. |
 | `sections` | Each section on or off: `services`, `pricing`, `why` (the "why us" points with the about text and photo), `area`, `gallery`, `reviews`, `faq`, `finalCta`. **Keep `gallery` and `reviews` off** until there are real photos and real reviews; the check fails if they're on and empty. |
-| `heroVideo` | `true` plays `public/media/hero.mp4` softly behind the hero on wider screens, with a pause button; never on phones held upright or with reduced motion. `false` shows only the photo. |
+| `heroVideo` | `true` plays `public/media/hero.mp4` softly behind the hero on wider screens and `hero-mobile.mp4` on phones held upright (if `media.json` lists it), with a pause button; only on a fast connection, never with reduced motion or data saver. `false` shows only the photo. |
 | `analytics.umamiWebsiteId` | `""` means no counting at all. The business's own Umami Cloud website ID turns it on (section 8). |
 
 ### `locales/<lang>/content.json` — the page text, per language
@@ -237,7 +237,7 @@ Points to the files in `src/assets/media/` (images) and `public/media/` (video).
 - **Gallery and logo:** optional. Gallery photos must be **real photos of her work**, with location removed.
 - **Area map (`area-map.jpg`):** the map behind the service-area pin. **Run `npm run area-map` once** after setting `business.json` → `city` and `geo`: it downloads the city from OpenStreetMap, shades the whole city area in the theme color, and saves the image (commit it). The template's map is Beer Sheva. If the city has no boundary in OpenStreetMap, the script makes a plain map around `geo`. The page credits OpenStreetMap on the map, as its license requires; leave that line.
 - **Share images (`og-<lang>.jpg`):** made automatically before every build (`scripts/share-images.mjs`) from `hero.jpg`, the business name, the tagline and the hourly price, in the site's colors and the Rubik font. Nothing to do; to see them after changing the data, run `npm run share-images`. After launch, and whenever they change, run the link through Facebook's Sharing Debugger and click **Scrape Again**.
-- **`hero.mp4`:** the template's video of the same room, played softly behind the hero on wider screens (`config.json` → `heroVideo`). Keep it for a cleaning or household business; for any other kind, replace it (`MEDIA-BRIEF.md` §4) or set `heroVideo` to `false`.
+- **`hero.mp4`, `hero-mobile.mp4`:** the template's videos of the same room (wide and tall), played softly behind the hero (`config.json` → `heroVideo`). Keep it for a cleaning or household business; for any other kind, replace it (`MEDIA-BRIEF.md` §4) or set `heroVideo` to `false`.
 
 ---
 

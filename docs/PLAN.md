@@ -334,7 +334,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 ```json
 {
   "hero": { "file": "hero.jpg", "fileMobile": "hero-mobile.jpg", "alt": "hero" },
-  "heroVideo": { "file": "hero.mp4", "poster": "hero.jpg" },
+  "heroVideo": { "file": "hero.mp4", "fileMobile": "hero-mobile.mp4", "poster": "hero.jpg" },
   "about": { "file": "about.jpg", "alt": "about" },
   "areaMap": { "file": "area-map.jpg" },
   "og": { "he": "og-he.jpg", "en": "og-en.jpg", "ru": "og-ru.jpg" },

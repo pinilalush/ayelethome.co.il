@@ -151,7 +151,7 @@ In Flow: choose **aspect ratio 9:16**, add `hero.jpg` to the prompt as a referen
 
 ## 4. `hero.mp4` — optional background video
 
-**Status:** the hero plays it softly behind the glow on wider screens when `config.json` → `heroVideo` is `true`. It loads only on landscape screens, never on phones in portrait, with reduced motion, or with data saver on, and it has a pause button. Without it, the hero shows the photo. Before adding the file, remove the sound and compress it: `ffmpeg -i clip.mp4 -an -c:v libx264 -crf 27 -pix_fmt yuv420p -movflags +faststart public/media/hero.mp4` (about 1–2 MB for 8 seconds of 720p).
+**Status:** the hero plays it softly behind the glow when `config.json` → `heroVideo` is `true`: `hero.mp4` (wide, 16:9) on wider screens and `hero-mobile.mp4` (tall, 9:16, `media.json` → `heroVideo.fileMobile`, optional) on phones held upright. Either loads only on a fast connection, never with reduced motion or data saver on, and it has a pause button; otherwise the hero shows the photo. Make each from its own photo as the start image (`hero.jpg` / `hero-mobile.jpg`) with the shape set in the tool, not in the prompt (a ratio in the prompt can be drawn as text). Keep only a clean stretch, loop it forward and back, remove the sound and compress it: `ffmpeg -i clip.mp4 -an -filter_complex "[0:v]trim=duration=4,setpts=PTS-STARTPTS,split[f][r];[r]reverse[rv];[f][rv]concat=n=2:v=1[o]" -map "[o]" -c:v libx264 -crf 26 -pix_fmt yuv420p -movflags +faststart public/media/hero.mp4` (about 3 MB for 8 seconds of 1080p).
 
 **Making it:**
 - **Purpose:** a short, silent, looping atmosphere shot: the same tidy room, a slow camera move, sunlight. The video is muted and can be paused, and it's off for visitors who turn off animations (PLAN §8, §12).
