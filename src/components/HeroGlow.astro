@@ -130,6 +130,16 @@ const sparkles = [
 		border-end-end-radius: clamp(1.5rem, 4vw, 3rem);
 	}
 
+	@media (max-width: 47.99rem) {
+		.hero {
+			padding-block-end: var(--space-l);
+		}
+
+		:global(.hero ~ section.section:not(.section ~ section)) {
+			padding-block-start: var(--space-xl);
+		}
+	}
+
 	.hero__decor {
 		position: absolute;
 		inset: 0;
@@ -174,7 +184,7 @@ const sparkles = [
 	.hero__video-toggle {
 		position: absolute;
 		inset-block-end: var(--space-m);
-		inset-inline-end: var(--space-m);
+		inset-inline-start: var(--space-m);
 		z-index: 1;
 		display: grid;
 		place-items: center;
