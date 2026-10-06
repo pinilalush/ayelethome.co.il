@@ -131,7 +131,7 @@ const pieces = (template: string) => template.split(/\{(\w+)\}/).map((text, i) =
 	}
 
 	.statement__title {
-		font-size: var(--step-5);
+		font-size: min(var(--step-5), 11.5vw);
 	}
 
 	.statement__title::after {

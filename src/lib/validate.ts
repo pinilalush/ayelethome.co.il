@@ -150,6 +150,16 @@ function crossCheck(config: Config, business: Business | undefined, media: Media
     if (business && !content.services.some((s) => s.id === business.defaultService)) {
       issues.push(`${where('business.json', ['defaultService'])}: "${business.defaultService}" is not one of the service ids in ${file} → services`);
     }
+    for (const id of business?.estimateByPhone ?? []) {
+      if (!content.services.some((s) => s.id === id)) {
+        issues.push(`${where('business.json', ['estimateByPhone'])}: "${id}" is not one of the service ids in ${file} → services`);
+      }
+    }
+    if (business?.estimateByPhone?.length) {
+      for (const key of ['estimateNote', 'messageEstimate'] as const) {
+        if (!content.booking[key]) issues.push(`${where(file, ['booking', key])}: missing, but business.json → estimateByPhone lists services`);
+      }
+    }
     if (config.sections.reviews && content.reviews.length === 0) {
       issues.push(`${where(file, ['reviews'])}: empty, but config.json → sections.reviews is true`);
     }

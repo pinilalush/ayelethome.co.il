@@ -39,6 +39,7 @@ const config: BookingConfig | undefined = pricing && {
 	workHours: business.workHours,
 	maxHours: maxHours(business.workHours, pricing),
 	defaultService: business.defaultService,
+	estimateByPhone: business.estimateByPhone ?? [],
 	texts: { [code]: textsFor(code), [contact]: textsFor(contact) },
 };
 
@@ -99,7 +100,13 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 						</fieldset>
 					)}
 
-					<fieldset class="field">
+					{content.booking.estimateNote && (
+						<p class="estimate" hidden data-booking-estimate>
+							{fillPricing(content.booking.estimateNote, code)}
+						</p>
+					)}
+
+					<fieldset class="field" data-booking-hours-field>
 						<legend class="field__label">{ui.booking.hours}</legend>
 						<div class="hours">
 							<button type="button" class="hours__step" aria-label={ui.booking.fewerHours} data-booking-less>
@@ -435,7 +442,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 
 	.hours__total {
 		display: grid;
-		margin-inline-start: auto;
+		flex-basis: 100%;
 		text-align: end;
 	}
 
@@ -452,6 +459,20 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 	.hours__detail {
 		color: var(--color-text-muted);
 		font-size: var(--step--1);
+	}
+
+	.estimate {
+		margin: 0;
+		padding: var(--space-s);
+		border-radius: var(--radius);
+		background: color-mix(in oklab, var(--color-primary) 10%, var(--color-surface));
+		color: var(--color-text);
+		font-size: var(--step--1);
+	}
+
+	.field[hidden],
+	.estimate[hidden] {
+		display: none;
 	}
 
 	.guide {
@@ -594,6 +615,8 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 		const total = get<HTMLElement>('[data-booking-total]')!;
 		const detail = get<HTMLElement>('[data-booking-detail]')!;
 		const guideButtons = [...dialog.querySelectorAll<HTMLButtonElement>('[data-booking-guide]')];
+		const hoursField = get<HTMLElement>('[data-booking-hours-field]')!;
+		const estimateNote = get<HTMLElement>('[data-booking-estimate]');
 		const daysBox = get<HTMLElement>('[data-booking-days]')!;
 		const timeField = get<HTMLElement>('[data-booking-time-field]')!;
 		const timeSelect = get<HTMLSelectElement>('[data-booking-time]')!;
@@ -652,16 +675,22 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 				durations: texts.durations,
 				days: texts.days,
 				pricing,
+				workHours: config.workHours,
 				choice: {
 					serviceName: texts.services[state.service],
 					slot: state.slot,
 					hours: state.hours,
 					day: state.day >= 0 ? { weekday: days[state.day].weekday, date: days[state.day].label } : undefined,
 					start: state.start >= 0 ? state.start : undefined,
+					estimate: config.estimateByPhone.includes(state.service),
 				},
 			});
 
 		function render() {
+			const estimate = config.estimateByPhone.includes(state.service);
+			if (estimate) state.hours = pricing.minimumHours;
+			hoursField.hidden = estimate;
+			if (estimateNote) estimateNote.hidden = !estimate;
 			if (state.day >= 0 && !fits(state.day, state.slot, state.hours)) state.day = -1;
 			const starts = startsFor(state.day, state.slot, state.hours);
 			if (!starts.includes(state.start)) state.start = -1;
@@ -679,7 +708,7 @@ const configJson = JSON.stringify(config ?? {}).replace(/</g, '\\u003c');
 
 			const money = (amount: number) => formatMoney(config.visitor, amount, pricing.currency);
 			const num = (value: number) => formatNumber(config.visitor, value);
-			const b = breakdown(pricing, state.slot, state.hours, state.start >= 0 ? state.start : undefined);
+			const b = breakdown(pricing, state.slot, state.hours, state.start >= 0 ? state.start : undefined, config.workHours);
 			total.textContent = money(b.total);
 			detail.textContent =
 				pricing.evening && b.dayHours > 0 && b.eveningHours > 0

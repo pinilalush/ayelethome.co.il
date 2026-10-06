@@ -70,10 +70,11 @@ const plans = [
 						<span class="plan__unit">{texts.perHour}</span>
 					</p>
 					<p class="plan__minimum">
-						{minimum} · {money(plan.rate * pricing.minimumHours)}
+						{minimum}
+						<span class="plan__total">· {money(plan.rate * pricing.minimumHours)}</span>
 					</p>
 					<Button
-						href={defaultWhatsappHref(code)}
+						href={defaultWhatsappHref(code, undefined, plan.slot)}
 						icon="whatsapp"
 						class="plan__book"
 						data-booking-open
@@ -111,7 +112,7 @@ const plans = [
 <style>
 	.plans {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 20.5rem), 1fr));
 		gap: var(--space-s);
 		max-inline-size: 52rem;
 		margin-inline: auto;
@@ -198,9 +199,14 @@ const plans = [
 		color: var(--color-text-muted);
 	}
 
+	.plan__total {
+		white-space: nowrap;
+	}
+
 	.plan :global(.plan__book) {
 		align-self: stretch;
 		margin-block-start: auto;
+		padding-inline: var(--space-s);
 	}
 
 	.pricing-note {

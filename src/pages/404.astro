@@ -103,6 +103,13 @@ const detect = {
 				document.documentElement.dir = page.dir;
 				document.title = page.dataset.title;
 			}
+			for (const link of document.querySelectorAll('.not-found__languages a[hreflang]')) {
+				link.addEventListener('click', () => {
+					try {
+						localStorage.setItem(storageKey, link.hreflang);
+					} catch (e) {}
+				});
+			}
 		</script>
 	</body>
 </html>
