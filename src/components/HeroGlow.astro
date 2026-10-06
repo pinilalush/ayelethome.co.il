@@ -136,8 +136,14 @@ const sparkles = [
 		}
 
 		:global(.hero ~ section.section:not(.section ~ section)) {
-			padding-block-start: var(--space-xl);
+			padding-block-start: var(--space-l);
 		}
+	}
+
+	:global(.hero ~ section.section:not(.section ~ section) [data-reveal]) {
+		animation: none;
+		opacity: 1;
+		translate: none;
 	}
 
 	.hero__decor {

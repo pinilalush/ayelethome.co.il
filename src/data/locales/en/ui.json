@@ -13,7 +13,7 @@
     "en": "English",
     "ru": "Russian"
   },
-  "opensInNewTab": "Opens in a new tab",
+  "opensInNewTab": "opens in a new tab",
   "sections": {
     "services": "Services",
     "why": "Why choose me",
@@ -58,7 +58,7 @@
   },
   "saveContact": "Save my number",
   "contact": "Contact",
-  "workHours": "Work hours",
+  "workHours": "Working hours",
   "days": {
     "Su": "Sun",
     "Mo": "Mon",
