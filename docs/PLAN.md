@@ -373,7 +373,7 @@ One page per language, short, built for phones first. No forms, no steps.
 2. **Hero** — headline, one supporting line, 3 short badges (e.g. "reliable and responsible", "thorough", "Beer Sheva and area"), **Call** and **WhatsApp** buttons. Optional background video.
 3. **Services** — cards with icon, short text, and a WhatsApp button that opens the booking panel with that service already selected.
 4. **Price** — two cards side by side (stacked on phones): **Daytime** (until 19:00) · ₪100 per hour · minimum 4 hours = **₪400**, and **Evening** (from 19:00) · ₪150 per hour · minimum 4 hours = **₪600**. Each card has its own WhatsApp button that opens the booking panel with that time already selected, plus a short line on what's included and the payment methods. A clear price up front saves her the "how much?" messages and filters out visitors who aren't a fit. The same prices appear in the FAQ ("How much does it cost?").
-5. **Why her** — three short points with icons, plus a short "about" line and her photo.
+5. **Why her** — opens with her photo and the about text under the about title ("נעים להכיר"), then the "why choose us" heading right above three short points with icons (Pini, 2026-10-06).
 6. **Service area** — the places she serves, as chips, with a stylized area graphic (no embedded Google Map: it's heavy and loads third-party cookies).
 7. **Gallery** *(off until real photos)*.
 8. **Reviews** *(off until real reviews)*.

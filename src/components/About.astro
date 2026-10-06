@@ -18,7 +18,7 @@ const photoAlt = content.media[site.media.about.alt] ?? content.ownerName;
 const initial = [...content.ownerName.trim()][0] ?? '';
 ---
 
-<Section id="why" title={ui.sections.why} tone={tone}>
+<Section id="why" title={content.about.title} tone={tone}>
 	<div class="about">
 		<div class="about__visual" data-reveal>
 			{
@@ -47,26 +47,28 @@ const initial = [...content.ownerName.trim()][0] ?? '';
 		</div>
 
 		<div class="about__text">
-			<h3 class="about__title" data-reveal>{content.about.title}</h3>
 			<p class="about__body" data-reveal>{content.about.text}</p>
 			<p class="about__signature" data-reveal>{content.ownerName}</p>
-
-			<ul class="points">
-				{
-					content.why.map((point) => (
-						<li class="point" data-reveal>
-							<span class="point__icon" aria-hidden="true">
-								<Icon name={point.icon} size="1.4rem" />
-							</span>
-							<div>
-								<h3 class="point__title">{point.title}</h3>
-								<p class="point__text">{point.text}</p>
-							</div>
-						</li>
-					))
-				}
-			</ul>
 		</div>
+	</div>
+
+	<div class="why">
+		<h3 class="why__title" data-reveal>{ui.sections.why}</h3>
+		<ul class="points">
+			{
+				content.why.map((point) => (
+					<li class="point" data-reveal>
+						<span class="point__icon" aria-hidden="true">
+							<Icon name={point.icon} size="1.4rem" />
+						</span>
+						<div>
+							<h4 class="point__title">{point.title}</h4>
+							<p class="point__text">{point.text}</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
 	</div>
 </Section>
 
@@ -153,10 +155,6 @@ const initial = [...content.ownerName.trim()][0] ?? '';
 		gap: var(--space-s);
 	}
 
-	.about__title {
-		font-size: var(--step-3);
-	}
-
 	.about__body {
 		font-size: var(--step-1);
 		color: var(--color-text-muted);
@@ -168,12 +166,29 @@ const initial = [...content.ownerName.trim()][0] ?? '';
 		font-weight: 700;
 	}
 
+	.why {
+		max-inline-size: 64rem;
+		margin: var(--space-2xl) auto 0;
+	}
+
+	.why__title {
+		margin-block-end: var(--space-m);
+		font-size: var(--step-3);
+		text-align: center;
+	}
+
 	.points {
 		display: grid;
 		gap: var(--space-s);
-		margin: var(--space-xs) 0 0;
+		margin: 0;
 		padding: 0;
 		list-style: none;
+	}
+
+	@media (min-width: 56rem) {
+		.points {
+			grid-template-columns: repeat(3, 1fr);
+		}
 	}
 
 	.point {
