@@ -496,7 +496,7 @@ I'll check these in the browser and send you screenshots of each; you check on r
 - Headings in the right order (one `h1`), real text (not text inside images), alt text from keywords.
 - Performance counts for ranking: target **Lighthouse 95+** in all four categories on mobile.
 
-**Outside the site (biggest effect for local search):** a **Google Business Profile** for her business, with the site link, photos, hours and reviews. The site links to it when `social.googleBusiness` is set. I'll write the steps when we get there.
+**Outside the site (biggest effect for local search):** a **Google Business Profile**, with the site link, photos, hours and reviews; the site links to it when `social.googleBusiness` is set. **Not for Ayelet for now** (Pini, 2026-10-06); consistent listings in local directories (same name and phone, with the site link) still help.
 
 ### Share preview
 
