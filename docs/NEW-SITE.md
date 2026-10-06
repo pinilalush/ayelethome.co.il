@@ -19,7 +19,7 @@ Throughout, `example.co.il` stands for the business's domain and `<repo>` for th
 
 ## 0. Before you start
 
-- **The business's answers:** services, work hours, places served, prices and price details, phone, WhatsApp, email, social links, a real photo of the owner, and who approves the English and Russian texts.
+- **The business's answers:** services, work hours, places served, prices and price details, phone, WhatsApp, email, social links, a real photo of the owner (or a drawing made from it), and who approves the English and Russian texts.
 - **The domain** (optional at first). The site can be tested at `https://pinilalush.github.io/<repo>/` before a domain exists. Buy a `.co.il` at an ISOC-IL accredited registrar, and turn on **auto-renew** so the site doesn't go down when the year ends.
 - **The media:** see [`MEDIA-BRIEF.md`](MEDIA-BRIEF.md).
 - **Tools:** Node 24 (the version is in `.nvmrc`), npm, git, and access to the `pinilalush` GitHub account.
@@ -233,7 +233,7 @@ Points to the files in `src/assets/media/` (images) and `public/media/` (video).
 
 **Per file:**
 - **`hero.jpg`, `hero-mobile.jpg`:** these come with the template (a tidy room) and show softly behind the hero, on wider screens and on phones. **Keep them for a cleaning or household business; replace both for any other kind** (`MEDIA-BRIEF.md` §8).
-- **`about.jpg`:** a **real photo of the owner**, never AI. **Remove its location data first** (`MEDIA-BRIEF.md`, *Removing location data*), because the repo is public. A real build stops until it's here.
+- **`about.jpg`:** a **real photo of the owner**, or a drawing made from it that she approves (`MEDIA-BRIEF.md` §5), never a realistic AI image. **Remove its location data first** (`MEDIA-BRIEF.md`, *Removing location data*), because the repo is public. A real build stops until it's here.
 - **Gallery and logo:** optional. Gallery photos must be **real photos of her work**, with location removed.
 - **Area map (`area-map.jpg`):** the map behind the service-area pin. **Run `npm run area-map` once** after setting `business.json` → `city` and `geo`: it downloads the city from OpenStreetMap, shades the whole city area in the theme color, and saves the image (commit it). The template's map is Beer Sheva. If the city has no boundary in OpenStreetMap, the script makes a plain map around `geo`. The page credits OpenStreetMap on the map, as its license requires; leave that line.
 - **Share images (`og-<lang>.jpg`):** made automatically before every build (`scripts/share-images.mjs`) from `hero.jpg`, the business name, the tagline and the hourly price, in the site's colors and the Rubik font. Nothing to do; to see them after changing the data, run `npm run share-images`. After launch, and whenever they change, run the link through Facebook's Sharing Debugger and click **Scrape Again**.

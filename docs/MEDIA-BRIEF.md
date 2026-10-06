@@ -18,7 +18,7 @@ The prompts are written for the template's current business type: home cleaning,
 | `hero-mobile.jpg` | The same, on phones (built in step 6.3) | You, with AI | 9:16 portrait | `src/assets/media/` | 1, template |
 | `og-he.jpg`, `og-en.jpg`, `og-ru.jpg` | The link preview in WhatsApp, Facebook and others (not on the page itself) | **The site, in step 6.3.** Don't make these | 1200 × 630 | made in step 6.3 | 1, template |
 | `hero.mp4` | Not yet. The hero has no video player, and `config.json` → `heroVideo` is `false` | You, with AI, **only if step 6.4 says yes** | 16:9, about 8 seconds | `public/media/` | 1, template |
-| `about.jpg` | The photo in the "Why us" section, next to the owner's name | **A real photo of the owner.** Never AI | Portrait, at least 1200 × 1500 | the business repo's `src/assets/media/` | 2, business only |
+| `about.jpg` | The photo in the "Why us" section, next to the owner's name | **A real photo of the owner**, or a drawing made from it that she approves. Never a realistic AI image | Portrait, at least 1200 × 1500 | the business repo's `src/assets/media/` | 2, business only |
 | Gallery photos | The gallery section, which is off until real photos exist | **Real photos of her work only** | 4:3 landscape, at least 1600 px wide | the business repo's `src/assets/media/` | 2, business only |
 | `logo.svg` | Header and footer, instead of the text logo | Only if the business already has a logo | SVG | the business repo's `src/assets/media/` | 2, business only |
 
@@ -31,7 +31,7 @@ The prompts are written for the template's current business type: home cleaning,
 ## Rules
 
 - **AI images are only for atmosphere:** an empty, tidy room. They never show people, and they are never presented as the business's actual work.
-- **`about.jpg` is a real photo of the owner.** No AI image and no AI editing of her face or background. Cropping, straightening and brightness are fine.
+- **`about.jpg` is a real photo of the owner.** No AI editing of her face or background. Cropping, straightening and brightness are fine. **If she'd rather not show a photo, it can be a drawn illustration made from her own photo**, clearly a drawing and approved by her (Pini, 2026-10-06; §5). **Never a realistic AI image**, of her or of anyone else.
 - **Gallery: only real photos of her real work**, taken with the client's permission.
 - **No text, logos or brand names inside images.** The site's text is real HTML, and share-image text is added in step 6.3.
 - **Real photos lose their location data before they go into a repo.** Business repos are **public**, and the original file is stored there as-is (§ *Removing location data*).
@@ -203,9 +203,9 @@ Step 6.3 takes it from there:
 
 Everything in this part is collected from the business and added **only in that business's repo**, never in the template. For Ayelet this is step 9.5.
 
-## 5. `about.jpg` — real photo of the owner
+## 5. `about.jpg` — real photo of the owner (or a drawing of her)
 
-**Purpose.** It's shown in the "Why us" section next to her name and the about text. This is the one image that builds trust, so **it must be a real, recent photo of her. No AI image, and no AI-edited face or background.**
+**Purpose.** It's shown in the "Why us" section next to her name and the about text. This is the one image that builds trust, so **it must be her: a real, recent photo, or a drawing made from one** (below). **Never a realistic AI image and never an AI-edited face or background**, because a client who opens the door to a different face feels misled.
 
 **Status:** without the file, the About section shows a placeholder (her initial), but only in builds with `ALLOW_PLACEHOLDERS=1`. **A business site's real build stops until `about.jpg` is in its `src/assets/media/`**, because `media.json` lists it and the data check requires every listed file.
 
@@ -228,6 +228,19 @@ Everything in this part is collected from the business and added **only in that 
 **Message to send her (Hebrew):**
 
 > היי! לאתר צריך תמונה אמיתית שלך (לא בינה מלאכותית). כמה טיפים: אור יום מחלון שמולך, רקע נקי ומסודר, פנים למצלמה עם חיוך, מהמותניים או מהחזה ומעלה, ושיהיה קצת מקום מעל הראש. עדיף שמישהו יצלם במצלמה האחורית, בלי פילטרים. אם אפשר, כבי לפני הצילום את שמירת המיקום בהגדרות המצלמה, כדי שהכתובת לא תישמר בתמונה. צלמי כמה, ושלחי את הכי טובות בוואטסאפ **כקובץ (מסמך)**, לא כתמונה, כדי שלא יידחסו. תודה! 😊
+
+**If she'd rather not show a photo: a drawing made from it** (Pini, 2026-10-06; Ayelet's site uses one):
+1. **She agrees** that her photo is uploaded to Google's Gemini to make the drawing, and **she approves the result** before it goes on the site.
+2. Open https://gemini.google.com, upload her photo and paste the prompt below. Don't write a shape or ratio in the prompt (it can be drawn as text); a portrait photo gives a portrait drawing.
+   ```text
+   Turn this photo into a hand-drawn illustration of the same woman, as if an illustrator drew her portrait. Keep her face, features, hair and side profile recognizable and true to the photo; don't change her age, face shape or expression. Style: soft modern editorial illustration with clean lines and gentle flat shading, clearly a drawing and not a photo. Replace the background with a plain gradient from deep teal to soft aqua, and remove the boat and everything else. Show her from the chest up, centered, with space around her head. Warm, calm and friendly. No text, no logo, no frame.
+   ```
+   Change "side profile" and "the boat" to match her photo, and the background colors to the site's.
+3. If the face drifts from hers, ask in the same chat to "make her face closer to the original photo", or generate again.
+4. Crop it to 4:5 at 1200 × 1500 with her face where both crops keep it, and save it as `about-illustration.jpg` with `media.json` → `about.file` set to match.
+5. **Say it's a drawing in the alt text** in every language (`content.json` → `media.about`), for example "איור של איילת, בעלת העסק" / "Illustration of Ayelet, the business owner".
+
+**If a photo has to come off the site later:** deleting the file isn't enough, because the repo is public and the photo stays in its history. Commit the replacement first, then remove the old file from every commit with `git filter-repo --invert-paths --path src/assets/media/about.jpg`, add the `origin` remote back (filter-repo removes it), force-push, and ask GitHub Support to clear cached views of the old commits.
 
 ---
 
