@@ -4,7 +4,7 @@ A static landing-page template built with Astro. Every business-specific detail 
 
 The first site built on it: **Ayelet**, who cleans, organizes and helps with whatever else the household needs (laundry, ironing, changing bedding, dishes…) in Beer Sheva (₪100 per hour, ₪150 per hour from 19:00, minimum 4 hours per visit). Her name and details go only into her own repo's data — the template keeps `TODO` test data.
 
-Status: **plan for review — no code yet.**
+Status: **built.** Every step in [`STEPS.md`](STEPS.md) is done (2026-10-06), and the first site, Ayelet's, is live at https://ayelethome.co.il. This plan stays the contract for every change; decisions made along the way are marked with who made them and when, for example "(Pini, 2026-10-06)".
 
 ---
 
@@ -203,7 +203,8 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 - `workHours` are the times she works (not shop opening hours). They're shown in the footer and used in the structured data for Google.
 - Empty social links are simply not shown.
 - `contactLanguages` — the languages she speaks with customers, first one is the main one (section 6). Each must be one of the site's languages.
-- `defaultService` — the `id` of the service a booking starts with when the customer didn't come from a service card (Ayelet: `household`, ניהול משק הבית). It's also the service in the default WhatsApp message. The check fails if it isn't one of the services in `content.json`.
+- `defaultService` — the `id` of the service a booking starts with when the customer didn't come from a service card (Ayelet: `deep`, סדר וניקיון יסודי, Pini, 2026-10-06). It's also the service in the default WhatsApp message. The check fails if it isn't one of the services in `content.json`.
+- `estimateByPhone` — optional list of service `id`s whose length is estimated by phone instead of chosen in the booking panel (Ayelet: `deep` and `holidays`; Pini, 2026-10-06). For these services the panel hides the hours, shows `booking.estimateNote`, and builds the message from `booking.messageEstimate` (section 5.3). The check fails on an id that isn't a service, or when the two texts are missing.
 - `bookingUrl` — optional online booking page (e.g. her free Cal.com page). Empty means hidden; filled in, a small "or choose a time online" link appears in the booking panel and the footer. WhatsApp stays the main way to book.
 - `payment` — how customers can pay, from a fixed list: `bit`, `paybox`, `cash`, `transfer`, `credit`. Shown as small labeled icons near the price; an empty list hides them. Generic icons with the name, not the companies' logos.
 - `siteUrl` + `basePath` are where the site actually lives, because the site uses them for its QR code, contact card and the addresses it gives search engines. While testing on GitHub: `https://pinilalush.github.io` + `/<repo>/`. Once the domain is connected: `https://<domain>` + `/`. The template itself keeps its demo address (`https://pinilalush.github.io` + `/landing-template/`), and the data check counts the template's demo path `/landing-template/` as test data, so a business site can't go live with it by mistake (only the template uses that path).
@@ -282,6 +283,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   - crossing 19:00: "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־17:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר שעתיים × 100 ₪ + שעתיים × 150 ₪, כלומר 500 ₪."
 - **The message is always written in a language she speaks** (`business.json` → `contactLanguages`, section 6), so it's built from that language's `booking` texts even when the visitor reads the site in English or Russian.
 - `hoursGuide` is the "how many hours do I need?" list shown next to the hours selector; tapping a line sets the hours. Real numbers come from her.
+- **Estimated by phone** (Pini, 2026-10-06): for a service in `business.json` → `estimateByPhone`, the panel shows `estimateNote` instead of the hours, and the message comes from `messageEstimate`, which asks to talk by phone to estimate the hours and repeats the hourly rate and the minimum. Its placeholders: `{service}`, `{slot}`, `{availability}`, `{rate}`, `{hours}`. Ayelet's: "היי, אשמח להזמין אותך {service} {slot}. {availability} אשמח שנדבר בטלפון כדי להעריך כמה שעות צריך. הבנתי שהמחיר {rate} לשעה, ומינימום {hours} שעות."
 - **Placeholders**, filled in from `business.json` → `pricing` and formatted for the language, so changing a price in one place updates every text:
   - `{hours}` — the minimum hours (4), as a plain number (the message uses `{duration}` instead)
   - `{rate}`, `{total}` — the day rate and minimum total (100 ₪, 400 ₪) in normal text; in the message, the chosen slot's rate and chosen hours × rate
@@ -389,9 +391,9 @@ One page per language, short, built for phones first. No forms, no steps.
 **Other pages:** `/accessibility` (statement, per language) and a styled 404.
 
 **The booking panel.** Every WhatsApp button opens one small panel that builds the message from a few taps, so the customer sees the price before sending anything:
-1. **Service** — already selected when they came from a service card; otherwise it starts on the default service (`defaultService`, Ayelet: household management). There's no "not decided yet" option.
+1. **Service** — already selected when they came from a service card; otherwise it starts on the default service (`defaultService`, Ayelet: סדר וניקיון יסודי). There's no "not decided yet" option.
 2. **Day or evening** — two big buttons with their rates (day ₪100/hour, evening ₪150/hour from 19:00). Already selected when they came from a price card.
-3. **How many hours** — a − 4 + stepper that starts at the minimum and moves by `pricing.step` (half hours: 4, 4.5, 5…). The total updates live: "4.5 שעות × 150 ₪ = 675 ₪". Next to it, the "how many hours do I need?" guide (`booking.hoursGuide`); tapping a line sets the hours.
+3. **How many hours** — a − 4 + stepper that starts at the minimum and moves by `pricing.step` (half hours: 4, 4.5, 5…). The total updates live: "4.5 שעות × 150 ₪ = 675 ₪". Next to it, the "how many hours do I need?" guide (`booking.hoursGuide`); tapping a line sets the hours. For a service estimated by phone (`estimateByPhone`), this step is replaced by a short note that the length is agreed by phone, with the minimum (Pini, 2026-10-06).
 4. **Day (optional)** — the next 14 days as buttons, only days she works; evening is disabled on days whose work hours end before 19:00 (e.g. Friday).
 5. **Start time (optional)** — every half hour inside her work hours for that day, so the whole visit fits before her work day ends. Daytime lists start times before 19:00, evening from 19:00. A daytime visit may run past 19:00: the price then splits automatically and shows it, e.g. "2 שעות × 100 ₪ + 2 שעות × 150 ₪ = 500 ₪".
 6. **Message preview** — in the visitor's language first, plus the Hebrew that will be sent when the visitor's language isn't hers (section 6) — then one big **Send on WhatsApp** button.
@@ -612,11 +614,12 @@ The work is split into small steps in **[`docs/STEPS.md`](STEPS.md)**: each step
 
 ## 19. Open decisions
 
-- Hero background video: yes / no (can decide after seeing the hero).
-- The exact list of services she offers, her hours, and the places she serves.
-- Who writes the English and Russian text: I draft both from the Hebrew; you or she approves the English, and a native Russian speaker checks the Russian.
-- Before Ayelet uses online booking: check with a free Cal.com test account that approving each booking ("Requires confirmation") and a Hebrew booking page are in the free plan.
-- "How many hours do I need?" — her real estimates by home size and service (the guide in the booking panel).
-- More price questions for her (text only, filled in with her data): a lower rate for a regular weekly/bi-weekly cleaning; whether the ₪100 cancellation fee applies to any cancellation or only close to the visit (e.g. less than 24 hours before).
-- Decided: visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days; cancelling costs a one-time ₪100; the booking panel starts on household management, with no "not decided yet" option.
-- Price details to confirm with her: does ₪100 include VAT (or is she VAT-exempt, עוסק פטור), are cleaning materials included, is there a travel charge for towns outside Beer Sheva, does the 4-hour minimum apply to every service.
+None open. How each one was settled (Ayelet's answers and Pini's decisions, 2026-10-06; her full record is in her repo's `docs/SITE.md`):
+
+- **Hero background video:** yes. A calm, silent loop of the hero room, with a separate portrait version for phones (section 7, `MEDIA-BRIEF.md` §4).
+- **Services, hours and places:** all seven template services; Sunday–Thursday 08:00–23:00 and Friday 08:00–13:00; all of Beer Sheva and no other towns.
+- **English and Russian text:** I drafted both from the Hebrew. Pini approved the English, and at his request I did the Russian review (STEPS 9.5b). A native Russian reading is still welcome.
+- **Online booking (Cal.com):** not now; WhatsApp only. Before turning it on (`bookingUrl`), check with a free test account that approving each booking ("Requires confirmation") and a Hebrew booking page are in the free plan.
+- **"How many hours do I need?":** 2–3 rooms and 4 rooms take 4 hours (the minimum); 5 rooms or more about 5 hours, shown as an estimate, not a commitment. Deep and Passover cleaning are estimated by phone (`estimateByPhone`).
+- **Price details:** she's VAT-exempt (עוסק פטור), so prices are final and the site says only that; the client provides the cleaning materials; no travel charge (Beer Sheva only); the 4-hour minimum applies to every service; no lower rate for regular clients; cancelling is free until two days before the visit, later it costs a one-time ₪100.
+- **Decided at the start:** visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days; the booking panel starts on `defaultService` (Ayelet: סדר וניקיון יסודי, Pini, 2026-10-06), with no "not decided yet" option.

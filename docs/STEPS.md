@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** none, every step is done. Ayelet's site is live at https://ayelethome.co.il.
+**Current step:** none, every step is done. Ayelet's site is live at https://ayelethome.co.il. New work gets its own phase at the end of this list, one small step per change, and this line names the step in progress.
 
 ---
 
