@@ -54,7 +54,8 @@ scripts/check-data.mjs         the data check (runs before every build)
 scripts/share-images.mjs       makes the share images from the data (runs before every build)
 scripts/area-map.mjs           makes the service-area map from OpenStreetMap (run by hand, once)
 scripts/fonts/                 Rubik as .ttf for the share images (SIL Open Font License)
-docs/                          plan, build steps, new-site guide, media brief
+CLAUDE.md                      project guide: reading order, how we work, lessons learned
+docs/                          plan, build steps, new-site guide, testing, media brief (+ SITE.md in a business repo)
 public/media/                  the hero video
 src/
   data/                        everything business-specific
@@ -79,10 +80,14 @@ src/
 
 ## Docs
 
+- [`CLAUDE.md`](CLAUDE.md): start here. What the project is, the reading order, how the work is done, and the lessons learned.
 - [`docs/PLAN.md`](docs/PLAN.md): the plan, covering what the template does and why.
 - [`docs/STEPS.md`](docs/STEPS.md): the build, step by step.
-- [`docs/NEW-SITE.md`](docs/NEW-SITE.md): starting a new business site.
+- [`docs/NEW-SITE.md`](docs/NEW-SITE.md): starting and running a business site.
+- [`docs/TESTING.md`](docs/TESTING.md): the checks every change goes through, with pass criteria.
 - [`docs/MEDIA-BRIEF.md`](docs/MEDIA-BRIEF.md): every image and video, with prompts for Google's image and video tools.
+
+**In a business repo** this README stays as it is (it arrives with template updates). The business's own record is `docs/SITE.md`, which only business repos have.
 
 ## Working on the template
 

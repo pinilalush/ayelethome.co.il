@@ -121,6 +121,7 @@ A good order to fill them in: `business.json`, then `config.json`, then the defa
 | `contactLanguages` | The languages the owner speaks with customers, main one first. Each must be a site language. The WhatsApp message is written in the visitor's language if it's on this list, otherwise in the main one, with a translation shown in the panel. Pages in other languages show "Calls in Hebrew" (or whichever language). |
 | `payment` | Any of `bit`, `paybox`, `cash`, `transfer`, `credit`, shown as small labeled icons near the price and in the footer. `[]` hides them. |
 | `defaultService` | The `id` of a service in `content.json`. The booking panel starts on it when the customer didn't come from a service card, and the plain WhatsApp link uses it. |
+| `estimateByPhone` | Optional list of service `id`s whose length the owner estimates by phone (for example deep cleaning). For these the booking panel hides the hours and shows `booking.estimateNote`, and the message comes from `booking.messageEstimate`. Leave it out when every service is booked by hours. |
 | `bookingUrl` | Optional online booking page (`https://…`). `""` hides it; filled in, a small "or choose a time online" link appears in the booking panel and the footer. |
 | `accessibilityStatementDate` | `"YYYY-MM-DD"`, the date shown on the accessibility statement. Update it when the statement is reviewed. |
 
@@ -163,7 +164,7 @@ Write the default language first, then translate. In every language, the service
 | `hero` | `title` (the page's only main heading), `subtitle`, and up to 4 `badges`. |
 | `services` | One card each: `id` (lowercase-with-dashes), `icon` (one of `sparkle broom spray clothes washer boxes kitchen window shield clock pin`), `title`, `text`, and `bookingName`, which is how the service reads inside the WhatsApp message (for example `"לניקיון שוטף"`). |
 | `pricing` | Price section labels, plus `note` (what's included; can be `""`). |
-| `booking` | The booking panel and the WhatsApp message. **The template marks the message texts (`message`, `availability`) `TODO` in every language.** Read each one, adjust it, and remove the `TODO`. The Hebrew texts address the owner in the feminine (`מתי את פנויה?`), so change them if the owner is a man (`מתי אתה פנוי?`). `hoursGuide` holds the owner's own "how many hours do I need?" estimates by home size. Each `hours` value must be bookable (at least the minimum, in `step`s). |
+| `booking` | The booking panel and the WhatsApp message. **The template marks the message texts (`message`, `availability`) `TODO` in every language.** Read each one, adjust it, and remove the `TODO`. The Hebrew texts address the owner in the feminine (`מתי את פנויה?`), so change them if the owner is a man (`מתי אתה פנוי?`). `hoursGuide` holds the owner's own "how many hours do I need?" estimates by home size. Each `hours` value must be bookable (at least the minimum, in `step`s). With `estimateByPhone` in `business.json`, also write `estimateNote` (shown instead of the hours) and `messageEstimate` (the message for those services: `{service}`, `{slot}`, `{availability}`, `{rate}`, `{hours}`). |
 | `why` | The "why us" points: `icon`, `title`, `text`. |
 | `about` | `title` and `text` next to the owner's photo. |
 | `area` | `title`, `text`, and `places`, shown as chips. The first place is the label in the area graphic, usually the city. |
@@ -304,6 +305,8 @@ Typing the full name into such a panel creates a doubled name (`…example.co.il
 
 **B. Set the custom domain in the repo** (before the DNS records, as GitHub recommends): **Settings → Pages → Custom domain** → `example.co.il` → **Save**. No `CNAME` file is needed, because the site is published by a GitHub Actions workflow.
 
+**Only once the domain itself exists in DNS.** A newly bought `.co.il` can take hours until the registry publishes it (`dig example.co.il NS +short` answers with the DNS provider's servers). Saved earlier, GitHub already redirects `https://pinilalush.github.io/<repo>/` to the domain, and the test site stops working until the domain resolves; remove the custom domain again if that happens.
+
 **C. DNS records at the registrar:**
 
 | Type | Name | Value |
@@ -320,7 +323,7 @@ Typing the full name into such a panel creates a doubled name (`…example.co.il
 
 Remove any other `A`, `AAAA` or `CNAME` records for the domain and `www`, such as the registrar's parking page. With both the domain and `www` set up, GitHub redirects between them.
 
-**D. Switch the site to the domain:** in `business.json`, set `"siteUrl": "https://example.co.il"` and `"basePath": "/"`. Commit and push.
+**D. Switch the site to the domain:** in `business.json`, set `"siteUrl": "https://example.co.il"` and `"basePath": "/"`. Commit and push **as soon as the domain serves the site**: until then the pages load from the domain but still ask for their images, styles and scripts under `/<repo>/`, which don't exist there.
 
 **E. Check DNS** (it may take up to 24 hours).
 - **In a browser:** Google's Admin Toolbox Dig, `https://toolbox.googleapps.com/apps/dig/`. Enter the name, pick the record type (A, AAAA, CNAME or TXT), and compare the answer with the tables above.
@@ -371,6 +374,7 @@ Remove any other `A`, `AAAA` or `CNAME` records for the domain and `www`, such a
   Then go to **Sitemaps**, enter `sitemap-index.xml` (the full address is `https://example.co.il/sitemap-index.xml`), and **Submit**.
 - **Google Business Profile:** create one with the site link, photos, hours and reviews, and put its link in `business.json` → `social.googleBusiness`.
 - **Changing anything later:** edit the JSON or media, then push. The workflow republishes.
+- **Keep the site record, `docs/SITE.md`**, in the business repo (only there; the template has none): the business in a few lines, the accounts and services and who owns them, the domain and its renewal date, the DNS records, decisions about this business with who made them and when, how to run the site, and the launch checks with their results (`TESTING.md` §7). Ayelet's repo has a full example. Update it whenever something changes.
 
 ---
 
