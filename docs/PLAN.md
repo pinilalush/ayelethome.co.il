@@ -2,9 +2,9 @@
 
 A static landing-page template built with Astro. Every business-specific detail lives in JSON files and media folders, so a new business site means: create a repo from this template, replace the data and media, push.
 
-The first site built on it: **Ayelet**, who cleans, organizes and helps with whatever else the household needs (laundry, ironing, changing bedding, dishes…) in Beer Sheva (₪100 per hour, ₪150 per hour from 19:00, minimum 4 hours per visit). Her name and details go only into her own repo's data — the template keeps `TODO` test data.
+The first site built on it: **a home cleaning and household-management business** that cleans, organizes and helps with whatever else the household needs (laundry, ironing, changing bedding, dishes…) in Beer Sheva (₪100 per hour, ₪150 per hour from 19:00, minimum 4 hours per visit). Its name and details go only into its own repo's data — the template keeps `TODO` test data.
 
-Status: **built.** Every step in [`STEPS.md`](STEPS.md) is done (2026-10-06), and the first site, Ayelet's, is live at https://ayelethome.co.il. This plan stays the contract for every change; decisions made along the way are marked with who made them and when, for example "(Pini, 2026-10-06)".
+Status: **built.** Every step in [`STEPS.md`](STEPS.md) is done (2026-10-06), and the first business site is live at https://ayelethome.co.il. This plan stays the contract for every change; decisions made along the way are marked with who made them and when, for example "(Pini, 2026-10-06)".
 
 ---
 
@@ -196,15 +196,15 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
 - Phone numbers are stored in international format (`+972…`); the site shows them in local format (`050-000-0000`).
 - `email` is optional. Without it, the footer, the contact card and the accessibility statement offer phone and WhatsApp only.
 - `pricing` holds only numbers; the words around them ("per hour", "minimum") come from `content.json` per language. The minimum visit price is calculated by the site (4 × ₪100 = ₪400 by day, 4 × ₪150 = ₪600 in the evening), so changing a rate updates everything.
-- `pricing.cancellationFee` — optional one-time fee for cancelling a booked visit (Ayelet: ₪100). Shown in the FAQ through `{cancellationFee}`; a business without one leaves it out.
+- `pricing.cancellationFee` — optional one-time fee for cancelling a booked visit (first site: ₪100). Shown in the FAQ through `{cancellationFee}`; a business without one leaves it out.
 - `pricing.step` — how extra time is charged after the minimum, in hours: `0.5` means by the half hour, so the booking panel offers 4, 4.5, 5….
 - **A visit that crosses `evening.from`** is split: the hours before 19:00 at the day rate, the hours after at the evening rate (e.g. 17:00–21:00 = 2 × ₪100 + 2 × ₪150 = ₪500). Same rates every work day, Friday and holiday eves included.
-- `pricing.evening` is optional: a business without an evening rate leaves it out, and the day/evening choice (section 7) disappears. If it's there, the check fails unless at least one work day leaves room for a full minimum-length visit starting at `evening.from` (Ayelet's test data: 4 hours from 19:00, so until 23:00).
+- `pricing.evening` is optional: a business without an evening rate leaves it out, and the day/evening choice (section 7) disappears. If it's there, the check fails unless at least one work day leaves room for a full minimum-length visit starting at `evening.from` (the template's test data: 4 hours from 19:00, so until 23:00).
 - `workHours` are the times she works (not shop opening hours). They're shown in the footer and used in the structured data for Google.
 - Empty social links are simply not shown.
 - `contactLanguages` — the languages she speaks with customers, first one is the main one (section 6). Each must be one of the site's languages.
-- `defaultService` — the `id` of the service a booking starts with when the customer didn't come from a service card (Ayelet: `deep`, סדר וניקיון יסודי, Pini, 2026-10-06). It's also the service in the default WhatsApp message. The check fails if it isn't one of the services in `content.json`.
-- `estimateByPhone` — optional list of service `id`s whose length is estimated by phone instead of chosen in the booking panel (Ayelet: `deep` and `holidays`; Pini, 2026-10-06). For these services the panel hides the hours, shows `booking.estimateNote`, and builds the message from `booking.messageEstimate` (section 5.3). The check fails on an id that isn't a service, or when the two texts are missing.
+- `defaultService` — the `id` of the service a booking starts with when the customer didn't come from a service card (first site: `deep`, סדר וניקיון יסודי, Pini, 2026-10-06). It's also the service in the default WhatsApp message. The check fails if it isn't one of the services in `content.json`.
+- `estimateByPhone` — optional list of service `id`s whose length is estimated by phone instead of chosen in the booking panel (first site: `deep` and `holidays`; Pini, 2026-10-06). For these services the panel hides the hours, shows `booking.estimateNote`, and builds the message from `booking.messageEstimate` (section 5.3). The check fails on an id that isn't a service, or when the two texts are missing.
 - `bookingUrl` — optional online booking page (e.g. her free Cal.com page). Empty means hidden; filled in, a small "or choose a time online" link appears in the booking panel and the footer. WhatsApp stays the main way to book.
 - `payment` — how customers can pay, from a fixed list: `bit`, `paybox`, `cash`, `transfer`, `credit`. Shown as small labeled icons near the price; an empty list hides them. Generic icons with the name, not the companies' logos.
 - `siteUrl` + `basePath` are where the site actually lives, because the site uses them for its QR code, contact card and the addresses it gives search engines. While testing on GitHub: `https://pinilalush.github.io` + `/<repo>/`. Once the domain is connected: `https://<domain>` + `/`. The template itself keeps its demo address (`https://pinilalush.github.io` + `/landing-template/`), and the data check counts the template's demo path `/landing-template/` as test data, so a business site can't go live with it by mistake (only the template uses that path).
@@ -283,7 +283,7 @@ All JSON. Text that changes per language is in `locales/<lang>/`; facts that don
   - crossing 19:00: "היי, אשמח להזמין אותך לניקיון שוטף ל־4 שעות בשעות היום. רציתי לבדוק אם את פנויה ביום ג׳ 14.10 מ־17:00, ואם לא, מתי כן נוח לך? הבנתי שהמחיר שעתיים × 100 ₪ + שעתיים × 150 ₪, כלומר 500 ₪."
 - **The message is always written in a language she speaks** (`business.json` → `contactLanguages`, section 6), so it's built from that language's `booking` texts even when the visitor reads the site in English or Russian.
 - `hoursGuide` is the "how many hours do I need?" list shown next to the hours selector; tapping a line sets the hours. Real numbers come from her.
-- **Estimated by phone** (Pini, 2026-10-06): for a service in `business.json` → `estimateByPhone`, the panel shows `estimateNote` instead of the hours, and the message comes from `messageEstimate`, which asks to talk by phone to estimate the hours and repeats the hourly rate and the minimum. Its placeholders: `{service}`, `{slot}`, `{availability}`, `{rate}`, `{hours}`. Ayelet's: "היי, אשמח להזמין אותך {service} {slot}. {availability} אשמח שנדבר בטלפון כדי להעריך כמה שעות צריך. הבנתי שהמחיר {rate} לשעה, ומינימום {hours} שעות."
+- **Estimated by phone** (Pini, 2026-10-06): for a service in `business.json` → `estimateByPhone`, the panel shows `estimateNote` instead of the hours, and the message comes from `messageEstimate`, which asks to talk by phone to estimate the hours and repeats the hourly rate and the minimum. Its placeholders: `{service}`, `{slot}`, `{availability}`, `{rate}`, `{hours}`. The first site's: "היי, אשמח להזמין אותך {service} {slot}. {availability} אשמח שנדבר בטלפון כדי להעריך כמה שעות צריך. הבנתי שהמחיר {rate} לשעה, ומינימום {hours} שעות."
 - **Placeholders**, filled in from `business.json` → `pricing` and formatted for the language, so changing a price in one place updates every text:
   - `{hours}` — the minimum hours (4), as a plain number (the message uses `{duration}` instead)
   - `{rate}`, `{total}` — the day rate and minimum total (100 ₪, 400 ₪) in normal text; in the message, the chosen slot's rate and chosen hours × rate
@@ -323,7 +323,7 @@ Starting keyword list (Hebrew), to confirm with her — she should only list ser
 - **Primary:** ניהול משק בית בבאר שבע, ניקיון בתים בבאר שבע, סידור וארגון הבית בבאר שבע, מארגנת בתים בבאר שבע
 - **Services:** ניהול משק בית, עזרה במשק הבית, עוזרת משק בית, כביסה וגיהוץ, גיהוץ, החלפת מצעים, ניקיון שוטף, ניקיון יסודי, ניקיון דירה, ניקיון לפני כניסה לדירה, ניקיון אחרי מעבר דירה, ניקיון אחרי שיפוץ, ניקיון לפני פסח, ניקיון לחגים, ניקיון מטבח, ניקיון חלונות, ניקיון חדרי רחצה, סידור ארונות, סידור ארון בגדים, ארגון מטבח, סידור מזווה, סידור חדרי ילדים, אריזה ופריקה במעבר דירה
 - **Phrases people search** (used for search only, not on the page): עוזרת בית בבאר שבע, מנקה בבאר שבע, ניקיון דירה באר שבע מחיר, מסדרת בתים, סידור בית אחרי מעבר, עזרה בניקיון הבית, ניקיון בית לפני אירוע
-- **Places (to verify with her):** באר שבע — רמות, נווה זאב, נווה נוי, נחל עשן, נחל בקע, הכלניות, סיגליות, העיר העתיקה, שכונות א׳–ו׳, ט׳, י״א. For now Ayelet serves Beer Sheva only; nearby towns (עומר, להבים, מיתר…) can be added to `area.places` and the keywords later.
+- **Places (to verify with her):** באר שבע — רמות, נווה זאב, נווה נוי, נחל עשן, נחל בקע, הכלניות, סיגליות, העיר העתיקה, שכונות א׳–ו׳, ט׳, י״א. For now the first site serves Beer Sheva only; nearby towns (עומר, להבים, מיתר…) can be added to `area.places` and the keywords later.
 
 English list covers the same services, plus the spellings people use for the city: **Beer Sheva, Be'er Sheva, Beersheba, Beer-Sheva**.
 
@@ -350,7 +350,7 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
 
 ## 6. Languages and RTL
 
-- **Languages for Ayelet's site:** Hebrew (default), English and **Russian** — Beer Sheva has a large Russian-speaking community. I draft the Russian; a native speaker checks it before launch.
+- **Languages for the first site:** Hebrew (default), English and **Russian** — Beer Sheva has a large Russian-speaking community. I draft the Russian; a native speaker checks it before launch.
 - **URLs:** default language at `/`, others at `/<code>/` (e.g. `/en/`, `/ru/`). Each language is a separate real page, so Google indexes each one.
 - **Direction:** the layout sets `<html lang="he" dir="rtl">` from `config.json`. All CSS uses logical properties (`margin-inline-start`, `padding-inline`, `inset-inline-end`), so nothing needs rewriting for RTL. Directional icons (arrows) flip automatically.
 - **Device language:** on a visitor's **first** visit to `/`, a small inline script reads `navigator.languages` in order. The first entry that is the default language or a language marked `"deviceRedirect": true` in `config.json` decides: a marked language goes to its URL, the default stays. Anything else → the default stays. **Only Russian is marked** (Pini, 2026-10-06): many Israelis use their phones and computers in English but read Hebrew, so they get Hebrew, and English is one click away in the switcher.
@@ -362,9 +362,9 @@ Text that's the same for any business: "Call now", "Send a WhatsApp message", "S
   3. Add the OG image for it in `media.json`.
   4. `npm run build` — the check script fails if any key is missing compared with the default language.
   5. Add it to `business.json` → `contactLanguages` only if the business actually speaks it.
-- **Contact language vs. site language.** The site can be in any language, but she answers WhatsApp and calls only in the languages in `business.json` → `contactLanguages` (Ayelet: Hebrew only).
+- **Contact language vs. site language.** The site can be in any language, but she answers WhatsApp and calls only in the languages in `business.json` → `contactLanguages` (first site: Hebrew only).
   - The WhatsApp message is built in the visitor's language if she speaks it, otherwise in her main contact language. A Russian visitor's message goes in Hebrew.
-  - In that case the booking panel shows the message **in the visitor's language first**, so they understand every detail (service, hours, day, time, price), with a note: "Ayelet speaks Hebrew, so this is sent in Hebrew". The Hebrew text that will actually be sent is shown under it.
+  - In that case the booking panel shows the message **in the visitor's language first**, so they understand every detail (service, hours, day, time, price), with a note: "Messages are written in Hebrew, so this is what will be sent". The Hebrew text that will actually be sent is shown under it.
   - Next to the Call button on those pages: "Calls in Hebrew".
 - **Mixed text:** phone numbers and English words inside Hebrew are wrapped so they don't get scrambled by the bidirectional algorithm (`dir="ltr"` on phone numbers, `<bdi>` where needed).
 
@@ -391,7 +391,7 @@ One page per language, short, built for phones first. No forms, no steps.
 **Other pages:** `/accessibility` (statement, per language) and a styled 404.
 
 **The booking panel.** Every WhatsApp button opens one small panel that builds the message from a few taps, so the customer sees the price before sending anything:
-1. **Service** — already selected when they came from a service card; otherwise it starts on the default service (`defaultService`, Ayelet: סדר וניקיון יסודי). There's no "not decided yet" option.
+1. **Service** — already selected when they came from a service card; otherwise it starts on the default service (`defaultService`, first site: סדר וניקיון יסודי). There's no "not decided yet" option.
 2. **Day or evening** — two big buttons with their rates (day ₪100/hour, evening ₪150/hour from 19:00). Already selected when they came from a price card.
 3. **How many hours** — a − 4 + stepper that starts at the minimum and moves by `pricing.step` (half hours: 4, 4.5, 5…). The total updates live: "4.5 שעות × 150 ₪ = 675 ₪". Next to it, the "how many hours do I need?" guide (`booking.hoursGuide`); tapping a line sets the hours. For a service estimated by phone (`estimateByPhone`), this step is replaced by a short note that the length is agreed by phone, with the minimum (Pini, 2026-10-06).
 4. **Day (optional)** — the next 14 days as buttons, only days she works; evening is disabled on days whose work hours end before 19:00 (e.g. Friday).
@@ -498,7 +498,7 @@ I'll check these in the browser and send you screenshots of each; you check on r
 - Headings in the right order (one `h1`), real text (not text inside images), alt text from keywords.
 - Performance counts for ranking: target **Lighthouse 95+** in all four categories on mobile.
 
-**Outside the site (biggest effect for local search):** a **Google Business Profile**, with the site link, photos, hours and reviews; the site links to it when `social.googleBusiness` is set. **Not for Ayelet for now** (Pini, 2026-10-06); consistent listings in local directories (same name and phone, with the site link) still help.
+**Outside the site (biggest effect for local search):** a **Google Business Profile**, with the site link, photos, hours and reviews; the site links to it when `social.googleBusiness` is set. **Not for the first site for now** (Pini, 2026-10-06); consistent listings in local directories (same name and phone, with the site link) still help.
 
 ### Share preview
 
@@ -614,7 +614,7 @@ The work is split into small steps in **[`docs/STEPS.md`](STEPS.md)**: each step
 
 ## 19. Open decisions
 
-None open. How each one was settled (Ayelet's answers and Pini's decisions, 2026-10-06; her full record is in her repo's `docs/SITE.md`):
+None open. How each one was settled (the first business's answers and Pini's decisions, 2026-10-06; its full record is in its repo's `docs/SITE.md`):
 
 - **Hero background video:** yes. A calm, silent loop of the hero room, with a separate portrait version for phones (section 7, `MEDIA-BRIEF.md` §4).
 - **Services, hours and places:** all seven template services; Sunday–Thursday 08:00–23:00 and Friday 08:00–13:00; all of Beer Sheva and no other towns.
@@ -622,4 +622,4 @@ None open. How each one was settled (Ayelet's answers and Pini's decisions, 2026
 - **Online booking (Cal.com):** not now; WhatsApp only. Before turning it on (`bookingUrl`), check with a free test account that approving each booking ("Requires confirmation") and a Hebrew booking page are in the free plan.
 - **"How many hours do I need?":** 2–3 rooms and 4 rooms take 4 hours (the minimum); 5 rooms or more about 5 hours, shown as an estimate, not a commitment. Deep and Passover cleaning are estimated by phone (`estimateByPhone`).
 - **Price details:** she's VAT-exempt (עוסק פטור), so prices are final and the site says only that; the client provides the cleaning materials; no travel charge (Beer Sheva only); the 4-hour minimum applies to every service; no lower rate for regular clients; cancelling is free until two days before the visit, later it costs a one-time ₪100.
-- **Decided at the start:** visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days; the booking panel starts on `defaultService` (Ayelet: סדר וניקיון יסודי, Pini, 2026-10-06), with no "not decided yet" option.
+- **Decided at the start:** visits crossing 19:00 are split (hours after 19:00 at ₪150); extra time is charged by the half hour; Friday and holiday eves cost the same as other days; the booking panel starts on `defaultService` (first site: סדר וניקיון יסודי, Pini, 2026-10-06), with no "not decided yet" option.

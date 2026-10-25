@@ -9,7 +9,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 **Who:** 🤖 = me · 👤 = you · 👩 = her (through you)
 
-**Current step:** none, every step is done. Ayelet's site is live at https://ayelethome.co.il. New work gets its own phase at the end of this list, one small step per change, and this line names the step in progress.
+**Current step:** none, every step is done. The first business site is live at https://ayelethome.co.il. New work gets its own phase at the end of this list, one small step per change, and this line names the step in progress.
 
 ---
 
@@ -17,7 +17,7 @@ The plan in [`PLAN.md`](PLAN.md) split into small steps. One step at a time: I d
 
 - [x] **0.1 👤 Review the plan.** Read `PLAN.md`, answer or note the open decisions (section 19).
 - [x] **0.2 👤 First push.** Push the two docs to `github.com/pinilalush/landing-template` (I'll give the commands).
-- [x] **0.3 👤👩 Ask Ayelet the open questions** (services, hours, places, price details). Not needed to build the template, needed for her site in Phase 9 — can run in parallel.
+- [x] **0.3 👤👩 Ask the business owner the open questions** (services, hours, places, price details). Not needed to build the template, needed for her site in Phase 9 — can run in parallel.
 
 ## Phase 1 — Base
 
@@ -99,17 +99,17 @@ Each section is checked at every width in the responsive matrix, in every langua
 - [x] **8.2 👤 Mark the repo as a template** (Settings → Template repository).
 - [x] **8.3 👤🤖 Dry run** — create a throwaway repo from the template, confirm its build fails on placeholders (no variable copied), then you delete the throwaway repo.
 
-## Phase 9 — Ayelet's site (home cleaning and organizing, Beer Sheva)
+## Phase 9 — The first business site (home cleaning and organizing, Beer Sheva)
 
 The domain steps (9.2–9.3) don't depend on the template and can be done any time earlier, so the name is secured.
 
-- [x] **9.1 🤖 Questionnaire for Ayelet** — a short Hebrew list you can send her on WhatsApp: business name, phone, services, hours, places, price details (VAT, materials, travel, minimum), social links. *(Done: she answered.)*
+- [x] **9.1 🤖 Questionnaire for the business owner** — a short Hebrew list you can send her on WhatsApp: business name, phone, services, hours, places, price details (VAT, materials, travel, minimum), social links. *(Done: she answered.)*
 - [x] **9.2 🤖 Domain name ideas** — a short list of names (`.co.il` and `.com`) that are easy to say on the phone and spell in English letters without mistakes, with the registrar options and approximate yearly cost. 👤👩 Pick one.
-- [x] **9.3 👤 Buy Ayelet's domain** at a registrar (an ISOC-IL accredited registrar for `.co.il`). Turn on auto-renew so the site doesn't go down when the year ends. *(Done 2026-10-05. Auto-renew is off by your choice, so renew it by hand before the year ends.)*
-- [x] **9.4 👤 Create Ayelet's repo** from the template ("Use this template"), named after the domain, public, cloned into `private-landings/`, and linked to the template right away, before any data changes (`docs/NEW-SITE.md` §2).
-- [x] **9.5 🤖 Fill Ayelet's data** — Hebrew content from her answers, English and Russian drafts, her hours guide, her pricing (₪100 per hour, ₪150 from 19:00, 4-hour minimum unless she says otherwise). 👤👩 Approve the texts.
-- [x] **9.5b 👤 A native Russian speaker checks the Russian text** (site and booking-panel translation notes). *(Done by Claude as the reviewer at Pini's request, 2026-10-06: name "Айелет — порядок в доме" and wording fixes. A native read later is still welcome.)*
-- [x] **9.5c 👤 Open a free Umami Cloud account** for Ayelet's site and send me the site ID. *(Done — the ID goes into her repo's `config.json` in 9.5, not into the template.)* *(Optional, later:* a free Cal.com account if she wants online booking — test approval and Hebrew first.*)*
+- [x] **9.3 👤 Buy the business's domain** at a registrar (an ISOC-IL accredited registrar for `.co.il`). Turn on auto-renew so the site doesn't go down when the year ends. *(Done 2026-10-05. Auto-renew is off by your choice, so renew it by hand before the year ends.)*
+- [x] **9.4 👤 Create the business's repo** from the template ("Use this template"), named after the domain, public, cloned into `private-landings/`, and linked to the template right away, before any data changes (`docs/NEW-SITE.md` §2).
+- [x] **9.5 🤖 Fill in the business's data** — Hebrew content from her answers, English and Russian drafts, her hours guide, her pricing (₪100 per hour, ₪150 from 19:00, 4-hour minimum unless she says otherwise). 👤👩 Approve the texts.
+- [x] **9.5b 👤 A native Russian speaker checks the Russian text** (site and booking-panel translation notes). *(Done by Claude as the reviewer at Pini's request, 2026-10-06: wording fixes; the Russian name is now "Порядок в доме", Pini, 2026-10-25. A native read later is still welcome.)*
+- [x] **9.5c 👤 Open a free Umami Cloud account** for the business's site and send me the site ID. *(Done — the ID goes into her repo's `config.json` in 9.5, not into the template.)* *(Optional, later:* a free Cal.com account if she wants online booking — test approval and Hebrew first.*)*
 - [x] **9.6 🤖 Build passes with no placeholders.**
 - [x] **9.7 👤 Publish** — Pages source: GitHub Actions, push, check at `https://pinilalush.github.io/<repo>/`.
 - [x] **9.8 👤 Connect the domain** — DNS records, GitHub Pages custom domain, domain verification, HTTPS. I'll give exact values. *(Done 2026-10-06: DNS on Cloudflare, domain verified in GitHub, HTTPS enforced, `basePath` "/" in her repo; http, www and the github.io address all lead to https://ayelethome.co.il.)*

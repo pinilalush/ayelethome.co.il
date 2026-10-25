@@ -9,7 +9,7 @@ Read this first when you pick up the project, whether you're Claude Code or a pe
 
 | Business repo | Business | Live |
 |---|---|---|
-| [`ayelethome.co.il`](https://github.com/pinilalush/ayelethome.co.il) | Ayelet: home cleaning and household management, Beer Sheva | https://ayelethome.co.il (since 2026-10-06) |
+| [`ayelethome.co.il`](https://github.com/pinilalush/ayelethome.co.il) | ניהול משקי בית: home cleaning and household management, Beer Sheva | https://ayelethome.co.il (since 2026-10-06) |
 
 **Which repo am I in?** Run `git remote -v`. In the template, `origin` is `landing-template`. A business repo has `origin` pointing to its own repo, plus a `template` remote. **A business repo also has `docs/SITE.md`**, the business's record: decisions, accounts, domain and DNS, operations and the launch checks. Read it before changing anything there.
 
