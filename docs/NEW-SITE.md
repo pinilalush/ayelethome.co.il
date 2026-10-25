@@ -374,7 +374,7 @@ Remove any other `A`, `AAAA` or `CNAME` records for the domain and `www`, such a
   Then go to **Sitemaps**, enter `sitemap-index.xml` (the full address is `https://example.co.il/sitemap-index.xml`), and **Submit**.
 - **Google Business Profile:** create one with the site link, photos, hours and reviews, and put its link in `business.json` → `social.googleBusiness`.
 - **Changing anything later:** edit the JSON or media, then push. The workflow republishes.
-- **Keep the site record, `docs/SITE.md`**, in the business repo (only there; the template has none): the business in a few lines, the accounts and services and who owns them, the domain and its renewal date, the DNS records, decisions about this business with who made them and when, how to run the site, and the launch checks with their results (`TESTING.md` §7). Ayelet's repo has a full example. Update it whenever something changes.
+- **Keep the site record, `docs/SITE.md`**, in the business repo (only there; the template has none): the business in a few lines, the accounts and services and who owns them, the domain and its renewal date, the DNS records, decisions about this business with who made them and when, how to run the site, and the launch checks with their results (`TESTING.md` §7). The first business repo (`ayelethome.co.il`) has a full example. Update it whenever something changes.
 
 ---
 

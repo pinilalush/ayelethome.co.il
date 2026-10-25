@@ -4,7 +4,7 @@ Every image and video the site needs: what it's for, where it shows, its size, i
 
 This brief has **two parts**:
 - **Part 1, the template's media (steps 6.2–6.3).** These are AI atmosphere images of a tidy room, with no real person and no real work in them, so they can live in the template and be copied into every new site.
-- **Part 2, for a business site.** The owner's photo, photos of her work, and a logo. These are real and personal, so they are **collected and added only in the business's own repo** (step 9.5 for Ayelet), **never in the template**.
+- **Part 2, for a business site.** The owner's photo, photos of her work, and a logo. These are real and personal, so they are **collected and added only in the business's own repo** (step 9.5 for the first site), **never in the template**.
 
 The prompts are written for the template's current business type: home cleaning, organizing and household help in an Israeli city. For another kind of business, keep the structure and change the scene (Part 2, §8).
 
@@ -201,7 +201,7 @@ Step 6.3 takes it from there:
 
 # Part 2 — For a business site (in the business's own repo only)
 
-Everything in this part is collected from the business and added **only in that business's repo**, never in the template. For Ayelet this is step 9.5.
+Everything in this part is collected from the business and added **only in that business's repo**, never in the template. For the first site this was step 9.5.
 
 ## 5. `about.jpg` — real photo of the owner (or a drawing of her)
 
@@ -229,7 +229,7 @@ Everything in this part is collected from the business and added **only in that 
 
 > היי! לאתר צריך תמונה אמיתית שלך (לא בינה מלאכותית). כמה טיפים: אור יום מחלון שמולך, רקע נקי ומסודר, פנים למצלמה עם חיוך, מהמותניים או מהחזה ומעלה, ושיהיה קצת מקום מעל הראש. עדיף שמישהו יצלם במצלמה האחורית, בלי פילטרים. אם אפשר, כבי לפני הצילום את שמירת המיקום בהגדרות המצלמה, כדי שהכתובת לא תישמר בתמונה. צלמי כמה, ושלחי את הכי טובות בוואטסאפ **כקובץ (מסמך)**, לא כתמונה, כדי שלא יידחסו. תודה! 😊
 
-**If she'd rather not show a photo: a drawing made from it** (Pini, 2026-10-06; Ayelet's site uses one):
+**If she'd rather not show a photo: a drawing made from it** (Pini, 2026-10-06; the first site uses one):
 1. **She agrees** that her photo is uploaded to Google's Gemini to make the drawing, and **she approves the result** before it goes on the site.
 2. Open https://gemini.google.com, upload her photo and paste the prompt below. Don't write a shape or ratio in the prompt (it can be drawn as text); a portrait photo gives a portrait drawing.
    ```text
@@ -238,7 +238,7 @@ Everything in this part is collected from the business and added **only in that 
    Change "side profile" and "the boat" to match her photo, and the background colors to the site's.
 3. If the face drifts from hers, ask in the same chat to "make her face closer to the original photo", or generate again.
 4. Crop it to 4:5 at 1200 × 1500 with her face where both crops keep it, and save it as `about-illustration.jpg` with `media.json` → `about.file` set to match.
-5. **Say it's a drawing in the alt text** in every language (`content.json` → `media.about`), for example "איור של איילת, בעלת העסק" / "Illustration of Ayelet, the business owner".
+5. **Say it's a drawing in the alt text** in every language (`content.json` → `media.about`), for example "איור של בעלת העסק" / "Illustration of the business owner".
 
 **If a photo has to come off the site later:** deleting the file isn't enough, because the repo is public and the photo stays in its history. Commit the replacement first, then remove the old file from every commit with `git filter-repo --invert-paths --path src/assets/media/about.jpg`, add the `origin` remote back (filter-repo removes it), force-push, and ask GitHub Support to clear cached views of the old commits.
 
