@@ -34,7 +34,7 @@
     "flexible": "Flexible",
     "total": "Total",
     "preview": "Your message",
-    "contactNote": "{name} speaks {language}, so this is the message that will be sent:",
+    "contactNote": "Messages are written in {language}, so this is the message that will be sent:",
     "send": "Send on WhatsApp",
     "close": "Close",
     "onlineBooking": "or choose a time online",

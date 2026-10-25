@@ -1,6 +1,6 @@
 # Site record: ayelethome.co.il
 
-The record of Ayelet's site: the business, the accounts and services it runs on, every decision about it, how to run it, and how it was checked at launch. Everything general (how the template works, the data fields, the tests) is in the other docs; this file holds only what is specific to this site. Keep it up to date whenever something here changes.
+The record of this site: the business, the accounts and services it runs on, every decision about it, how to run it, and how it was checked at launch. Everything general (how the template works, the data fields, the tests) is in the other docs; this file holds only what is specific to this site. Keep it up to date whenever something here changes.
 
 Start with [`CLAUDE.md`](../CLAUDE.md) for how the work is done, then read this file.
 
@@ -8,13 +8,13 @@ Start with [`CLAUDE.md`](../CLAUDE.md) for how the work is done, then read this 
 
 | | |
 |---|---|
-| Business | **איילת ניהול משקי בית**: home cleaning, tidying and household management (laundry, ironing, bedding, dishes, whatever the household needs) |
-| Owner | Ayelet (first name only on the site). Pini runs the site for her and relays her approvals. |
+| Business | **ניהול משקי בית**: home cleaning, tidying and household management (laundry, ironing, bedding, dishes, whatever the household needs) |
+| Owner | The business owner. **Her name is not on the site** (Pini, 2026-10-25): the business name stands in for it on the contact card and the signature under the about text. Pini runs the site for her and relays her approvals. |
 | Area | All of Beer Sheva, no other towns |
 | Live site | https://ayelethome.co.il (Hebrew `/`, English `/en/`, Russian `/ru/`) |
 | Repo | [github.com/pinilalush/ayelethome.co.il](https://github.com/pinilalush/ayelethome.co.il), public, created from [`landing-template`](https://github.com/pinilalush/landing-template) with a `template` remote |
 | Launched | 2026-10-06 (built 2026-10-05 to 2026-10-06) |
-| Names | he "איילת ניהול משקי בית" · en "Ayelet Household Management" · ru "Айелет — порядок в доме" |
+| Names | he "ניהול משקי בית" · en "Household Management" · ru "Порядок в доме" (Pini, 2026-10-25) |
 
 ## Where the facts live
 
@@ -22,7 +22,7 @@ The data files are the source of truth; this record explains them.
 
 | What | File |
 |---|---|
-| Phone and WhatsApp (`+972556666630`, the same number), prices, work hours, payment methods, default service, phone-estimate services | `src/data/business.json` |
+| Phone and WhatsApp (`+972556667777`, the same number; Pini, 2026-10-25), prices, work hours, payment methods, default service, phone-estimate services | `src/data/business.json` |
 | Languages, theme colors, sections on or off, hero video, Umami ID | `src/data/config.json` |
 | All page text, per language (services, FAQ, booking messages, hours guide, about text) | `src/data/locales/<lang>/content.json` |
 | Titles, descriptions, keywords, share-preview text | `src/data/locales/<lang>/seo.json` |
@@ -31,10 +31,10 @@ The data files are the source of truth; this record explains them.
 
 ## Decisions
 
-All made on 2026-10-05 and 2026-10-06, from Ayelet's questionnaire answers and Pini's decisions. A change to any of these is a decision for Pini (and Ayelet); record it here with the date.
+All made on 2026-10-05 and 2026-10-06, from the owner's questionnaire answers and Pini's decisions, with later changes dated. A change to any of these is a decision for Pini (and the owner); record it here with the date.
 
 **Name and wording**
-- The name is "איילת ניהול משקי בית" (Pini changed "משק בית" to "משקי בית").
+- The name is "ניהול משקי בית" (Pini, 2026-10-25). Don't add the owner's name or the earlier phone number anywhere, in the site or in the docs.
 - The Russian name is short so the header fits on phones.
 - The site describes her work as "ניקיון וניהול משק הבית".
 - She is "אמינה ואחראית", never "דיסקרטית", which can read the wrong way (Pini).
@@ -53,7 +53,7 @@ All made on 2026-10-05 and 2026-10-06, from Ayelet's questionnaire answers and P
 
 **The about section**
 - Pini's wording, in three paragraphs.
-- The picture is **a drawing of Ayelet**, made in Gemini from her own photo and approved by her (`about-illustration.jpg`). The alt text says it's an illustration.
+- The picture is **a drawing of the owner**, made in Gemini from her own photo and approved by her (`about-illustration.jpg`). The alt text says it's an illustration.
 - **Don't put a photo of her on the site or in the repo unless she asks for one.** Never use a realistic AI image.
 
 **Services**
@@ -156,7 +156,7 @@ Before pushing, check what the merge did to the data with `git diff ORIG_HEAD --
 |---|---|---|
 | `hero.jpg`, `hero-mobile.jpg` | A tidy living room behind the hero (wide and portrait) | AI-generated atmosphere images, from the template (`MEDIA-BRIEF.md` §1–2) |
 | `public/media/hero.mp4`, `hero-mobile.mp4` | The hero's background loop (1080p wide; 1080×1920 portrait) | Google Flow, made from the hero photos, looped forward and back, silent |
-| `about-illustration.jpg` | Ayelet, drawn (1200×1500) | Gemini, from her own photo, approved by her |
+| `about-illustration.jpg` | The owner, drawn (1200×1500) | Gemini, from her own photo, approved by her |
 | `area-map.jpg` | Beer Sheva with the city area shaded | `npm run area-map` (OpenStreetMap) |
 | `og-he.jpg`, `og-en.jpg`, `og-ru.jpg` | Link-preview images | Made by every build from the data |
 

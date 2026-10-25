@@ -1,6 +1,6 @@
 {
-  "businessName": "Ayelet Household Management",
-  "ownerName": "Ayelet",
+  "businessName": "Household Management",
+  "ownerName": "Household Management",
   "tagline": "Home cleaning and household management in Beer Sheva",
   "hero": {
     "title": "Want a clean, tidy home in Beer Sheva?",
@@ -94,7 +94,7 @@
   ],
   "about": {
     "title": "Nice to meet you",
-    "text": "I'm Ayelet, and I've been managing households in Beer Sheva for many years. Most of my clients stay with me for years and book me regularly, which to me is the greatest compliment.\nA clean, tidy home isn't just a shiny floor. It's folded laundry, fresh bedding, dishes put away, and more free time for you.\nI work thoroughly, responsibly and with respect for your home, and every home gets the same care from me, just like my own."
+    "text": "I've been managing households in Beer Sheva for many years. Most of my clients stay with me for years and book me regularly, which to me is the greatest compliment.\nA clean, tidy home isn't just a shiny floor. It's folded laundry, fresh bedding, dishes put away, and more free time for you.\nI work thoroughly, responsibly and with respect for your home, and every home gets the same care from me, just like my own."
   },
   "area": {
     "title": "Service area",
@@ -122,6 +122,6 @@
   "accessibilityService": "The service takes place in the client's home, and the business has no premises open to the public. If you need any adjustment, for example arranging things by phone instead of in writing, a visit at a particular time, or a detailed explanation in advance, contact me by phone or WhatsApp and I'll gladly adapt the service.",
   "media": {
     "hero": "A bright, clean and tidy living room in an apartment",
-    "about": "Illustration of Ayelet, the business owner"
+    "about": "Illustration of the business owner"
   }
 }
